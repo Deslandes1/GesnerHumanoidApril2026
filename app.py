@@ -1,90 +1,39 @@
-import streamlit as st
-from PIL import Image, ImageDraw
-import asyncio
-import edge_tts
-import time
-
-# -----------------------------
-# BROWN HUMANOID FACE
-# -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    skin = (139, 69, 19)
+    brown = (120, 72, 40)        # main brown
+    dark_brown = (80, 45, 20)    # darker shade
+    light = (200, 170, 130)      # highlight
 
-    # Head
-    draw.ellipse((50, 80, 350, 350), fill=skin, outline="black", width=5)
+    # HEAD (rectangular robot style)
+    draw.rectangle((80, 80, 320, 320), fill=brown, outline="black", width=5)
 
-    # Eyes
-    draw.ellipse((140, 170, 180, 210), fill="white")
-    draw.ellipse((150, 180, 170, 200), fill="black")
+    # TOP PANEL
+    draw.rectangle((140, 40, 260, 80), fill=dark_brown, outline="black", width=3)
 
-    draw.ellipse((220, 170, 260, 210), fill="white")
-    draw.ellipse((230, 180, 250, 200), fill="black")
+    # SIDE PANELS (ears)
+    draw.rectangle((50, 150, 80, 250), fill=dark_brown, outline="black", width=3)
+    draw.rectangle((320, 150, 350, 250), fill=dark_brown, outline="black", width=3)
 
-    # Mouth
+    # EYES (robot style big circles)
+    draw.ellipse((140, 150, 180, 190), fill="white", outline="black")
+    draw.ellipse((150, 160, 170, 180), fill="black")
+
+    draw.ellipse((220, 150, 260, 190), fill="white", outline="black")
+    draw.ellipse((230, 160, 250, 180), fill="black")
+
+    # NOSE (robot line)
+    draw.line((200, 200, 200, 240), fill="black", width=3)
+
+    # MOUTH (animated)
     if mouth_open:
-        draw.ellipse((170, 240, 230, 300), fill="black")
+        draw.rectangle((170, 250, 230, 290), fill="black")
     else:
-        draw.arc((150, 230, 250, 300), start=0, end=180, fill="black", width=4)
+        draw.line((170, 270, 230, 270), fill="black", width=4)
 
-    # Antenna
-    draw.line((200, 80, 200, 40), fill="black", width=4)
-    draw.ellipse((185, 20, 215, 50), fill="black")
+    # DETAILS (robot lines)
+    draw.line((100, 120, 300, 120), fill=light, width=2)
+    draw.line((100, 300, 300, 300), fill=light, width=2)
 
     return img
-
-# -----------------------------
-# VOICE GENERATION
-# -----------------------------
-async def generate_voice(text, voice):
-    communicate = edge_tts.Communicate(text, voice)
-    await communicate.save("speech.mp3")
-
-# -----------------------------
-# ESTIMATE DURATION
-# -----------------------------
-def estimate_duration(text):
-    words = len(text.split())
-    return words / 2.5  # ~2.5 words per second
-
-# -----------------------------
-# STREAMLIT UI
-# -----------------------------
-st.title("🤖 Gesner Humanoid AI")
-
-language = st.selectbox("🌍 Select Language", ["English", "French", "Spanish"])
-
-voices = {
-    "English": "en-US-GuyNeural",
-    "French": "fr-FR-HenriNeural",
-    "Spanish": "es-ES-AlvaroNeural"
-}
-
-speech_text = """Hello everyone. My name is Gesner Deslandes, and I am the founder of GlobalInternet.py. We build real software solutions using Python, Streamlit, GitHub, and AI. Thank you for listening. Let’s build something great together."""
-
-frame = st.empty()
-frame.image(create_face(False))
-
-if st.button("▶️ Speak"):
-
-    # Generate voice
-    asyncio.run(generate_voice(speech_text, voices[language]))
-
-    # Play audio
-    audio_file = open("speech.mp3", "rb")
-    st.audio(audio_file.read(), format="audio/mp3")
-
-    # Estimate duration
-    duration = estimate_duration(speech_text)
-
-    # Animate
-    start = time.time()
-    while time.time() - start < duration:
-        frame.image(create_face(True))
-        time.sleep(0.2)
-        frame.image(create_face(False))
-        time.sleep(0.2)
-
-    frame.image(create_face(False))
