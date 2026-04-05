@@ -1,4 +1,4 @@
 streamlit
 pillow
 edge-tts
-asyncio
+pydub
