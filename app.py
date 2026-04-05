@@ -1,12 +1,32 @@
 import streamlit as st
 from PIL import Image, ImageDraw
-from gtts import gTTS
+import asyncio
+import edge_tts
+import time
 import os
 
 # -----------------------------
-# CREATE ROBOT FACE (BETTER)
+# VOICE SETTINGS
 # -----------------------------
-def create_robot_face():
+voices = {
+    "English": "en-US-GuyNeural",   # Male
+    "French": "fr-FR-HenriNeural",  # Male
+    "Spanish": "es-ES-AlvaroNeural" # Male
+}
+
+# -----------------------------
+# TEXT PER LANGUAGE
+# -----------------------------
+texts = {
+    "English": "Hello World, this is Gesner Deslandes. I build software now. My company GlobalInternet.py is heading to humanoid projects, please stay tuned!",
+    "French": "Bonjour le monde, ici Gesner Deslandes. Je développe des logiciels maintenant. Mon entreprise GlobalInternet.py se dirige vers des projets humanoïdes, restez connectés!",
+    "Spanish": "Hola mundo, soy Gesner Deslandes. Ahora desarrollo software. Mi empresa GlobalInternet.py se dirige hacia proyectos humanoides, manténganse atentos!"
+}
+
+# -----------------------------
+# CREATE ROBOT FACE (WITH MOUTH STATES)
+# -----------------------------
+def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
@@ -20,8 +40,11 @@ def create_robot_face():
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # Smile
-    draw.arc((150, 230, 250, 310), start=0, end=180, fill="black", width=4)
+    # Mouth animation
+    if mouth_open:
+        draw.ellipse((170, 240, 230, 300), outline="black", width=4)
+    else:
+        draw.arc((150, 230, 250, 300), start=0, end=180, fill="black", width=4)
 
     # Antenna
     draw.line((200, 80, 200, 40), fill="black", width=4)
@@ -34,27 +57,34 @@ def create_robot_face():
     return img
 
 # -----------------------------
-# TEXT TO SPEECH (WORKS ONLINE)
+# GENERATE VOICE FILE
 # -----------------------------
-def generate_voice():
-    text = ("Hello World, this is Gesner Deslandes. "
-            "I build software now. "
-            "My company GlobalInternet.py is heading to humanoid projects, "
-            "please stay tuned!")
-
-    tts = gTTS(text=text, lang='en', tld='com')  # US voice
-    tts.save("voice.mp3")
+async def generate_voice(text, voice):
+    communicate = edge_tts.Communicate(text, voice)
+    await communicate.save("voice.mp3")
 
 # -----------------------------
 # STREAMLIT UI
 # -----------------------------
 st.title("🤖 Gesner Humanoid AI")
 
-robot = create_robot_face()
-st.image(robot, caption="Humanoid Robot")
+# Language selector
+language = st.selectbox("🌍 Select Language", list(voices.keys()))
 
-if st.button("🔊 Speak"):
-    generate_voice()
+# Display face
+frame = st.empty()
+frame.image(create_face(False))
+
+if st.button("▶️ Speak"):
     
+    # Generate voice
+    asyncio.run(generate_voice(texts[language], voices[language]))
+
+    # Play audio
     audio_file = open("voice.mp3", "rb")
     st.audio(audio_file.read(), format="audio/mp3")
+
+    # Animate mouth while speaking
+    for i in range(20):
+        frame.image(create_face(mouth_open=(i % 2 == 0)))
+        time.sleep(0.2)
