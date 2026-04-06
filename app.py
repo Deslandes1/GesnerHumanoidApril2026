@@ -18,65 +18,81 @@ voices = {
 # FULL SPEECH PER LANGUAGE
 # -----------------------------
 texts = {
-    "English": """How Engineers in Silicon Valley Build Software Today – And How We Do It at GlobalInternet.py.
+    "English": """Accountant Excel Advanced AI April 2026.
 
-I, Gesner Deslandes, the owner of GlobalInternet.py, want to share with you how software is built today and how my online company delivers working applications in record time.
+This is Gesner Deslandes, founder of GlobalInternet.py.
 
-In Silicon Valley, the role of an engineer has changed completely. Developers no longer spend weeks writing every line of code by hand. Instead, they focus on architecture, user experience, and problem-solving.
+A complete accounting and loan tracking system that replaces messy spreadsheets.
 
-They describe what they want in plain English, and AI tools generate the code almost instantly.
+Manage cash flow, track loans, and generate professional reports all in one secure web app.
 
-The engineer’s job becomes breaking down problems, prompting AI, reviewing code, integrating systems, and deploying fast.
+You can record cash in and cash out, track your real-time balance, and manage loans with automatic calculations.
 
-At GlobalInternet.py, I follow this exact model. I act as the architect and product owner, designing, validating, and deploying everything from the cloud.
+Add borrowers, define payment schedules, track payments, and view full history.
 
-Because my company is one hundred percent online, I deliver complete software solutions within twenty-four hours.
+Generate professional reports including cash flow, loan status, and payment history.
 
-We deliver full-stack applications, databases, AI tools, and complete systems with documentation.
+Export everything to Excel and PDF.
 
-Made in Haiti, built for the world.
+The system is multilingual and secure with login and logout functionality.
 
-Let’s build something great together.""",
+Perfect for businesses, NGOs, schools, and government offices.
 
-    "French": """Comment les ingénieurs de la Silicon Valley construisent des logiciels aujourd’hui.
+One-time payment: one hundred forty-nine US dollars with lifetime access.
+
+Send payment via Moncash and receive access within twenty-four hours.
+
+Built in Haiti by GlobalInternet.py for the world.
+
+Order today and simplify your accounting tomorrow.""",
+
+    "French": """Accountant Excel Advanced AI avril 2026.
 
 Je suis Gesner Deslandes, fondateur de GlobalInternet.py.
 
-Aujourd’hui, les développeurs utilisent l’intelligence artificielle pour créer plus rapidement.
+Un système complet de comptabilité et de gestion de prêts qui remplace Excel.
 
-Ils définissent les problèmes, donnent des instructions, vérifient le code et déploient rapidement.
+Gérez les entrées et sorties d’argent, suivez le solde en temps réel et les prêts automatiquement.
 
-Chez GlobalInternet.py, je travaille exactement ainsi.
+Ajoutez des emprunteurs, définissez les paiements et suivez l’historique complet.
 
-Je conçois, développe et livre des applications complètes en moins de 24 heures.
+Générez des rapports professionnels exportables en Excel et PDF.
 
-Nous créons des applications web, des bases de données et des outils intelligents.
+Application sécurisée, multilingue avec connexion et déconnexion.
 
-Fait en Haïti, pour le monde entier.
+Idéal pour entreprises, ONG, écoles et institutions.
 
-Construisons quelque chose de grand ensemble.""",
+Paiement unique de 149 dollars avec accès à vie.
 
-    "Spanish": """Cómo los ingenieros en Silicon Valley construyen software hoy.
+Fabriqué en Haïti pour le monde.
+
+Commandez aujourd’hui et simplifiez votre comptabilité.""",
+
+    "Spanish": """Accountant Excel Advanced AI abril 2026.
 
 Soy Gesner Deslandes, fundador de GlobalInternet.py.
 
-Hoy en día, los desarrolladores usan inteligencia artificial para crear software más rápido.
+Un sistema completo de contabilidad y gestión de préstamos que reemplaza Excel.
 
-Definen problemas, dan instrucciones y validan el código.
+Registra ingresos y gastos, controla el balance en tiempo real y gestiona préstamos automáticamente.
 
-En GlobalInternet.py seguimos este mismo modelo.
+Agrega clientes, define pagos y revisa el historial completo.
 
-Creamos aplicaciones completas en menos de 24 horas.
+Genera reportes profesionales exportables en Excel y PDF.
 
-Desarrollamos software, bases de datos y herramientas de inteligencia artificial.
+Sistema seguro y multilingüe.
+
+Ideal para empresas, ONG, escuelas y gobiernos.
+
+Pago único de 149 dólares con acceso de por vida.
 
 Hecho en Haití para el mundo.
 
-Construyamos algo grande juntos."""
+Ordena hoy y simplifica tu contabilidad."""
 }
 
 # -----------------------------
-# CREATE ROBOT FACE (KEEP YOUR STYLE)
+# CREATE ROBOT FACE
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
@@ -141,7 +157,7 @@ if st.button("▶️ Speak"):
     audio_file = open("voice.mp3", "rb")
     st.audio(audio_file.read(), format="audio/mp3")
 
-    # Animate based on speech duration
+    # Animate mouth based on speech duration
     duration = estimate_duration(texts[language])
 
     start = time.time()
