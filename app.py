@@ -4,7 +4,7 @@ import time
 import edge_tts
 
 # -----------------------------
-# BROWN HUMANOID FACE
+# HUMANOID FACE
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
@@ -36,7 +36,7 @@ def create_face(mouth_open=False):
 
 
 # -----------------------------
-# VOICE GENERATION (FIXED)
+# VOICE GENERATION (SAFE SYNC)
 # -----------------------------
 def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
@@ -61,15 +61,18 @@ language = st.selectbox(
     ["English", "French", "Spanish"]
 )
 
-# ✅ FIXED VOICES (more natural)
+# -----------------------------
+# FIXED MALE VOICES (REAL NATURAL)
+# -----------------------------
 voices = {
+    # English male (already good)
     "English": "en-US-GuyNeural",
 
-    # Better French voice (more natural than Henri)
-    "French": "fr-FR-DeniseNeural",
+    # Real natural French male voice
+    "French": "fr-FR-HenriNeural",
 
-    # More neutral Spanish (better than Alvaro for most users)
-    "Spanish": "es-MX-JorgeNeural"
+    # Real natural Spanish male voice (Spain, clear and correct)
+    "Spanish": "es-ES-AlvaroNeural"
 }
 
 speech_text = """
@@ -82,22 +85,21 @@ frame = st.empty()
 frame.image(create_face(False))
 
 # -----------------------------
-# BUTTON ACTION
+# ACTION BUTTON
 # -----------------------------
 if st.button("▶️ Speak"):
 
-    # Generate voice (fixed sync version)
+    # Generate speech
     generate_voice(speech_text, voices[language])
 
     # Play audio
-    audio_file = open("speech.mp3", "rb")
-    st.audio(audio_file.read(), format="audio/mp3")
-
-    # Estimate duration
-    duration = estimate_duration(speech_text)
+    with open("speech.mp3", "rb") as audio_file:
+        st.audio(audio_file.read(), format="audio/mp3")
 
     # Animate mouth
+    duration = estimate_duration(speech_text)
     start = time.time()
+
     while time.time() - start < duration:
         frame.image(create_face(True))
         time.sleep(0.2)
