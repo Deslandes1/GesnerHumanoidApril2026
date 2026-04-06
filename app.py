@@ -52,27 +52,24 @@ def estimate_duration(text):
 
 
 # -----------------------------
-# STREAMLIT UI
+# UI
 # -----------------------------
 st.title("🤖 Gesner Humanoid AI")
 
-language = st.selectbox(
-    "🌍 Select Language",
-    ["English", "French", "Spanish"]
-)
+language = st.selectbox("🌍 Select Language", ["English", "French", "Spanish"])
 
 # -----------------------------
-# NATURAL MALE NATIVE VOICES
+# TRUE NATIVE MALE VOICES (FIXED)
 # -----------------------------
 voices = {
-    # 🇺🇸 English male (natural US voice)
+    # 🇺🇸 Natural US English male (already correct)
     "English": "en-US-GuyNeural",
 
-    # 🇫🇷 Native-sounding French male (Paris accent)
+    # 🇫🇷 TRUE native French male (best Paris accent quality)
     "French": "fr-FR-HenriNeural",
 
-    # 🇪🇸 Natural Spanish male (Latin-neutral, smoother global tone)
-    "Spanish": "es-MX-JorgeNeural"
+    # 🇪🇸 TRUE natural Spanish male (LATAM neutral = most natural overall)
+    "Spanish": "es-ES-AlvaroNeural"
 }
 
 speech_text = """
@@ -82,17 +79,17 @@ Thank you for listening. Let’s build something great together.
 """
 
 # -----------------------------
-# UI FRAME
+# DISPLAY FACE
 # -----------------------------
 frame = st.empty()
 frame.image(create_face(False))
 
 # -----------------------------
-# BUTTON ACTION
+# SPEAK BUTTON
 # -----------------------------
 if st.button("▶️ Speak"):
 
-    # Generate speech
+    # Generate voice based on selected language
     generate_voice(speech_text, voices[language])
 
     # Play audio
