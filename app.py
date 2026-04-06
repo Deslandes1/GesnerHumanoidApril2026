@@ -1,8 +1,7 @@
 import streamlit as st
 from PIL import Image, ImageDraw
-import asyncio
-import edge_tts
 import time
+import edge_tts
 
 # -----------------------------
 # BROWN HUMANOID FACE
@@ -35,42 +34,60 @@ def create_face(mouth_open=False):
 
     return img
 
+
 # -----------------------------
-# VOICE GENERATION
+# VOICE GENERATION (FIXED)
 # -----------------------------
-async def generate_voice(text, voice):
+def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
-    await communicate.save("speech.mp3")
+    communicate.save_sync("speech.mp3")
+
 
 # -----------------------------
 # ESTIMATE DURATION
 # -----------------------------
 def estimate_duration(text):
     words = len(text.split())
-    return words / 2.5  # ~2.5 words per second
+    return words / 2.5
+
 
 # -----------------------------
 # STREAMLIT UI
 # -----------------------------
 st.title("🤖 Gesner Humanoid AI")
 
-language = st.selectbox("🌍 Select Language", ["English", "French", "Spanish"])
+language = st.selectbox(
+    "🌍 Select Language",
+    ["English", "French", "Spanish"]
+)
 
+# ✅ FIXED VOICES (more natural)
 voices = {
     "English": "en-US-GuyNeural",
-    "French": "fr-FR-HenriNeural",
-    "Spanish": "es-ES-AlvaroNeural"
+
+    # Better French voice (more natural than Henri)
+    "French": "fr-FR-DeniseNeural",
+
+    # More neutral Spanish (better than Alvaro for most users)
+    "Spanish": "es-MX-JorgeNeural"
 }
 
-speech_text = """Hello everyone. My name is Gesner Deslandes, and I am the founder of GlobalInternet.py. We build real software solutions using Python, Streamlit, GitHub, and AI. Thank you for listening. Let’s build something great together."""
+speech_text = """
+Hello everyone. My name is Gesner Deslandes, and I am the founder of GlobalInternet.py.
+We build real software solutions using Python, Streamlit, GitHub, and AI.
+Thank you for listening. Let’s build something great together.
+"""
 
 frame = st.empty()
 frame.image(create_face(False))
 
+# -----------------------------
+# BUTTON ACTION
+# -----------------------------
 if st.button("▶️ Speak"):
 
-    # Generate voice
-    asyncio.run(generate_voice(speech_text, voices[language]))
+    # Generate voice (fixed sync version)
+    generate_voice(speech_text, voices[language])
 
     # Play audio
     audio_file = open("speech.mp3", "rb")
@@ -79,7 +96,7 @@ if st.button("▶️ Speak"):
     # Estimate duration
     duration = estimate_duration(speech_text)
 
-    # Animate
+    # Animate mouth
     start = time.time()
     while time.time() - start < duration:
         frame.image(create_face(True))
