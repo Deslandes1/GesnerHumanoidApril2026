@@ -13,23 +13,19 @@ def create_face(mouth_open=False):
 
     skin = (139, 69, 19)
 
-    # Head
     draw.ellipse((50, 80, 350, 350), fill=skin, outline="black", width=5)
 
-    # Eyes
     draw.ellipse((140, 170, 180, 210), fill="white")
     draw.ellipse((150, 180, 170, 200), fill="black")
 
     draw.ellipse((220, 170, 260, 210), fill="white")
     draw.ellipse((230, 180, 250, 200), fill="black")
 
-    # Mouth
     if mouth_open:
         draw.ellipse((170, 240, 230, 300), fill="black")
     else:
         draw.arc((150, 230, 250, 300), start=0, end=180, fill="black", width=4)
 
-    # Antenna
     draw.line((200, 80, 200, 40), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), fill="black")
 
@@ -44,35 +40,72 @@ async def generate_voice(text, voice):
     await communicate.save("speech.mp3")
 
 
-# -----------------------------
-# SPEED ESTIMATION
-# -----------------------------
 def estimate_duration(text):
     return len(text.split()) / 2.5
 
 
 # -----------------------------
-# SPEECH (YOUR TEXT)
+# ENGLISH SPEECH
 # -----------------------------
 speech_english = """
 Building Real Solutions with Python, Streamlit, and AI.
 
-Hello everyone. My name is Gesner Deslandes, and I am the founder of GlobalInternet.py.
-We build real software solutions using Python, Streamlit, GitHub, and AI.
-Thank you for listening. Let’s build something great together.
-"""
+Hello everyone. My name is Gesner Deslandes, and I am the founder of GlobalInternet.py – an online software company based in Haiti, operating entirely from the cloud.
 
-speech_french = """
-Construire de vraies solutions avec Python, Streamlit et l'intelligence artificielle.
+In just a few weeks, we have built a portfolio of production-ready applications that solve real problems for real people.
 
-Bonjour à tous. Je m'appelle Gesner Deslandes et je suis le fondateur de GlobalInternet.py.
-Nous construisons de véritables solutions logicielles avec Python, Streamlit, GitHub et l'intelligence artificielle.
-Merci de votre attention. Construisons quelque chose de grand ensemble.
+1. Play Chess Against the Machine – A Teaching Tool
+We built an interactive chess app that teaches you how to win in four languages.
+
+2. Haiti Archives Nationales Database
+A secure digital record system for government data management.
+
+3. SCORPION – AI App Builder
+An AI system that builds full applications from simple prompts.
+
+4. Smart Radio & Media Suite
+A tool that converts media links into downloadable audio and video files.
+
+All systems were built using Python, Streamlit, GitHub, and AI tools.
+
+GlobalInternet.py is a cloud-based company operating from Haiti.
+
+Thank you for listening.
 """
 
 
 # -----------------------------
-# VOICES (FIXED)
+# FRENCH SPEECH (FULL NATURAL TRANSLATION)
+# -----------------------------
+speech_french = """
+Construire de vraies solutions avec Python, Streamlit et l’intelligence artificielle.
+
+Bonjour à tous. Je m’appelle Gesner Deslandes et je suis le fondateur de GlobalInternet.py – une entreprise de logiciels en ligne basée en Haïti et entièrement opérée depuis le cloud.
+
+En seulement quelques semaines, nous avons créé un portefeuille d’applications prêtes à l’utilisation qui résolvent de vrais problèmes pour de vraies personnes.
+
+1. Jouer aux échecs contre la machine – un outil d’apprentissage
+Nous avons construit une application d’échecs interactive qui vous apprend à gagner en quatre langues.
+
+2. Base de données des Archives Nationales d’Haïti
+Un système sécurisé de gestion des données gouvernementales.
+
+3. SCORPION – Constructeur d’applications IA
+Un système d’intelligence artificielle capable de créer des applications complètes à partir de simples instructions.
+
+4. Suite Radio et Médias Intelligents
+Un outil qui convertit des liens multimédias en fichiers audio et vidéo téléchargeables.
+
+Tous ces systèmes ont été développés avec Python, Streamlit, GitHub et des outils d’intelligence artificielle.
+
+GlobalInternet.py est une entreprise basée dans le cloud opérant depuis Haïti.
+
+Merci de votre attention.
+"""
+
+
+# -----------------------------
+# VOICES
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
@@ -92,20 +125,17 @@ frame.image(create_face(False))
 
 
 # -----------------------------
-# SPEAK BUTTON
+# SPEAK
 # -----------------------------
 if st.button("▶️ Speak"):
 
     text = speech_english if language == "English" else speech_french
 
-    # generate voice
     asyncio.run(generate_voice(text, voices[language]))
 
-    # play audio
     audio_file = open("speech.mp3", "rb")
     st.audio(audio_file.read(), format="audio/mp3")
 
-    # animation
     duration = estimate_duration(text)
 
     start = time.time()
