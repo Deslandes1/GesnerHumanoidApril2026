@@ -5,7 +5,7 @@ import edge_tts
 import time
 
 # -----------------------------
-# BROWN HUMANOID FACE
+# HUMANOID FACE
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
@@ -37,7 +37,7 @@ def create_face(mouth_open=False):
 
 
 # -----------------------------
-# VOICE GENERATION (EDGE TTS)
+# TTS FUNCTION
 # -----------------------------
 async def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
@@ -45,69 +45,68 @@ async def generate_voice(text, voice):
 
 
 # -----------------------------
-# ESTIMATE DURATION
+# SPEED ESTIMATION
 # -----------------------------
 def estimate_duration(text):
-    words = len(text.split())
-    return words / 2.5
+    return len(text.split()) / 2.5
 
 
 # -----------------------------
-# SPEECH CONTENT (NEW)
+# SPEECH (YOUR TEXT)
 # -----------------------------
-speech_text = """
+speech_english = """
 Building Real Solutions with Python, Streamlit, and AI.
 
-Hello everyone. My name is Gesner Deslandes, and I am the founder of GlobalInternet.py – an online software company based in Haiti, operating entirely from the cloud.
-
-In just a few weeks, we have built a portfolio of production-ready applications that solve real problems for real people. Let me walk you through what we have created.
-
-1. Play Chess Against the Machine – A Teaching Tool
-We built an interactive chess app that teaches you how to win. It has four difficulty levels – from Easy to Super Smart – and explains every move in four languages. It shows your moves, AI moves, and game results, and even generates reports.
-
-2. Haiti Archives Nationales Database
-We created a secure national record system for storing citizen data, documents, and identity records with high-level privacy and minister-level control.
-
-3. SCORPION – AI App Builder
-SCORPION generates full applications from simple prompts like calculators, websites, or tools. It also analyzes media and writes reports.
-
-4. Smart Radio & Media Suite
-A browser tool that converts video and audio links into downloadable MP3 and MP4 files, and allows recording and analysis.
-
-How we build so fast:
-We use Python, Streamlit, GitHub, and AI tools to accelerate development while maintaining full control as architects.
-
-GlobalInternet.py is a cloud-based company operating from Haiti, delivering software worldwide.
-
+Hello everyone. My name is Gesner Deslandes, and I am the founder of GlobalInternet.py.
+We build real software solutions using Python, Streamlit, GitHub, and AI.
 Thank you for listening. Let’s build something great together.
+"""
+
+speech_french = """
+Construire de vraies solutions avec Python, Streamlit et l'intelligence artificielle.
+
+Bonjour à tous. Je m'appelle Gesner Deslandes et je suis le fondateur de GlobalInternet.py.
+Nous construisons de véritables solutions logicielles avec Python, Streamlit, GitHub et l'intelligence artificielle.
+Merci de votre attention. Construisons quelque chose de grand ensemble.
 """
 
 
 # -----------------------------
-# STREAMLIT UI
+# VOICES (FIXED)
+# -----------------------------
+voices = {
+    "English": "en-US-GuyNeural",
+    "French": "fr-FR-HenriNeural"
+}
+
+
+# -----------------------------
+# UI
 # -----------------------------
 st.title("🤖 Gesner Humanoid AI")
 
+language = st.selectbox("🌍 Select Language", ["English", "French"])
+
 frame = st.empty()
 frame.image(create_face(False))
+
 
 # -----------------------------
 # SPEAK BUTTON
 # -----------------------------
 if st.button("▶️ Speak"):
 
-    # FIXED VOICE (clean single male English voice for stability)
-    voice = "en-US-GuyNeural"
+    text = speech_english if language == "English" else speech_french
 
-    # Generate audio
-    asyncio.run(generate_voice(speech_text, voice))
+    # generate voice
+    asyncio.run(generate_voice(text, voices[language]))
 
-    # Play audio
+    # play audio
     audio_file = open("speech.mp3", "rb")
     st.audio(audio_file.read(), format="audio/mp3")
 
-    # Animate mouth
-    duration = estimate_duration(speech_text)
+    # animation
+    duration = estimate_duration(text)
 
     start = time.time()
     while time.time() - start < duration:
