@@ -36,7 +36,7 @@ def create_face(mouth_open=False):
 
 
 # -----------------------------
-# VOICE GENERATION (SAFE SYNC)
+# VOICE GENERATION (STABLE)
 # -----------------------------
 def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
@@ -62,17 +62,17 @@ language = st.selectbox(
 )
 
 # -----------------------------
-# FIXED MALE VOICES (REAL NATURAL)
+# NATURAL MALE NATIVE VOICES
 # -----------------------------
 voices = {
-    # English male (already good)
+    # 🇺🇸 English male (natural US voice)
     "English": "en-US-GuyNeural",
 
-    # Real natural French male voice
+    # 🇫🇷 Native-sounding French male (Paris accent)
     "French": "fr-FR-HenriNeural",
 
-    # Real natural Spanish male voice (Spain, clear and correct)
-    "Spanish": "es-ES-AlvaroNeural"
+    # 🇪🇸 Natural Spanish male (Latin-neutral, smoother global tone)
+    "Spanish": "es-MX-JorgeNeural"
 }
 
 speech_text = """
@@ -81,11 +81,14 @@ We build real software solutions using Python, Streamlit, GitHub, and AI.
 Thank you for listening. Let’s build something great together.
 """
 
+# -----------------------------
+# UI FRAME
+# -----------------------------
 frame = st.empty()
 frame.image(create_face(False))
 
 # -----------------------------
-# ACTION BUTTON
+# BUTTON ACTION
 # -----------------------------
 if st.button("▶️ Speak"):
 
