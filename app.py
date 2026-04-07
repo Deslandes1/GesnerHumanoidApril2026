@@ -20,47 +20,46 @@ voices = {
 }
 
 # -----------------------------
-# FULL SPEECH PER LANGUAGE
+# FULL SPEECH PER MODE
 # -----------------------------
 texts = {
-    "English": """Official Online Voting System for Haiti Elections...
-Built in Haiti by GlobalInternet.py.""",
+    "English": "Official Online Voting System for Haiti Elections...",
 
-    "French": """Système de vote en ligne officiel prêt pour les élections en Haïti...
-Fabriqué en Haïti par GlobalInternet.py.""",
+    "French": "Système de vote en ligne officiel prêt pour les élections en Haïti...",
 
-    "Spanish": """Sistema oficial de votación en línea para elecciones en Haití...
-Hecho en Haití por GlobalInternet.py.""",
+    "Spanish": "Sistema oficial de votación en línea para elecciones en Haití...",
 
     # -----------------------------
-    # PROMO SPEECH (NEW)
+    # FULL PROMO SPEECH (YOUR SCRIPT)
     # -----------------------------
     "Promo": """
 GlobalInternet.py – Build with Python. Deliver with Speed.
 
-We don’t just write code. We build complete, production-ready software on demand – tailored to your needs, delivered by email in record time.
+We don’t just write code. We build complete production ready software on demand, tailored to your needs, delivered by email in record time.
 
 What we do:
-- Custom web applications (Streamlit, Flask, Django)
-- Election & voting systems
-- AI-powered tools (chatbots, automation, data analysis)
-- Business dashboards, reporting tools, internal workflows
-- Any Python-based project you can imagine – we make it work online
+Custom web applications using Streamlit, Flask, and Django.
+Election and voting systems like the one you just saw.
+Artificial intelligence tools including chatbots, automation, and data analysis systems.
+Business dashboards, reporting tools, and internal workflow systems.
+Any Python based project you can imagine, we make it work online.
 
 Who we are:
-GlobalInternet.py was founded by Gesner Deslandes – owner, founder, and lead engineer.
-Like Silicon Valley, but with a Haitian touch and outstanding outcomes.
-We leverage AI and modern Python frameworks to build fast, reliable, and scalable solutions.
+GlobalInternet.py was founded by Gesner Deslandes, owner, founder, and lead engineer.
+Like Silicon Valley, but with a Haitian touch and outstanding results.
+We use artificial intelligence and modern Python frameworks to build fast, reliable, and scalable solutions.
 
 Our promise:
 We are an online company working for the world.
-No matter where you are, we deliver the full software package via email – ready to install and use.
+No matter where you are, we deliver full software packages by email, ready to install and use.
 
 Contact us right now:
-Phone / WhatsApp: (509)-47385663
-Email: deslandes78@gmail.com
+Phone or WhatsApp, five zero nine, four seven three eight five six six three.
+Email, deslandes78@gmail.com.
 
-GlobalInternet.py – Your Python partner, from Haiti to the world.
+Whether you need a website, a custom software tool, or a full online platform, we build it and you own it.
+
+GlobalInternet.py, your Python partner from Haiti to the world.
 """
 }
 
@@ -91,40 +90,32 @@ def create_face(mouth_open=False):
     return img
 
 # -----------------------------
-# VOICE GENERATION
+# VOICE ENGINE
 # -----------------------------
 async def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
     await communicate.save("voice.mp3")
 
-# -----------------------------
-# ESTIMATE DURATION
-# -----------------------------
 def estimate_duration(text):
     return len(text.split()) / 2.5
 
 # -----------------------------
-# UI LAYOUT
+# UI
 # -----------------------------
 left, right = st.columns([3, 1])
 
-# RIGHT PANEL
 with right:
-    st.markdown("### 🏢 Company Info")
-    st.markdown("**GlobalInternet.py**")
-    st.markdown("Online Company Building Software")
+    st.markdown("### 🏢 GlobalInternet.py")
     st.markdown("Owner: Gesner Deslandes")
+    st.markdown("Online Software Company")
 
     st.markdown("---")
     st.markdown("### 📞 Contact")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
-    st.markdown("🏢 Office: Available upon request")
 
-    st.markdown("---")
-    st.info("AI & Software Solutions built in Haiti 🇭🇹")
+    st.info("AI Software Built in Haiti 🇭🇹")
 
-# LEFT PANEL
 with left:
 
     st.title("🤖 Gesner Humanoid AI")
@@ -134,19 +125,19 @@ with left:
         unsafe_allow_html=True
     )
 
-    language = st.selectbox("🌍 Select Mode", list(voices.keys()))
+    mode = st.selectbox("🌍 Select Mode", list(voices.keys()))
 
     frame = st.empty()
     frame.image(create_face(False))
 
     if st.button("▶️ Speak"):
 
-        asyncio.run(generate_voice(texts[language], voices[language]))
+        asyncio.run(generate_voice(texts[mode], voices[mode]))
 
         audio_file = open("voice.mp3", "rb")
         st.audio(audio_file.read(), format="audio/mp3")
 
-        duration = estimate_duration(texts[language])
+        duration = estimate_duration(texts[mode])
 
         start = time.time()
         while time.time() - start < duration:
