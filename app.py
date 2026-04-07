@@ -20,93 +20,46 @@ voices = {
 }
 
 # -----------------------------
-# FULL SPEECH PER LANGUAGE
+# SPEECH TEXT (SHORTENED FORMAT SAFE FOR STREAMLIT)
 # -----------------------------
+english_text = (
+"GlobalInternet.py – Build with Python. Deliver with Speed. "
+"We build complete production-ready software delivered within 24 hours. "
+"After your order, we send you an email with a zip file containing app.py, requirements, and a guide. "
+"Download, extract, install requirements, and run using Streamlit or Python. "
+"You can upload to GitHub and use Streamlit Cloud to access it anywhere. "
+"You can store passwords securely using Streamlit secrets. "
+"Contact us now if you need a website or custom software. "
+"We build based on your needs and integrate your company logo professionally. "
+"GlobalInternet.py – Your Python partner from Haiti to the world."
+)
+
+french_text = (
+"GlobalInternet.py – Construisez avec Python. Livrez avec rapidité. "
+"Nous créons des logiciels complets livrés en moins de 24 heures. "
+"Après votre commande, nous envoyons un email avec un fichier zip contenant app.py, les dépendances et un guide. "
+"Téléchargez, extrayez, installez et exécutez avec Streamlit ou Python. "
+"Vous pouvez utiliser GitHub et Streamlit Cloud pour l'accès en ligne. "
+"Utilisez les secrets Streamlit pour sécuriser vos mots de passe. "
+"Contactez-nous pour un site web ou logiciel personnalisé. "
+"Nous intégrons aussi votre logo professionnellement."
+)
+
+spanish_text = (
+"GlobalInternet.py – Construye con Python. Entrega con rapidez. "
+"Creamos software completo entregado en 24 horas. "
+"Recibirás un email con un archivo zip que contiene app.py, dependencias y guía. "
+"Descarga, extrae, instala y ejecuta con Streamlit o Python. "
+"Puedes usar GitHub y Streamlit Cloud para acceso en línea. "
+"Guarda contraseñas con seguridad usando Streamlit secrets. "
+"Contáctanos para crear tu sitio web o software personalizado. "
+"Integramos tu logo profesionalmente."
+)
+
 texts = {
-
-    "English": """GlobalInternet.py – Build with Python. Deliver with Speed.
-
-We don’t just write code. We build complete, production-ready software tailored to your needs and delivered within 24 hours.
-
-Here is how we deliver your software step by step.
-
-After your order is completed, we send you an email containing your full software package.
-
-Inside that email, you will receive a zip file. This zip file contains your app.py file, all required dependencies, and a clear step-by-step guide explaining how to install and run your software.
-
-First, you download the zip file and extract it on your computer or mobile device.
-
-Next, you install the required packages using the provided requirements file.
-
-Then, you simply run the application using Streamlit or Python, following the instructions included in your guide.
-
-You also have the option to upload your project to GitHub and connect it with Streamlit Cloud. This allows you to run your application online and access it from anywhere in the world.
-
-For security, you can store your passwords and private keys safely using Streamlit secret settings.
-
-If you need a professional website or custom software for your business, get in touch with us right now.
-
-We build your solution based on your exact requirements. You tell us what you need, and we handle everything professionally from start to finish.
-
-We can also integrate your company logo or suggest a design that matches your brand identity.
-
-GlobalInternet.py – Your Python partner from Haiti to the world.""",
-
-    "French": """GlobalInternet.py – Construisez avec Python. Livrez avec rapidité.
-
-Nous ne faisons pas que coder. Nous créons des logiciels complets et prêts à l’emploi, adaptés à vos besoins et livrés en moins de 24 heures.
-
-Voici comment nous livrons votre logiciel étape par étape.
-
-Après la finalisation de votre commande, nous vous envoyons un email contenant votre logiciel complet.
-
-Dans cet email, vous recevrez un fichier zip contenant votre fichier app.py, toutes les dépendances nécessaires, ainsi qu’un guide clair expliquant comment installer et exécuter votre logiciel.
-
-D’abord, vous téléchargez le fichier zip et vous l’extrayez sur votre ordinateur ou votre téléphone.
-
-Ensuite, vous installez les dépendances à l’aide du fichier requirements fourni.
-
-Puis, vous lancez simplement l’application avec Streamlit ou Python en suivant le guide.
-
-Vous pouvez aussi utiliser GitHub et Streamlit Cloud pour mettre votre application en ligne et y accéder depuis n’importe où.
-
-Pour la sécurité, vous pouvez enregistrer vos mots de passe en toute sécurité avec les paramètres secrets de Streamlit.
-
-Si vous avez besoin d’un site web ou d’un logiciel professionnel pour votre entreprise, contactez-nous dès maintenant.
-
-Nous construisons votre solution selon vos besoins exacts. Vous expliquez votre projet, et nous faisons le reste de manière professionnelle.
-
-Nous pouvons aussi intégrer le logo de votre entreprise ou vous proposer un design adapté à votre image.
-
-GlobalInternet.py – Votre partenaire Python d’Haïti vers le monde.""",
-
-    "Spanish": """GlobalInternet.py – Construye con Python. Entrega con rapidez.
-
-No solo escribimos código. Creamos software completo y listo para usar, adaptado a tus necesidades y entregado en menos de 24 horas.
-
-Así es como entregamos tu software paso a paso.
-
-Después de completar tu pedido, te enviamos un correo electrónico con tu paquete completo.
-
-Dentro del correo recibirás un archivo zip con tu archivo app.py, todas las dependencias necesarias y una guía clara paso a paso para instalar y ejecutar el software.
-
-Primero, descargas el archivo zip y lo extraes en tu computadora o teléfono.
-
-Luego, instalas las dependencias usando el archivo requirements.
-
-Después, ejecutas la aplicación con Streamlit o Python siguiendo la guía.
-
-También puedes subir tu proyecto a GitHub y conectarlo con Streamlit Cloud para usarlo en línea desde cualquier lugar.
-
-Para mayor seguridad, puedes guardar tus contraseñas usando la configuración secreta de Streamlit.
-
-Si necesitas un sitio web o software profesional para tu negocio, contáctanos ahora mismo.
-
-Construimos tu solución según tus necesidades. Tú nos dices lo que necesitas y nosotros hacemos el resto profesionalmente.
-
-También podemos integrar el logo de tu empresa o sugerir un diseño adecuado para tu marca.
-
-GlobalInternet.py – Tu socio Python desde Haití para el mundo."""
+    "English": english_text,
+    "French": french_text,
+    "Spanish": spanish_text
 }
 
 # -----------------------------
@@ -146,18 +99,30 @@ def get_audio_duration(file_path):
     return MP3(file_path).info.length
 
 # -----------------------------
-# UI
+# LAYOUT FIX (CRITICAL)
 # -----------------------------
-left, right = st.columns([3, 1])
+col1, col2 = st.columns([2.8, 1.2], gap="large")
 
-with right:
+# -----------------------------
+# RIGHT PANEL (LOCKED)
+# -----------------------------
+with col2:
     st.markdown("### 🏢 Company Info")
     st.markdown("**GlobalInternet.py**")
     st.markdown("Owner: Gesner Deslandes")
+
+    st.markdown("---")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
 
-with left:
+    st.markdown("---")
+    st.success("Always available for projects")
+
+# -----------------------------
+# LEFT PANEL
+# -----------------------------
+with col1:
+
     st.title("🤖 Gesner Humanoid AI")
 
     st.markdown(
@@ -175,11 +140,9 @@ with left:
         asyncio.run(generate_voice(texts[language], voices[language]))
 
         audio_file = "voice.mp3"
-
         st.audio(open(audio_file, "rb").read(), autoplay=True)
 
         duration = get_audio_duration(audio_file)
-
         start = time.time()
 
         while time.time() - start < duration:
