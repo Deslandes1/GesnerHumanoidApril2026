@@ -175,8 +175,21 @@ def estimate_duration(text):
 # -----------------------------
 st.title("🤖 Gesner Humanoid AI")
 
+# 🇭🇹 HAITIAN FLAG (ALWAYS DISPLAYED)
+st.markdown(
+    """
+    <div style="text-align: center;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg" width="150">
+        <h4 style="color: #0B3D91;">Made in Haiti – Built for the World</h4>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Language selector
 language = st.selectbox("🌍 Select Language", list(voices.keys()))
 
+# Display face
 frame = st.empty()
 frame.image(create_face(False))
 
