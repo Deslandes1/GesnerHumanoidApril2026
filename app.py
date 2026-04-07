@@ -5,124 +5,121 @@ import edge_tts
 import time
 
 # -----------------------------
-# PAGE CONFIG
+# PAGE CONFIG (FIXED LAYOUT FOR SCREEN RECORDING)
 # -----------------------------
 st.set_page_config(layout="wide")
+
+st.markdown(
+    """
+    <style>
+    .block-container {
+        padding-top: 1rem;
+        padding-bottom: 0rem;
+        max-height: 100vh;
+        overflow: hidden;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # -----------------------------
 # VOICE SETTINGS
 # -----------------------------
 voices = {
-    "English": "en-US-GuyNeural",
-    "French": "fr-FR-HenriNeural",
-    "Spanish": "es-ES-AlvaroNeural",
-    "Promo": "en-US-GuyNeural"
+    "Promo Speech": "en-US-GuyNeural"
 }
 
 # -----------------------------
-# DISPLAY TEXT (PRETTY UI VERSION)
+# PROMO SCRIPT (CLEAN DISPLAY VERSION)
 # -----------------------------
-display_texts = {
-    "English": "Official Online Voting System for Haiti Elections...",
-    "French": "Système de vote en ligne officiel prêt pour les élections en Haïti...",
-    "Spanish": "Sistema oficial de votación en línea para elecciones en Haití...",
-
-    "Promo": """
-🚀 GlobalInternet.py – Build with Python. Deliver with Speed.
+promo_text = """
+GlobalInternet.py – Build with Python. Deliver with Speed.
 
 We don’t just write code. We build complete production-ready software on demand – tailored to your needs, delivered by email in record time.
 
-💡 What we do:
-- Custom web applications (Streamlit, Flask, Django)
-- Election & voting systems
-- AI-powered tools (chatbots, data analysis, automation)
-- Business dashboards and workflows
-- Any Python-based project you can imagine
+What we do:
+Custom web applications (Streamlit, Flask, Django)
+Election & voting systems
+AI-powered tools (chatbots, data analysis, automation)
+Business dashboards, reporting tools, internal workflows
+Any Python-based project you can imagine – we make it work online
 
-👨‍💻 Who we are:
+Who we are:
 GlobalInternet.py was founded by Gesner Deslandes – owner, founder, and lead engineer.
 Like Silicon Valley, but with a Haitian touch and outstanding outcomes.
+We leverage AI and modern Python frameworks to build fast, reliable, and scalable solutions.
 
-🌍 Our promise:
+Our promise:
 We are an online company working for the world.
-We deliver full software packages by email, ready to install and use.
+No matter where you are, we deliver full software packages via email – ready to install and use.
 
-📞 Contact:
-Phone/WhatsApp: (509)-47385663
+Contact us:
+Phone / WhatsApp: (509)-47385663
 Email: deslandes78@gmail.com
 
-GlobalInternet.py – Your Python partner from Haiti to the world. 🇭🇹
+GlobalInternet.py – Your Python partner, from Haiti to the world.
 """
-}
 
 # -----------------------------
-# SPEECH TEXT (CLEAN VERSION FOR TTS)
+# SPEECH VERSION (CLEAN TTS)
 # -----------------------------
-speech_texts = {
-    "English": display_texts["English"],
-    "French": display_texts["French"],
-    "Spanish": display_texts["Spanish"],
-
-    "Promo": """
+speech_text = """
 GlobalInternet py Build with Python Deliver with Speed.
 
-We don’t just write code. We build complete production ready software on demand tailored to your needs delivered by email in record time.
+We build complete production ready software on demand tailored to your needs delivered by email in record time.
 
 What we do.
-
 Custom web applications using Streamlit Flask and Django.
 Election and voting systems.
 Artificial intelligence tools including chatbots data analysis and automation.
-Business dashboards reporting tools and workflows.
+Business dashboards reporting tools and internal workflows.
 Any Python based project you can imagine we make it work online.
 
 Who we are.
-
 GlobalInternet py was founded by Gesner Deslandes owner founder and lead engineer.
-Like Silicon Valley but with a Haitian touch and strong results.
+Like Silicon Valley but with a Haitian touch and outstanding results.
+We use artificial intelligence and modern Python frameworks to build fast reliable and scalable solutions.
 
 Our promise.
-
 We are an online company working for the world.
 We deliver full software packages by email ready to install and use.
 
 Contact us.
-
 Phone or WhatsApp five zero nine four seven three eight five six six three.
 Email deslandes78 at gmail dot com.
 
 GlobalInternet py your Python partner from Haiti to the world.
 """
-}
 
 # -----------------------------
 # HUMANOID FACE
 # -----------------------------
 def create_face(mouth_open=False):
-    img = Image.new("RGB", (400, 400), "white")
+    img = Image.new("RGB", (420, 420), "white")
     draw = ImageDraw.Draw(img)
 
-    draw.ellipse((50, 80, 350, 350), outline="black", width=5)
-    draw.ellipse((90, 120, 310, 320), outline="black", width=4)
+    draw.ellipse((50, 80, 370, 360), outline="black", width=5)
+    draw.ellipse((100, 130, 320, 330), outline="black", width=4)
 
-    draw.ellipse((140, 170, 180, 210), fill="black")
-    draw.ellipse((220, 170, 260, 210), fill="black")
+    draw.ellipse((150, 180, 190, 220), fill="black")
+    draw.ellipse((230, 180, 270, 220), fill="black")
 
     if mouth_open:
-        draw.ellipse((170, 240, 230, 300), outline="black", width=4)
+        draw.ellipse((180, 250, 240, 310), outline="black", width=4)
     else:
-        draw.arc((150, 230, 250, 300), start=0, end=180, fill="black", width=4)
+        draw.arc((160, 240, 260, 310), start=0, end=180, fill="black", width=4)
 
-    draw.line((200, 80, 200, 40), fill="black", width=4)
-    draw.ellipse((185, 20, 215, 50), outline="black", width=3)
+    draw.line((210, 90, 210, 50), fill="black", width=4)
+    draw.ellipse((195, 30, 225, 60), outline="black", width=3)
 
-    draw.rectangle((40, 180, 70, 260), outline="black", width=3)
-    draw.rectangle((330, 180, 360, 260), outline="black", width=3)
+    draw.rectangle((40, 190, 70, 270), outline="black", width=3)
+    draw.rectangle((350, 190, 380, 270), outline="black", width=3)
 
     return img
 
 # -----------------------------
-# VOICE GENERATION
+# VOICE ENGINE
 # -----------------------------
 async def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
@@ -132,11 +129,11 @@ def estimate_duration(text):
     return len(text.split()) / 2.5
 
 # -----------------------------
-# UI LAYOUT
+# UI LAYOUT (NO SCROLL FIXED VIEW)
 # -----------------------------
 left, right = st.columns([3, 1])
 
-# RIGHT PANEL
+# RIGHT PANEL (STATIC INFO)
 with right:
     st.markdown("### 🏢 GlobalInternet.py")
     st.markdown("Owner: Gesner Deslandes")
@@ -147,35 +144,37 @@ with right:
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
 
-    st.info("AI Software Built in Haiti 🇭🇹")
+    st.markdown("---")
+    st.info("Built in Haiti 🇭🇹")
 
-# LEFT PANEL
+# LEFT PANEL (MAIN)
 with left:
 
-    st.title("🤖 Gesner Humanoid AI")
+    st.title("🤖 Gesner Humanoid AI – GlobalInternet.py Promo")
 
     st.markdown(
-        "<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>",
+        "<div style='text-align:center;'>"
+        "<img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='110'>"
+        "</div>",
         unsafe_allow_html=True
     )
 
-    mode = st.selectbox("🌍 Select Mode", list(voices.keys()))
+    st.markdown("### 📜 GlobalInternet.py Promotional Speech")
+
+    # FIXED BOX (NO SCROLL DURING VIDEO)
+    st.text_area("", promo_text, height=320)
 
     frame = st.empty()
     frame.image(create_face(False))
 
-    # SHOW TEXT
-    st.markdown("### 📜 Script Preview")
-    st.write(display_texts[mode])
+    if st.button("▶️ Play Promo"):
 
-    if st.button("▶️ Speak"):
-
-        asyncio.run(generate_voice(speech_texts[mode], voices[mode]))
+        asyncio.run(generate_voice(speech_text, voices["Promo Speech"]))
 
         audio_file = open("voice.mp3", "rb")
         st.audio(audio_file.read(), format="audio/mp3")
 
-        duration = estimate_duration(speech_texts[mode])
+        duration = estimate_duration(speech_text)
 
         start = time.time()
         while time.time() - start < duration:
