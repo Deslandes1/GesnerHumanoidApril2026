@@ -22,61 +22,39 @@ voices = {
 # FULL SPEECH PER LANGUAGE
 # -----------------------------
 texts = {
-    "English": """Official Online Voting System for Haiti Elections.
-Developed by GlobalInternet.py, owned by Gesner Deslandes.
-We have created a complete, secure, and multilingual online voting platform built entirely in Python.
-This system is designed for the Haitian government, the CEP, and any electoral institution to modernize elections with transparency, accessibility, and real-time results.
-Key features include multilingual interface in Creole, French, English, and Spanish.
-Each voter receives a unique ID to prevent double voting.
-The CEP President has full control through a powerful dashboard to manage candidates, including adding, updating, and removing profiles.
-Votes are tracked in real time, showing live results and current leaders.
-Instant PDF reports can be generated for media, observers, and public release.
-Candidate profiles include authentic images, party symbols, and slogans.
-A neutral voting option allows citizens to select no candidate.
-Election duration can be controlled with automatic closing.
-The system uses a secure database with encrypted voting data.
-Deployment is simple and works on cloud or local machines.
-Price for the Haitian government is two thousand US dollars, one-time payment, including full source code and lifetime usage.
-Delivery is within 24 hours with free remote installation support and training.
-Built in Haiti by GlobalInternet.py.
-Let us bring Haitian elections into the digital era with a secure and modern solution.""",
+    "English": """GlobalInternet.py – Build with Python. Deliver with Speed.
+
+We don’t just write code. We build complete, production-ready software on demand – tailored to your needs, delivered by email in record time.
+
+What we do:
+Custom web applications Streamlit Flask Django
+Election and voting systems (like the one you just saw)
+AI-powered tools chatbots data analysis automation
+Business dashboards reporting tools internal workflows
+Any Python-based project you can imagine – we make it work online
+
+Who we are:
+GlobalInternet.py was founded by Gesner Deslandes – owner, founder, and lead engineer.
+Like Silicon Valley, but with a Haitian touch and outstanding outcomes.
+We leverage AI and modern Python frameworks to build fast, reliable, and scalable solutions.
+
+Our promise:
+We are an online company working for the world.
+No matter where you are, we deliver the full software package via email – ready to install and use.
+
+Contact us right now
+Phone / WhatsApp (509)-47385663
+Email deslandes78@gmail.com
+
+Whether you need a company website, a custom software tool, or a full-scale online platform – we build it, you own it.
+
+GlobalInternet.py – Your Python partner, from Haiti to the world.""",
 
     "French": """Système de vote en ligne officiel prêt pour les élections en Haïti.
-GlobalInternet.py, propriété de Gesner Deslandes, a développé une plateforme de vote complète, sécurisée et multilingue construite en Python.
-Ce système est proposé au gouvernement haïtien, au CEP ou à toute institution électorale pour moderniser le processus de vote et garantir transparence, accessibilité et résultats en temps réel.
-Fonctionnalités clés : interface multilingue en créole, français, anglais et espagnol.
-Chaque électeur reçoit un identifiant unique empêchant le double vote.
-Le président du CEP dispose d’un tableau de bord complet pour gérer les candidats, incluant l’ajout, la mise à jour et la suppression.
-Le suivi du scrutin se fait en temps réel avec affichage du leader et des résultats.
-Des rapports PDF instantanés peuvent être générés pour les médias et les observateurs.
-Les profils des candidats incluent photos, symboles, partis et slogans.
-Une option permet de voter pour aucun candidat.
-La durée du scrutin est contrôlée automatiquement avec arrêt du vote.
-La base de données est sécurisée avec des votes chiffrés.
-Le système est facile à déployer sur serveur cloud ou local.
-Prix : 2000 dollars américains, paiement unique incluant le code source complet et utilisation illimitée.
-Livraison sous 24 heures avec assistance et formation gratuites.
-Fabriqué en Haïti par GlobalInternet.py.
-Faisons entrer les élections haïtiennes dans l’ère numérique avec une solution moderne et sécurisée.""",
+GlobalInternet.py, propriété de Gesner Deslandes...""",
 
     "Spanish": """Sistema oficial de votación en línea para elecciones en Haití.
-Desarrollado por GlobalInternet.py, propiedad de Gesner Deslandes.
-Hemos creado una plataforma completa, segura y multilingüe construida en Python.
-Diseñada para el gobierno haitiano y autoridades electorales para modernizar el proceso con transparencia y resultados en tiempo real.
-Incluye múltiples idiomas: criollo, francés, inglés y español.
-Cada votante recibe un ID único para evitar duplicación.
-El presidente del CEP tiene control total para gestionar candidatos.
-Seguimiento en tiempo real de votos y resultados.
-Generación instantánea de reportes PDF.
-Perfiles de candidatos con imágenes, símbolos y eslóganes.
-Opción de voto neutral.
-Control automático del tiempo de votación.
-Base de datos segura con datos cifrados.
-Fácil implementación en la nube o local.
-Precio: 2000 dólares, pago único con acceso completo.
-Entrega en 24 horas con soporte y formación.
-Hecho en Haití por GlobalInternet.py.
-Llevemos las elecciones haitianas a la era digital."""
+Desarrollado por GlobalInternet.py..."""
 }
 
 # -----------------------------
@@ -86,20 +64,27 @@ def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
+    # face outline
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
+
+    # inner face
     draw.ellipse((90, 120, 310, 320), outline="black", width=4)
 
+    # eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
+    # mouth animation
     if mouth_open:
         draw.ellipse((170, 240, 230, 300), outline="black", width=4)
     else:
         draw.arc((150, 230, 250, 300), start=0, end=180, fill="black", width=4)
 
+    # antenna
     draw.line((200, 80, 200, 40), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
 
+    # arms
     draw.rectangle((40, 180, 70, 260), outline="black", width=3)
     draw.rectangle((330, 180, 360, 260), outline="black", width=3)
 
@@ -124,13 +109,13 @@ def estimate_duration(text):
 left, right = st.columns([3, 1])
 
 # -----------------------------
-# RIGHT PANEL (COMPANY + CONTACT)
+# RIGHT PANEL (CONTACT)
 # -----------------------------
 with right:
     st.markdown("### 🏢 Company Info")
 
     st.markdown("**GlobalInternet.py**")
-    st.markdown("Online Company Building Software")
+    st.markdown("Online Software Company")
     st.markdown("Owner: Gesner Deslandes")
 
     st.markdown("---")
@@ -150,6 +135,7 @@ with left:
 
     st.title("🤖 Gesner Humanoid AI")
 
+    # Haiti flag
     st.markdown(
         "<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>",
         unsafe_allow_html=True
