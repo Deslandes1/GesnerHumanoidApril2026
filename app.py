@@ -85,18 +85,20 @@ def create_face(mouth_open=False):
     return img
 
 # -----------------------------
-# GENERATE VOICE
+# SYNCHRONOUS AUDIO GENERATION
 # -----------------------------
-async def generate_audio(text, voice):
-    communicate = edge_tts.Communicate(text, voice)
-    await communicate.save("speech.mp3")
+def generate_audio_sync(text, voice):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        communicate = edge_tts.Communicate(text, voice)
+        loop.run_until_complete(communicate.save("speech.mp3"))
+    finally:
+        loop.close()
 
-# -----------------------------
-# ESTIMATE DURATION FOR ANIMATION
-# -----------------------------
 def estimate_duration(text):
     words = len(text.split())
-    return max(8, words / 2.2)  # seconds
+    return max(8, words / 2.2)
 
 # -----------------------------
 # STREAMLIT UI WITH HAITIAN FLAG
@@ -114,30 +116,18 @@ with col_main:
     st.markdown(f"**Lyrics ({language}):**")
     st.text(lyrics[language])
 
-    # Optional: upload singing MP3 (only for French original)
-    uploaded_audio = None
-    if language == "French (original)":
-        uploaded_audio = st.file_uploader("🎤 Or upload a singing MP3 (for musical rendition)", type=["mp3"])
-
     frame = st.empty()
     frame.image(create_face(False))
 
-    if st.button("🔊 Recite / Sing"):
-        if uploaded_audio is not None:
-            # Use uploaded singing audio
-            st.audio(uploaded_audio, format="audio/mp3")
-            duration = len(uploaded_audio.getvalue()) / 32000  # rough estimate
-            duration = max(8, min(duration, 45))
-        else:
-            # Generate spoken audio
-            with st.spinner("Generating voice..."):
-                await generate_audio(lyrics[language], voices[language])
-                audio_file = open("speech.mp3", "rb")
-                st.audio(audio_file.read(), format="audio/mp3")
-                duration = estimate_duration(lyrics[language])
-                audio_file.close()
+    if st.button("🔊 Recite"):
+        with st.spinner("Generating voice..."):
+            generate_audio_sync(lyrics[language], voices[language])
+            audio_file = open("speech.mp3", "rb")
+            st.audio(audio_file.read(), format="audio/mp3")
+            duration = estimate_duration(lyrics[language])
+            audio_file.close()
 
-        # Animate mouth for the duration
+        # Animate mouth
         start = time.time()
         while time.time() - start < duration:
             frame.image(create_face(True))
@@ -147,7 +137,7 @@ with col_main:
         frame.image(create_face(False))
 
         # Clean up
-        if uploaded_audio is None and os.path.exists("speech.mp3"):
+        if os.path.exists("speech.mp3"):
             os.remove("speech.mp3")
 
 with col_right:
