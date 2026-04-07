@@ -4,6 +4,9 @@ import asyncio
 import edge_tts
 import time
 import os
+import base64
+
+st.set_page_config(page_title="Gesner Humanoid AI", layout="wide")
 
 # -----------------------------
 # VOICE SETTINGS
@@ -139,32 +142,46 @@ def estimate_duration(text):
     return words / 2.5
 
 # -----------------------------
-# STREAMLIT UI
+# STREAMLIT UI WITH HAITIAN FLAG ON THE LEFT
 # -----------------------------
-st.title("🤖 Gesner Humanoid AI")
+# Create three columns: flag, content, empty spacer
+col_flag, col_main, col_right = st.columns([1, 3, 1])
 
-language = st.selectbox("🌍 Select Language", list(voices.keys()))
+with col_flag:
+    st.image("https://flagcdn.com/w320/ht.png", width=120)
 
-frame = st.empty()
-frame.image(create_face(False))
-
-if st.button("▶️ Speak"):
-
-    # Generate voice
-    asyncio.run(generate_voice(texts[language], voices[language]))
-
-    # Play audio
-    audio_file = open("voice.mp3", "rb")
-    st.audio(audio_file.read(), format="audio/mp3")
-
-    # Animate mouth based on speech duration
-    duration = estimate_duration(texts[language])
-
-    start = time.time()
-    while time.time() - start < duration:
-        frame.image(create_face(True))
-        time.sleep(0.2)
-        frame.image(create_face(False))
-        time.sleep(0.2)
-
+with col_main:
+    st.title("🤖 Gesner Humanoid AI")
+    language = st.selectbox("🌍 Select Language", list(voices.keys()))
+    frame = st.empty()
     frame.image(create_face(False))
+
+    if st.button("▶️ Speak"):
+        # Generate voice
+        asyncio.run(generate_voice(texts[language], voices[language]))
+
+        # Play audio
+        audio_file = open("voice.mp3", "rb")
+        st.audio(audio_file.read(), format="audio/mp3")
+
+        # Animate mouth based on speech duration
+        duration = estimate_duration(texts[language])
+        start = time.time()
+        while time.time() - start < duration:
+            frame.image(create_face(True))
+            time.sleep(0.2)
+            frame.image(create_face(False))
+            time.sleep(0.2)
+        frame.image(create_face(False))
+
+with col_right:
+    st.markdown("""
+    <div style='text-align: right;'>
+        <b>GlobalInternet.py</b><br>
+        Gesner Deslandes<br>
+        Python Developer
+    </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("---")
+st.markdown("© 2026 GlobalInternet.py – All rights reserved")
