@@ -4,6 +4,7 @@ import asyncio
 import edge_tts
 import time
 import os
+from mutagen.mp3 import MP3
 
 st.set_page_config(page_title="Gesner Humanoid AI - La Dessalinienne", layout="wide")
 
@@ -96,12 +97,24 @@ def generate_audio_sync(text, voice):
     finally:
         loop.close()
 
-def estimate_duration(text):
-    words = len(text.split())
-    return max(8, words / 2.2)
+def get_audio_duration(file_path):
+    audio = MP3(file_path)
+    return audio.info.length
 
 # -----------------------------
-# COMPACT LAYOUT – ALL VISIBLE WITHOUT SCROLLING
+# HIGHLIGHT LYRICS
+# -----------------------------
+def highlight_lyrics(text, current_line_index, lines):
+    highlighted = []
+    for i, line in enumerate(lines):
+        if i == current_line_index:
+            highlighted.append(f'<span style="color: gold; font-weight: bold;">{line}</span>')
+        else:
+            highlighted.append(f'<span style="color: black;">{line}</span>')
+    return "<br>".join(highlighted)
+
+# -----------------------------
+# COMPACT LAYOUT
 # -----------------------------
 col_flag, col_humanoid, col_lyrics = st.columns([1, 1.5, 1.5])
 
@@ -122,16 +135,35 @@ with col_humanoid:
             generate_audio_sync(lyrics[language], voices[language])
             audio_file = open("speech.mp3", "rb")
             st.audio(audio_file.read(), format="audio/mp3")
-            duration = estimate_duration(lyrics[language])
+            duration = get_audio_duration("speech.mp3")
             audio_file.close()
         
-        # Mouth moves while audio plays
+        # Split lyrics into lines for highlighting
+        lines = lyrics[language].split('\n')
+        num_lines = len(lines)
+        time_per_line = duration / num_lines
+        
+        # Highlight container
+        lyrics_placeholder = col_lyrics.empty()
+        
+        # Mouth animation + line highlighting
         start = time.time()
+        line_idx = 0
         while time.time() - start < duration:
+            # Update highlighted line
+            elapsed = time.time() - start
+            line_idx = min(int(elapsed / time_per_line), num_lines - 1)
+            highlighted_html = highlight_lyrics(lyrics[language], line_idx, lines)
+            lyrics_placeholder.markdown(f"<div style='font-family: monospace; font-size: 0.9rem; line-height: 1.4;'>{highlighted_html}</div>", unsafe_allow_html=True)
+            
+            # Animate mouth
             frame.image(create_face(True), width=250)
             time.sleep(0.2)
             frame.image(create_face(False), width=250)
             time.sleep(0.2)
+        
+        # Final state: no highlight, mouth closed
+        lyrics_placeholder.markdown(f"<div style='font-family: monospace; font-size: 0.9rem; line-height: 1.4;'>{lyrics[language].replace(chr(10), '<br>')}</div>", unsafe_allow_html=True)
         frame.image(create_face(False), width=250)
         
         # Clean up
@@ -141,7 +173,7 @@ with col_humanoid:
 with col_lyrics:
     st.markdown("<h3 style='margin-bottom: 5px;'>📜 Lyrics</h3>", unsafe_allow_html=True)
     st.markdown(f"<p style='font-size: 0.85rem;'><b>{language}</b></p>", unsafe_allow_html=True)
-    st.text(lyrics[language])
+    st.markdown(f"<div style='font-family: monospace; font-size: 0.9rem; line-height: 1.4;'>{lyrics[language].replace(chr(10), '<br>')}</div>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("""
     <div style='text-align: right; font-size: 0.8rem;'>
