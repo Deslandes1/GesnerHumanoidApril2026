@@ -18,10 +18,11 @@ voices = {
 }
 
 # -----------------------------
-# TRANSLATED LYRICS
+# TRANSLATED LYRICS (Two parts)
 # -----------------------------
-lyrics = {
-    "French (original)": """Pour le pays, pour les ancêtres,
+lyrics_parts = {
+    "First Part": {
+        "French (original)": """Pour le pays, pour les ancêtres,
 Marchons unis, marchons unis.
 Dans nos rangs point de traîtres,
 Du sol soyons seuls maîtres.
@@ -31,7 +32,7 @@ Pour le pays, pour les ancêtres.
 Marchons, marchons, marchons unis,
 Pour le pays, pour les ancêtres.""",
 
-    "English": """For the country, for the ancestors,
+        "English": """For the country, for the ancestors,
 Let us march united, let us march united.
 In our ranks no traitors,
 Let us be the sole masters of the soil.
@@ -41,7 +42,7 @@ For the country, for the ancestors.
 Let us march, let us march, let us march united,
 For the country, for the ancestors.""",
 
-    "Spanish": """Por el país, por los ancestros,
+        "Spanish": """Por el país, por los ancestros,
 Marchemos unidos, marchemos unidos.
 En nuestras filas no hay traidores,
 Seamos los únicos dueños del suelo.
@@ -50,6 +51,38 @@ Por el país, por los ancestros.
 
 Marchemos, marchemos, marchemos unidos,
 Por el país, por los ancestros."""
+    },
+    "Second Part": {
+        "French (original)": """Pour les Aïeux, pour la Patrie,
+Bêchons joyeux, bêchons joyeux.
+Quand le champ fructifie,
+L'âme se fortifie.
+Bêchons joyeux, bêchons joyeux,
+Pour les Aïeux, pour la Patrie.
+
+Bêchons, bêchons, bêchons joyeux,
+Pour les Aïeux, pour la Patrie.""",
+
+        "English": """For the ancestors, for the homeland,
+Let us dig joyfully, let us dig joyfully.
+When the field bears fruit,
+The soul grows stronger.
+Let us dig joyfully, let us dig joyfully,
+For the ancestors, for the homeland.
+
+Let us dig, let us dig, let us dig joyfully,
+For the ancestors, for the homeland.""",
+
+        "Spanish": """Por los ancestros, por la patria,
+Cavemos alegres, cavemos alegres.
+Cuando el campo fructifica,
+El alma se fortalece.
+Cavemos alegres, cavemos alegres,
+Por los ancestros, por la patria.
+
+Cavemos, cavemos, cavemos alegres,
+Por los ancestros, por la patria."""
+    }
 }
 
 # -----------------------------
@@ -125,21 +158,23 @@ with col_humanoid:
     st.markdown("<h3 style='margin-bottom: 0;'>🤖 Gesner Humanoid AI</h3>", unsafe_allow_html=True)
     st.markdown("<p style='margin-top: 0; font-size: 0.9rem;'>La Dessalinienne – Haitian National Anthem</p>", unsafe_allow_html=True)
     
+    part = st.radio("Select Part", ["First Part", "Second Part"], horizontal=True)
     language = st.selectbox("🌍 Language", list(voices.keys()), label_visibility="collapsed")
     
     frame = st.empty()
     frame.image(create_face(False), width=250)
     
     if st.button("🔊 Speak", use_container_width=True):
+        selected_text = lyrics_parts[part][language]
         with st.spinner("Generating voice..."):
-            generate_audio_sync(lyrics[language], voices[language])
+            generate_audio_sync(selected_text, voices[language])
             audio_file = open("speech.mp3", "rb")
             st.audio(audio_file.read(), format="audio/mp3")
             duration = get_audio_duration("speech.mp3")
             audio_file.close()
         
         # Split lyrics into lines for highlighting
-        lines = lyrics[language].split('\n')
+        lines = selected_text.split('\n')
         num_lines = len(lines)
         time_per_line = duration / num_lines
         
@@ -150,10 +185,9 @@ with col_humanoid:
         start = time.time()
         line_idx = 0
         while time.time() - start < duration:
-            # Update highlighted line
             elapsed = time.time() - start
             line_idx = min(int(elapsed / time_per_line), num_lines - 1)
-            highlighted_html = highlight_lyrics(lyrics[language], line_idx, lines)
+            highlighted_html = highlight_lyrics(selected_text, line_idx, lines)
             lyrics_placeholder.markdown(f"<div style='font-family: monospace; font-size: 0.9rem; line-height: 1.4;'>{highlighted_html}</div>", unsafe_allow_html=True)
             
             # Animate mouth
@@ -163,7 +197,7 @@ with col_humanoid:
             time.sleep(0.2)
         
         # Final state: no highlight, mouth closed
-        lyrics_placeholder.markdown(f"<div style='font-family: monospace; font-size: 0.9rem; line-height: 1.4;'>{lyrics[language].replace(chr(10), '<br>')}</div>", unsafe_allow_html=True)
+        lyrics_placeholder.markdown(f"<div style='font-family: monospace; font-size: 0.9rem; line-height: 1.4;'>{selected_text.replace(chr(10), '<br>')}</div>", unsafe_allow_html=True)
         frame.image(create_face(False), width=250)
         
         # Clean up
@@ -173,7 +207,9 @@ with col_humanoid:
 with col_lyrics:
     st.markdown("<h3 style='margin-bottom: 5px;'>📜 Lyrics</h3>", unsafe_allow_html=True)
     st.markdown(f"<p style='font-size: 0.85rem;'><b>{language}</b></p>", unsafe_allow_html=True)
-    st.markdown(f"<div style='font-family: monospace; font-size: 0.9rem; line-height: 1.4;'>{lyrics[language].replace(chr(10), '<br>')}</div>", unsafe_allow_html=True)
+    # Initially show first part lyrics
+    default_text = lyrics_parts["First Part"][language]
+    st.markdown(f"<div style='font-family: monospace; font-size: 0.9rem; line-height: 1.4;'>{default_text.replace(chr(10), '<br>')}</div>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("""
     <div style='text-align: right; font-size: 0.8rem;'>
