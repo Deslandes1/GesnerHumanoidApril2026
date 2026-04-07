@@ -1,12 +1,14 @@
 import streamlit as st
 from gtts import gTTS
-import os
 import uuid
+import base64
+import time
+import os
 
-st.set_page_config(page_title="GlobalInternet.py AI Voice", layout="centered")
+st.set_page_config(page_title="Gesner Humanoid AI", layout="centered")
 
-# 🎤 EXACT SCRIPT (will NOT be displayed)
-script = """
+# 🧠 EXACT SCRIPT (NOT DISPLAYED)
+SCRIPT = """
 GlobalInternet.py – Build with Python. Deliver with Speed.
 
 We don’t just write code. We build complete, production-ready software on demand – tailored to your needs, delivered by email in record time.
@@ -28,30 +30,52 @@ We are an online company working for the world.
 No matter where you are we deliver the full software package via email ready to install and use.
 
 Contact us right now
-Phone or WhatsApp 509 47385663
+Phone WhatsApp 509 47385663
 Email deslandes78@gmail.com
-
-Whether you need a company website a custom software tool or a full scale online platform we build it you own it.
 
 GlobalInternet.py Your Python partner from Haiti to the world.
 """
 
-def generate_audio(text):
-    filename = f"speech_{uuid.uuid4().hex}.mp3"
+# 🎤 TTS generator
+def speak(text):
+    filename = f"voice_{uuid.uuid4().hex}.mp3"
     tts = gTTS(text=text, lang="en")
     tts.save(filename)
     return filename
 
-st.title("🔊 GlobalInternet.py AI Voice System")
+# 🧑 Humanoid face (simple animated mouth)
+def humanoid_face(moving=False):
+    mouth = "🟡" if moving else "⚪"
+    face_html = f"""
+    <div style="text-align:center;">
+        <div style="font-size:120px;">🤖</div>
+        <div style="font-size:50px; margin-top:-20px;">{mouth}</div>
+    </div>
+    """
+    st.markdown(face_html, unsafe_allow_html=True)
 
-# Button only (no text display)
-if st.button("▶️ Play AI Voice"):
-    with st.spinner("Generating voice..."):
-        audio_file = generate_audio(script)
+st.title("🧠 Gesner Humanoid AI")
 
-    st.success("Ready")
+# Keep face always visible
+humanoid_face(False)
+
+if st.button("▶️ Start AI Speaking"):
+    humanoid_face(True)
+
+    with st.spinner("AI is speaking..."):
+        audio_file = speak(SCRIPT)
 
     audio_bytes = open(audio_file, "rb").read()
-    st.audio(audio_bytes, format="audio/mp3")
+    st.audio(audio_bytes, autoplay=True)
+
+    # fake lip movement loop (simple animation effect)
+    for _ in range(6):
+        humanoid_face(True)
+        time.sleep(0.3)
+        humanoid_face(False)
+        time.sleep(0.3)
 
     os.remove(audio_file)
+
+# Keep UI clean (NO SCRIPT SHOWN)
+st.markdown("<br><center>Gesner Humanoid AI System Online</center>", unsafe_allow_html=True)
