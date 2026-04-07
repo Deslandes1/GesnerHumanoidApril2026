@@ -3,6 +3,7 @@ from PIL import Image, ImageDraw
 import asyncio
 import edge_tts
 import time
+from pydub import AudioSegment
 
 # -----------------------------
 # PAGE CONFIG
@@ -68,49 +69,47 @@ Fonctionnalités clés : interface multilingue en créole, français, anglais et
 
 Chaque électeur reçoit un identifiant unique empêchant le double vote.
 
-Le président du CEP dispose d’un tableau de bord complet pour gérer les candidats, incluant l’ajout, la mise à jour et la suppression.
+Le président du CEP dispose d’un tableau de bord complet pour gérer les candidats.
 
-Le suivi du scrutin se fait en temps réel avec affichage du leader et des résultats.
+Le suivi du scrutin se fait en temps réel avec affichage des résultats.
 
-Des rapports PDF instantanés peuvent être générés pour les médias et les observateurs.
+Des rapports PDF instantanés peuvent être générés.
 
-Les profils des candidats incluent photos, symboles, partis et slogans.
+Les profils des candidats incluent photos, symboles et slogans.
 
 Une option permet de voter pour aucun candidat.
 
-La durée du scrutin est contrôlée automatiquement avec arrêt du vote.
+La durée du scrutin est contrôlée automatiquement.
 
 La base de données est sécurisée avec des votes chiffrés.
 
-Le système est facile à déployer sur serveur cloud ou local.
+Déploiement facile sur serveur cloud ou local.
 
-Prix : 2000 dollars américains, paiement unique incluant le code source complet et utilisation illimitée.
+Prix : 2000 dollars américains, paiement unique avec code source complet.
 
-Livraison sous 24 heures avec assistance et formation gratuites.
+Livraison sous 24 heures avec assistance gratuite.
 
 Fabriqué en Haïti par GlobalInternet.py.
 
-Faisons entrer les élections haïtiennes dans l’ère numérique avec une solution moderne et sécurisée.""",
+Faisons entrer les élections haïtiennes dans l’ère numérique.""",
 
     "Spanish": """Sistema oficial de votación en línea para elecciones en Haití.
 
 Desarrollado por GlobalInternet.py, propiedad de Gesner Deslandes.
 
-Hemos creado una plataforma completa, segura y multilingüe construida en Python.
+Es una plataforma completa, segura y multilingüe construida en Python.
 
-Diseñada para el gobierno haitiano y autoridades electorales para modernizar el proceso con transparencia y resultados en tiempo real.
+Diseñada para el gobierno haitiano.
 
-Incluye múltiples idiomas: criollo, francés, inglés y español.
+Incluye múltiples idiomas y prevención de doble voto.
 
-Cada votante recibe un ID único para evitar duplicación.
+Panel completo para gestionar candidatos.
 
-El presidente del CEP tiene control total para gestionar candidatos.
+Seguimiento en tiempo real de votos.
 
-Seguimiento en tiempo real de votos y resultados.
+Generación de reportes PDF.
 
-Generación instantánea de reportes PDF.
-
-Perfiles de candidatos con imágenes, símbolos y eslóganes.
+Perfiles de candidatos con datos reales.
 
 Opción de voto neutral.
 
@@ -120,9 +119,9 @@ Base de datos segura con datos cifrados.
 
 Fácil implementación en la nube o local.
 
-Precio: 2000 dólares, pago único con acceso completo.
+Precio: 2000 dólares, pago único.
 
-Entrega en 24 horas con soporte y formación.
+Entrega en 24 horas con soporte.
 
 Hecho en Haití por GlobalInternet.py.
 
@@ -130,33 +129,26 @@ Llevemos las elecciones haitianas a la era digital."""
 }
 
 # -----------------------------
-# ORIGINAL HUMANOID FACE
+# ORIGINAL FACE
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # Head
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
-
-    # Inner face
     draw.ellipse((90, 120, 310, 320), outline="black", width=4)
 
-    # Eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # Mouth animation
     if mouth_open:
         draw.ellipse((170, 240, 230, 300), outline="black", width=4)
     else:
         draw.arc((150, 230, 250, 300), start=0, end=180, fill="black", width=4)
 
-    # Antenna
     draw.line((200, 80, 200, 40), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
 
-    # Side panels
     draw.rectangle((40, 180, 70, 260), outline="black", width=3)
     draw.rectangle((330, 180, 360, 260), outline="black", width=3)
 
@@ -170,30 +162,27 @@ async def generate_voice(text, voice):
     await communicate.save("voice.mp3")
 
 # -----------------------------
-# ESTIMATE DURATION
+# GET REAL AUDIO DURATION
 # -----------------------------
-def estimate_duration(text):
-    return len(text.split()) / 2.5
+def get_audio_duration():
+    audio = AudioSegment.from_file("voice.mp3")
+    return len(audio) / 1000  # seconds
 
 # -----------------------------
 # UI
 # -----------------------------
 st.title("🤖 Gesner Humanoid AI")
 
-# 🇭🇹 FLAG
 st.markdown(
     "<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>",
     unsafe_allow_html=True
 )
 
-# Language selector
 language = st.selectbox("🌍 Select Language", list(voices.keys()))
 
-# Face display
 frame = st.empty()
 frame.image(create_face(False))
 
-# Speak button
 if st.button("▶️ Speak"):
 
     asyncio.run(generate_voice(texts[language], voices[language]))
@@ -201,13 +190,13 @@ if st.button("▶️ Speak"):
     audio_file = open("voice.mp3", "rb")
     st.audio(audio_file.read(), format="audio/mp3")
 
-    duration = estimate_duration(texts[language])
+    duration = get_audio_duration()
 
     start = time.time()
     while time.time() - start < duration:
         frame.image(create_face(True))
-        time.sleep(0.2)
+        time.sleep(0.15)
         frame.image(create_face(False))
-        time.sleep(0.2)
+        time.sleep(0.15)
 
     frame.image(create_face(False))
