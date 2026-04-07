@@ -4,23 +4,23 @@ import asyncio
 import edge_tts
 import time
 import os
-import base64
 
-st.set_page_config(page_title="Gesner Humanoid AI - Singing", layout="wide")
+st.set_page_config(page_title="Gesner Humanoid AI - La Dessalinienne", layout="wide")
 
 # -----------------------------
-# VOICE SETTINGS (fallback for spoken version)
+# VOICE SETTINGS
 # -----------------------------
 voices = {
+    "French (original)": "fr-FR-HenriNeural",
     "English": "en-US-GuyNeural",
-    "French": "fr-FR-HenriNeural",
     "Spanish": "es-ES-AlvaroNeural"
 }
 
 # -----------------------------
-# HAITIAN ANTHEM LYRICS (excerpt)
+# TRANSLATED LYRICS
 # -----------------------------
-anthem_lyrics = """Pour le pays, pour les ancêtres,
+lyrics = {
+    "French (original)": """Pour le pays, pour les ancêtres,
 Marchons unis, marchons unis.
 Dans nos rangs point de traîtres,
 Du sol soyons seuls maîtres.
@@ -28,7 +28,28 @@ Marchons unis, marchons unis,
 Pour le pays, pour les ancêtres.
 
 Marchons, marchons, marchons unis,
-Pour le pays, pour les ancêtres."""
+Pour le pays, pour les ancêtres.""",
+
+    "English": """For the country, for the ancestors,
+Let us march united, let us march united.
+In our ranks no traitors,
+Let us be the sole masters of the soil.
+Let us march united, let us march united,
+For the country, for the ancestors.
+
+Let us march, let us march, let us march united,
+For the country, for the ancestors.""",
+
+    "Spanish": """Por el país, por los ancestros,
+Marchemos unidos, marchemos unidos.
+En nuestras filas no hay traidores,
+Seamos los únicos dueños del suelo.
+Marchemos unidos, marchemos unidos,
+Por el país, por los ancestros.
+
+Marchemos, marchemos, marchemos unidos,
+Por el país, por los ancestros."""
+}
 
 # -----------------------------
 # CREATE ROBOT FACE
@@ -47,7 +68,7 @@ def create_face(mouth_open=False):
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # Mouth animation
+    # Mouth
     if mouth_open:
         draw.ellipse((170, 240, 230, 300), outline="black", width=4)
     else:
@@ -64,19 +85,18 @@ def create_face(mouth_open=False):
     return img
 
 # -----------------------------
-# GENERATE SPOKEN VERSION (fallback)
+# GENERATE VOICE
 # -----------------------------
-async def generate_spoken_audio(text, voice):
+async def generate_audio(text, voice):
     communicate = edge_tts.Communicate(text, voice)
-    await communicate.save("voice.mp3")
+    await communicate.save("speech.mp3")
 
 # -----------------------------
 # ESTIMATE DURATION FOR ANIMATION
 # -----------------------------
 def estimate_duration(text):
     words = len(text.split())
-    # Anthem takes ~30 seconds when spoken with rhythm
-    return max(25, words / 2.0)
+    return max(8, words / 2.2)  # seconds
 
 # -----------------------------
 # STREAMLIT UI WITH HAITIAN FLAG
@@ -87,46 +107,48 @@ with col_flag:
     st.image("https://flagcdn.com/w320/ht.png", width=120)
 
 with col_main:
-    st.title("🤖 Gesner Humanoid AI - Sings La Dessalinienne")
-    st.markdown("**Haitian National Anthem (excerpt)**")
-    
-    # Display lyrics
-    st.markdown(f"```\n{anthem_lyrics}\n```")
-    
-    # Audio upload option for real singing
-    uploaded_audio = st.file_uploader("🎤 Upload a singing audio file (MP3) for better rhythm", type=["mp3"])
-    
+    st.title("🤖 Gesner Humanoid AI")
+    st.markdown("### La Dessalinienne – Haitian National Anthem")
+
+    language = st.selectbox("🌍 Select language for recitation", list(voices.keys()))
+    st.markdown(f"**Lyrics ({language}):**")
+    st.text(lyrics[language])
+
+    # Optional: upload singing MP3 (only for French original)
+    uploaded_audio = None
+    if language == "French (original)":
+        uploaded_audio = st.file_uploader("🎤 Or upload a singing MP3 (for musical rendition)", type=["mp3"])
+
     frame = st.empty()
     frame.image(create_face(False))
-    
-    if st.button("🎵 Sing / Recite"):
+
+    if st.button("🔊 Recite / Sing"):
         if uploaded_audio is not None:
             # Use uploaded singing audio
             st.audio(uploaded_audio, format="audio/mp3")
-            # Estimate duration from file size (rough)
-            duration = len(uploaded_audio.getvalue()) / 32000  # approx 32kbps
-            duration = max(25, min(duration, 45))
+            duration = len(uploaded_audio.getvalue()) / 32000  # rough estimate
+            duration = max(8, min(duration, 45))
         else:
-            # Fallback: generate spoken version with rhythm
-            with st.spinner("Generating spoken version..."):
-                asyncio.run(generate_spoken_audio(anthem_lyrics, voices["French"]))
-                audio_file = open("voice.mp3", "rb")
+            # Generate spoken audio
+            with st.spinner("Generating voice..."):
+                await generate_audio(lyrics[language], voices[language])
+                audio_file = open("speech.mp3", "rb")
                 st.audio(audio_file.read(), format="audio/mp3")
-                duration = estimate_duration(anthem_lyrics)
-        
+                duration = estimate_duration(lyrics[language])
+                audio_file.close()
+
         # Animate mouth for the duration
         start = time.time()
         while time.time() - start < duration:
             frame.image(create_face(True))
-            time.sleep(0.25)
+            time.sleep(0.2)
             frame.image(create_face(False))
-            time.sleep(0.25)
+            time.sleep(0.2)
         frame.image(create_face(False))
-        
-        if not uploaded_audio:
-            os.remove("voice.mp3")
-    
-    st.info("For the best experience, upload a recording of someone singing the anthem. The humanoid will move its lips in sync.")
+
+        # Clean up
+        if uploaded_audio is None and os.path.exists("speech.mp3"):
+            os.remove("speech.mp3")
 
 with col_right:
     st.markdown("""
