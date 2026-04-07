@@ -23,6 +23,7 @@ voices = {
 # FULL SPEECH PER LANGUAGE
 # -----------------------------
 texts = {
+
     "English": """GlobalInternet.py – Build with Python. Deliver with Speed.
 
 We don’t just write code. We build complete, production-ready software tailored to your needs and delivered within 24 hours.
@@ -51,15 +52,65 @@ We can also integrate your company logo or suggest a design that matches your br
 
 GlobalInternet.py – Your Python partner from Haiti to the world.""",
 
-    "French": """Système de vote en ligne officiel prêt pour les élections en Haïti.
-GlobalInternet.py, propriété de Gesner Deslandes...""",
+    "French": """GlobalInternet.py – Construisez avec Python. Livrez avec rapidité.
 
-    "Spanish": """Sistema oficial de votación en línea para elecciones en Haití.
-Desarrollado por GlobalInternet.py..."""
+Nous ne faisons pas que coder. Nous créons des logiciels complets et prêts à l’emploi, adaptés à vos besoins et livrés en moins de 24 heures.
+
+Voici comment nous livrons votre logiciel étape par étape.
+
+Après la finalisation de votre commande, nous vous envoyons un email contenant votre logiciel complet.
+
+Dans cet email, vous recevrez un fichier zip contenant votre fichier app.py, toutes les dépendances nécessaires, ainsi qu’un guide clair expliquant comment installer et exécuter votre logiciel.
+
+D’abord, vous téléchargez le fichier zip et vous l’extrayez sur votre ordinateur ou votre téléphone.
+
+Ensuite, vous installez les dépendances à l’aide du fichier requirements fourni.
+
+Puis, vous lancez simplement l’application avec Streamlit ou Python en suivant le guide.
+
+Vous pouvez aussi utiliser GitHub et Streamlit Cloud pour mettre votre application en ligne et y accéder depuis n’importe où.
+
+Pour la sécurité, vous pouvez enregistrer vos mots de passe en toute sécurité avec les paramètres secrets de Streamlit.
+
+Si vous avez besoin d’un site web ou d’un logiciel professionnel pour votre entreprise, contactez-nous dès maintenant.
+
+Nous construisons votre solution selon vos besoins exacts. Vous expliquez votre projet, et nous faisons le reste de manière professionnelle.
+
+Nous pouvons aussi intégrer le logo de votre entreprise ou vous proposer un design adapté à votre image.
+
+GlobalInternet.py – Votre partenaire Python d’Haïti vers le monde.""",
+
+    "Spanish": """GlobalInternet.py – Construye con Python. Entrega con rapidez.
+
+No solo escribimos código. Creamos software completo y listo para usar, adaptado a tus necesidades y entregado en menos de 24 horas.
+
+Así es como entregamos tu software paso a paso.
+
+Después de completar tu pedido, te enviamos un correo electrónico con tu paquete completo.
+
+Dentro del correo recibirás un archivo zip con tu archivo app.py, todas las dependencias necesarias y una guía clara paso a paso para instalar y ejecutar el software.
+
+Primero, descargas el archivo zip y lo extraes en tu computadora o teléfono.
+
+Luego, instalas las dependencias usando el archivo requirements.
+
+Después, ejecutas la aplicación con Streamlit o Python siguiendo la guía.
+
+También puedes subir tu proyecto a GitHub y conectarlo con Streamlit Cloud para usarlo en línea desde cualquier lugar.
+
+Para mayor seguridad, puedes guardar tus contraseñas usando la configuración secreta de Streamlit.
+
+Si necesitas un sitio web o software profesional para tu negocio, contáctanos ahora mismo.
+
+Construimos tu solución según tus necesidades. Tú nos dices lo que necesitas y nosotros hacemos el resto profesionalmente.
+
+También podemos integrar el logo de tu empresa o sugerir un diseño adecuado para tu marca.
+
+GlobalInternet.py – Tu socio Python desde Haití para el mundo."""
 }
 
 # -----------------------------
-# HUMANOID FACE
+# FACE
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
@@ -85,45 +136,28 @@ def create_face(mouth_open=False):
     return img
 
 # -----------------------------
-# VOICE GENERATION
+# VOICE
 # -----------------------------
 async def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
     await communicate.save("voice.mp3")
 
-# -----------------------------
-# REAL AUDIO DURATION
-# -----------------------------
 def get_audio_duration(file_path):
-    audio = MP3(file_path)
-    return audio.info.length
+    return MP3(file_path).info.length
 
 # -----------------------------
-# UI LAYOUT
+# UI
 # -----------------------------
 left, right = st.columns([3, 1])
 
-# RIGHT PANEL
 with right:
     st.markdown("### 🏢 Company Info")
-
     st.markdown("**GlobalInternet.py**")
-    st.markdown("Online Software Company")
     st.markdown("Owner: Gesner Deslandes")
+    st.markdown("📱 (509)-47385663")
+    st.markdown("📧 deslandes78@gmail.com")
 
-    st.markdown("---")
-    st.markdown("### 📞 Contact")
-
-    st.markdown("📱 Phone: (509)-47385663")
-    st.markdown("📧 Email: deslandes78@gmail.com")
-    st.markdown("🏢 Office: Available upon request")
-
-    st.markdown("---")
-    st.info("AI & Software Solutions built in Haiti 🇭🇹")
-
-# LEFT PANEL
 with left:
-
     st.title("🤖 Gesner Humanoid AI")
 
     st.markdown(
@@ -142,8 +176,7 @@ with left:
 
         audio_file = "voice.mp3"
 
-        audio_bytes = open(audio_file, "rb").read()
-        st.audio(audio_bytes, format="audio/mp3", autoplay=True)
+        st.audio(open(audio_file, "rb").read(), autoplay=True)
 
         duration = get_audio_duration(audio_file)
 
