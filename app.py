@@ -20,46 +20,78 @@ voices = {
 }
 
 # -----------------------------
-# FULL SPEECH PER MODE
+# DISPLAY TEXT (PRETTY UI VERSION)
 # -----------------------------
-texts = {
+display_texts = {
     "English": "Official Online Voting System for Haiti Elections...",
-
     "French": "Système de vote en ligne officiel prêt pour les élections en Haïti...",
-
     "Spanish": "Sistema oficial de votación en línea para elecciones en Haití...",
 
-    # -----------------------------
-    # FULL PROMO SPEECH (YOUR SCRIPT)
-    # -----------------------------
     "Promo": """
-GlobalInternet.py – Build with Python. Deliver with Speed.
+🚀 GlobalInternet.py – Build with Python. Deliver with Speed.
 
-We don’t just write code. We build complete production ready software on demand, tailored to your needs, delivered by email in record time.
+We don’t just write code. We build complete production-ready software on demand – tailored to your needs, delivered by email in record time.
 
-What we do:
-Custom web applications using Streamlit, Flask, and Django.
-Election and voting systems like the one you just saw.
-Artificial intelligence tools including chatbots, automation, and data analysis systems.
-Business dashboards, reporting tools, and internal workflow systems.
-Any Python based project you can imagine, we make it work online.
+💡 What we do:
+- Custom web applications (Streamlit, Flask, Django)
+- Election & voting systems
+- AI-powered tools (chatbots, data analysis, automation)
+- Business dashboards and workflows
+- Any Python-based project you can imagine
 
-Who we are:
-GlobalInternet.py was founded by Gesner Deslandes, owner, founder, and lead engineer.
-Like Silicon Valley, but with a Haitian touch and outstanding results.
-We use artificial intelligence and modern Python frameworks to build fast, reliable, and scalable solutions.
+👨‍💻 Who we are:
+GlobalInternet.py was founded by Gesner Deslandes – owner, founder, and lead engineer.
+Like Silicon Valley, but with a Haitian touch and outstanding outcomes.
 
-Our promise:
+🌍 Our promise:
 We are an online company working for the world.
-No matter where you are, we deliver full software packages by email, ready to install and use.
+We deliver full software packages by email, ready to install and use.
 
-Contact us right now:
-Phone or WhatsApp, five zero nine, four seven three eight five six six three.
-Email, deslandes78@gmail.com.
+📞 Contact:
+Phone/WhatsApp: (509)-47385663
+Email: deslandes78@gmail.com
 
-Whether you need a website, a custom software tool, or a full online platform, we build it and you own it.
+GlobalInternet.py – Your Python partner from Haiti to the world. 🇭🇹
+"""
+}
 
-GlobalInternet.py, your Python partner from Haiti to the world.
+# -----------------------------
+# SPEECH TEXT (CLEAN VERSION FOR TTS)
+# -----------------------------
+speech_texts = {
+    "English": display_texts["English"],
+    "French": display_texts["French"],
+    "Spanish": display_texts["Spanish"],
+
+    "Promo": """
+GlobalInternet py Build with Python Deliver with Speed.
+
+We don’t just write code. We build complete production ready software on demand tailored to your needs delivered by email in record time.
+
+What we do.
+
+Custom web applications using Streamlit Flask and Django.
+Election and voting systems.
+Artificial intelligence tools including chatbots data analysis and automation.
+Business dashboards reporting tools and workflows.
+Any Python based project you can imagine we make it work online.
+
+Who we are.
+
+GlobalInternet py was founded by Gesner Deslandes owner founder and lead engineer.
+Like Silicon Valley but with a Haitian touch and strong results.
+
+Our promise.
+
+We are an online company working for the world.
+We deliver full software packages by email ready to install and use.
+
+Contact us.
+
+Phone or WhatsApp five zero nine four seven three eight five six six three.
+Email deslandes78 at gmail dot com.
+
+GlobalInternet py your Python partner from Haiti to the world.
 """
 }
 
@@ -90,7 +122,7 @@ def create_face(mouth_open=False):
     return img
 
 # -----------------------------
-# VOICE ENGINE
+# VOICE GENERATION
 # -----------------------------
 async def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
@@ -100,10 +132,11 @@ def estimate_duration(text):
     return len(text.split()) / 2.5
 
 # -----------------------------
-# UI
+# UI LAYOUT
 # -----------------------------
 left, right = st.columns([3, 1])
 
+# RIGHT PANEL
 with right:
     st.markdown("### 🏢 GlobalInternet.py")
     st.markdown("Owner: Gesner Deslandes")
@@ -116,6 +149,7 @@ with right:
 
     st.info("AI Software Built in Haiti 🇭🇹")
 
+# LEFT PANEL
 with left:
 
     st.title("🤖 Gesner Humanoid AI")
@@ -130,14 +164,18 @@ with left:
     frame = st.empty()
     frame.image(create_face(False))
 
+    # SHOW TEXT
+    st.markdown("### 📜 Script Preview")
+    st.write(display_texts[mode])
+
     if st.button("▶️ Speak"):
 
-        asyncio.run(generate_voice(texts[mode], voices[mode]))
+        asyncio.run(generate_voice(speech_texts[mode], voices[mode]))
 
         audio_file = open("voice.mp3", "rb")
         st.audio(audio_file.read(), format="audio/mp3")
 
-        duration = estimate_duration(texts[mode])
+        duration = estimate_duration(speech_texts[mode])
 
         start = time.time()
         while time.time() - start < duration:
