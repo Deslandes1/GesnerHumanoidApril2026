@@ -80,7 +80,7 @@ Llevemos las elecciones haitianas a la era digital."""
 }
 
 # -----------------------------
-# ORIGINAL HUMANOID FACE
+# HUMANOID FACE
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
@@ -106,7 +106,7 @@ def create_face(mouth_open=False):
     return img
 
 # -----------------------------
-# GENERATE VOICE
+# VOICE GENERATION
 # -----------------------------
 async def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
@@ -119,20 +119,33 @@ def estimate_duration(text):
     return len(text.split()) / 2.5
 
 # -----------------------------
-# UI LAYOUT (LEFT + RIGHT PANEL)
+# UI LAYOUT
 # -----------------------------
 left, right = st.columns([3, 1])
 
-# RIGHT PANEL (YOUR COMPANY INFO)
+# -----------------------------
+# RIGHT PANEL (COMPANY + CONTACT)
+# -----------------------------
 with right:
     st.markdown("### 🏢 Company Info")
-    st.markdown("**GlobalInternet.py**")
-    st.markdown("Owner: Gesner Deslandes")
-    st.markdown("Online Company Building Software")
-    st.markdown("---")
-    st.info("Building AI + Software Solutions from Haiti")
 
+    st.markdown("**GlobalInternet.py**")
+    st.markdown("Online Company Building Software")
+    st.markdown("Owner: Gesner Deslandes")
+
+    st.markdown("---")
+    st.markdown("### 📞 Contact")
+
+    st.markdown("📱 Phone: (509)-47385663")
+    st.markdown("📧 Email: deslandes78@gmail.com")
+    st.markdown("🏢 Office: Available upon request")
+
+    st.markdown("---")
+    st.info("AI & Software Solutions built in Haiti 🇭🇹")
+
+# -----------------------------
 # LEFT PANEL (MAIN APP)
+# -----------------------------
 with left:
 
     st.title("🤖 Gesner Humanoid AI")
