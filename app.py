@@ -6,10 +6,10 @@ import time
 import os
 import base64
 
-st.set_page_config(page_title="Gesner Humanoid AI", layout="wide")
+st.set_page_config(page_title="Gesner Humanoid AI - Singing", layout="wide")
 
 # -----------------------------
-# VOICE SETTINGS
+# VOICE SETTINGS (fallback for spoken version)
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
@@ -18,81 +18,17 @@ voices = {
 }
 
 # -----------------------------
-# FULL SPEECH PER LANGUAGE
+# HAITIAN ANTHEM LYRICS (excerpt)
 # -----------------------------
-texts = {
-    "English": """Accountant Excel Advanced AI April 2026.
+anthem_lyrics = """Pour le pays, pour les ancêtres,
+Marchons unis, marchons unis.
+Dans nos rangs point de traîtres,
+Du sol soyons seuls maîtres.
+Marchons unis, marchons unis,
+Pour le pays, pour les ancêtres.
 
-This is Gesner Deslandes, founder of GlobalInternet.py.
-
-A complete accounting and loan tracking system that replaces messy spreadsheets.
-
-Manage cash flow, track loans, and generate professional reports all in one secure web app.
-
-You can record cash in and cash out, track your real-time balance, and manage loans with automatic calculations.
-
-Add borrowers, define payment schedules, track payments, and view full history.
-
-Generate professional reports including cash flow, loan status, and payment history.
-
-Export everything to Excel and PDF.
-
-The system is multilingual and secure with login and logout functionality.
-
-Perfect for businesses, NGOs, schools, and government offices.
-
-One-time payment: one hundred forty-nine US dollars with lifetime access.
-
-Send payment via Moncash and receive access within twenty-four hours.
-
-Built in Haiti by GlobalInternet.py for the world.
-
-Order today and simplify your accounting tomorrow.""",
-
-    "French": """Accountant Excel Advanced AI avril 2026.
-
-Je suis Gesner Deslandes, fondateur de GlobalInternet.py.
-
-Un système complet de comptabilité et de gestion de prêts qui remplace Excel.
-
-Gérez les entrées et sorties d’argent, suivez le solde en temps réel et les prêts automatiquement.
-
-Ajoutez des emprunteurs, définissez les paiements et suivez l’historique complet.
-
-Générez des rapports professionnels exportables en Excel et PDF.
-
-Application sécurisée, multilingue avec connexion et déconnexion.
-
-Idéal pour entreprises, ONG, écoles et institutions.
-
-Paiement unique de 149 dollars avec accès à vie.
-
-Fabriqué en Haïti pour le monde.
-
-Commandez aujourd’hui et simplifiez votre comptabilité.""",
-
-    "Spanish": """Accountant Excel Advanced AI abril 2026.
-
-Soy Gesner Deslandes, fundador de GlobalInternet.py.
-
-Un sistema completo de contabilidad y gestión de préstamos que reemplaza Excel.
-
-Registra ingresos y gastos, controla el balance en tiempo real y gestiona préstamos automáticamente.
-
-Agrega clientes, define pagos y revisa el historial completo.
-
-Genera reportes profesionales exportables en Excel y PDF.
-
-Sistema seguro y multilingüe.
-
-Ideal para empresas, ONG, escuelas y gobiernos.
-
-Pago único de 149 dólares con acceso de por vida.
-
-Hecho en Haití para el mundo.
-
-Ordena hoy y simplifica tu contabilidad."""
-}
+Marchons, marchons, marchons unis,
+Pour le pays, pour les ancêtres."""
 
 # -----------------------------
 # CREATE ROBOT FACE
@@ -128,51 +64,69 @@ def create_face(mouth_open=False):
     return img
 
 # -----------------------------
-# GENERATE VOICE
+# GENERATE SPOKEN VERSION (fallback)
 # -----------------------------
-async def generate_voice(text, voice):
+async def generate_spoken_audio(text, voice):
     communicate = edge_tts.Communicate(text, voice)
     await communicate.save("voice.mp3")
 
 # -----------------------------
-# ESTIMATE SPEECH DURATION
+# ESTIMATE DURATION FOR ANIMATION
 # -----------------------------
 def estimate_duration(text):
     words = len(text.split())
-    return words / 2.5
+    # Anthem takes ~30 seconds when spoken with rhythm
+    return max(25, words / 2.0)
 
 # -----------------------------
-# STREAMLIT UI WITH HAITIAN FLAG ON THE LEFT
+# STREAMLIT UI WITH HAITIAN FLAG
 # -----------------------------
-# Create three columns: flag, content, empty spacer
 col_flag, col_main, col_right = st.columns([1, 3, 1])
 
 with col_flag:
     st.image("https://flagcdn.com/w320/ht.png", width=120)
 
 with col_main:
-    st.title("🤖 Gesner Humanoid AI")
-    language = st.selectbox("🌍 Select Language", list(voices.keys()))
+    st.title("🤖 Gesner Humanoid AI - Sings La Dessalinienne")
+    st.markdown("**Haitian National Anthem (excerpt)**")
+    
+    # Display lyrics
+    st.markdown(f"```\n{anthem_lyrics}\n```")
+    
+    # Audio upload option for real singing
+    uploaded_audio = st.file_uploader("🎤 Upload a singing audio file (MP3) for better rhythm", type=["mp3"])
+    
     frame = st.empty()
     frame.image(create_face(False))
-
-    if st.button("▶️ Speak"):
-        # Generate voice
-        asyncio.run(generate_voice(texts[language], voices[language]))
-
-        # Play audio
-        audio_file = open("voice.mp3", "rb")
-        st.audio(audio_file.read(), format="audio/mp3")
-
-        # Animate mouth based on speech duration
-        duration = estimate_duration(texts[language])
+    
+    if st.button("🎵 Sing / Recite"):
+        if uploaded_audio is not None:
+            # Use uploaded singing audio
+            st.audio(uploaded_audio, format="audio/mp3")
+            # Estimate duration from file size (rough)
+            duration = len(uploaded_audio.getvalue()) / 32000  # approx 32kbps
+            duration = max(25, min(duration, 45))
+        else:
+            # Fallback: generate spoken version with rhythm
+            with st.spinner("Generating spoken version..."):
+                asyncio.run(generate_spoken_audio(anthem_lyrics, voices["French"]))
+                audio_file = open("voice.mp3", "rb")
+                st.audio(audio_file.read(), format="audio/mp3")
+                duration = estimate_duration(anthem_lyrics)
+        
+        # Animate mouth for the duration
         start = time.time()
         while time.time() - start < duration:
             frame.image(create_face(True))
-            time.sleep(0.2)
+            time.sleep(0.25)
             frame.image(create_face(False))
-            time.sleep(0.2)
+            time.sleep(0.25)
         frame.image(create_face(False))
+        
+        if not uploaded_audio:
+            os.remove("voice.mp3")
+    
+    st.info("For the best experience, upload a recording of someone singing the anthem. The humanoid will move its lips in sync.")
 
 with col_right:
     st.markdown("""
