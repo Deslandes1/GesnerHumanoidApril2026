@@ -3,6 +3,7 @@ from PIL import Image, ImageDraw
 import asyncio
 import edge_tts
 import time
+from mutagen.mp3 import MP3
 
 # -----------------------------
 # PAGE CONFIG
@@ -64,17 +65,15 @@ def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # face outline
+    # face
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
-
-    # inner face
     draw.ellipse((90, 120, 310, 320), outline="black", width=4)
 
     # eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # mouth animation
+    # mouth
     if mouth_open:
         draw.ellipse((170, 240, 230, 300), outline="black", width=4)
     else:
@@ -98,10 +97,11 @@ async def generate_voice(text, voice):
     await communicate.save("voice.mp3")
 
 # -----------------------------
-# ESTIMATE DURATION
+# GET REAL AUDIO DURATION
 # -----------------------------
-def estimate_duration(text):
-    return len(text.split()) / 2.5
+def get_audio_duration(file_path):
+    audio = MP3(file_path)
+    return audio.info.length
 
 # -----------------------------
 # UI LAYOUT
@@ -109,7 +109,7 @@ def estimate_duration(text):
 left, right = st.columns([3, 1])
 
 # -----------------------------
-# RIGHT PANEL (CONTACT)
+# RIGHT PANEL
 # -----------------------------
 with right:
     st.markdown("### 🏢 Company Info")
@@ -129,13 +129,12 @@ with right:
     st.info("AI & Software Solutions built in Haiti 🇭🇹")
 
 # -----------------------------
-# LEFT PANEL (MAIN APP)
+# LEFT PANEL
 # -----------------------------
 with left:
 
     st.title("🤖 Gesner Humanoid AI")
 
-    # Haiti flag
     st.markdown(
         "<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>",
         unsafe_allow_html=True
@@ -148,18 +147,26 @@ with left:
 
     if st.button("▶️ Speak"):
 
+        # generate voice
         asyncio.run(generate_voice(texts[language], voices[language]))
 
-        audio_file = open("voice.mp3", "rb")
-        st.audio(audio_file.read(), format="audio/mp3")
+        audio_file = "voice.mp3"
 
-        duration = estimate_duration(texts[language])
+        # play audio
+        audio_bytes = open(audio_file, "rb").read()
+        st.audio(audio_bytes, format="audio/mp3", autoplay=True)
+
+        # 🔥 REAL DURATION FIX
+        duration = get_audio_duration(audio_file)
 
         start = time.time()
+
+        # 👄 LIPS SYNCHED TO REAL AUDIO TIME
         while time.time() - start < duration:
             frame.image(create_face(True))
-            time.sleep(0.2)
+            time.sleep(0.15)
+
             frame.image(create_face(False))
-            time.sleep(0.2)
+            time.sleep(0.15)
 
         frame.image(create_face(False))
