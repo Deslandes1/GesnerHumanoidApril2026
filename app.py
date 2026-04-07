@@ -101,24 +101,22 @@ def estimate_duration(text):
     return max(8, words / 2.2)
 
 # -----------------------------
-# STREAMLIT UI WITH HAITIAN FLAG
+# STREAMLIT UI: Flag left, Humanoid center, Lyrics right
 # -----------------------------
-col_flag, col_main, col_right = st.columns([1, 3, 1])
+col_flag, col_humanoid, col_lyrics = st.columns([1, 2, 2])
 
 with col_flag:
     st.image("https://flagcdn.com/w320/ht.png", width=120)
 
-with col_main:
+with col_humanoid:
     st.title("🤖 Gesner Humanoid AI")
     st.markdown("### La Dessalinienne – Haitian National Anthem")
-
-    language = st.selectbox("🌍 Select language for recitation", list(voices.keys()))
-    st.markdown(f"**Lyrics ({language}):**")
-    st.text(lyrics[language])
-
+    
+    language = st.selectbox("🌍 Select language", list(voices.keys()))
+    
     frame = st.empty()
     frame.image(create_face(False))
-
+    
     if st.button("🔊 Recite"):
         with st.spinner("Generating voice..."):
             generate_audio_sync(lyrics[language], voices[language])
@@ -126,8 +124,7 @@ with col_main:
             st.audio(audio_file.read(), format="audio/mp3")
             duration = estimate_duration(lyrics[language])
             audio_file.close()
-
-        # Animate mouth
+        
         start = time.time()
         while time.time() - start < duration:
             frame.image(create_face(True))
@@ -135,12 +132,15 @@ with col_main:
             frame.image(create_face(False))
             time.sleep(0.2)
         frame.image(create_face(False))
-
-        # Clean up
+        
         if os.path.exists("speech.mp3"):
             os.remove("speech.mp3")
 
-with col_right:
+with col_lyrics:
+    st.markdown("### 📜 Lyrics")
+    st.markdown(f"**{language}**")
+    st.text(lyrics[language])
+    st.markdown("---")
     st.markdown("""
     <div style='text-align: right;'>
         <b>GlobalInternet.py</b><br>
