@@ -6,7 +6,7 @@ import os
 
 st.set_page_config(page_title="Gesner Humanoid AI 🇭🇹", layout="centered")
 
-# 🇭🇹 EXACT SCRIPT (HIDDEN — NEVER DISPLAYED)
+# 🇭🇹 FULL SCRIPT (HIDDEN)
 SCRIPT = """
 GlobalInternet.py – Build with Python. Deliver with Speed.
 
@@ -35,55 +35,53 @@ Email deslandes78@gmail.com
 GlobalInternet.py Your Python partner from Haiti to the world.
 """
 
-# 🎤 Voice engine
+# 🎤 voice
 def speak(text):
     filename = f"voice_{uuid.uuid4().hex}.mp3"
     tts = gTTS(text=text, lang="en")
     tts.save(filename)
     return filename
 
-# 🤖 Humanoid Face (REAL UI STYLE)
-def humanoid_face(mouth_open=False):
-    mouth = "🔴" if mouth_open else "⚪"
+# 🤖 face UI (stable frame)
+def face(open_mouth=False):
+    mouth = "🔴" if open_mouth else "⚪"
 
     st.markdown(f"""
     <div style="
         text-align:center;
-        padding:20px;
-        background:linear-gradient(180deg,#0f172a,#1e293b);
-        border-radius:20px;
+        background:#0f172a;
+        padding:30px;
+        border-radius:25px;
         color:white;
     ">
-        <div style="font-size:70px;">🇭🇹</div>
-        <div style="font-size:110px;">🤖</div>
-        <div style="font-size:40px; margin-top:-10px;">{mouth}</div>
-        <div style="font-size:18px; margin-top:10px; opacity:0.7;">
-            GESNER HUMANOID AI SYSTEM
-        </div>
+        <div style="font-size:60px;">🇭🇹</div>
+        <div style="font-size:120px;">🤖</div>
+        <div style="font-size:45px;">{mouth}</div>
+        <div style="opacity:0.7;">GESNER HUMANOID AI</div>
     </div>
     """, unsafe_allow_html=True)
 
-# UI
 st.title("🇭🇹 Gesner Humanoid AI")
 
-humanoid_face(False)
+face(False)
 
-if st.button("▶️ Activate Humanoid AI"):
-    humanoid_face(True)
-
-    with st.spinner("AI is speaking..."):
-        audio_file = speak(SCRIPT)
+if st.button("▶️ START AI"):
+    audio_file = speak(SCRIPT)
 
     audio_bytes = open(audio_file, "rb").read()
     st.audio(audio_bytes, autoplay=True)
 
-    # 🟡 lip sync animation loop
-    for _ in range(8):
-        humanoid_face(True)
+    # ⏱️ approximate speech duration (based on text length)
+    estimated_duration = max(8, len(SCRIPT.split()) * 0.35)
+
+    start = time.time()
+
+    while time.time() - start < estimated_duration:
+        face(True)
         time.sleep(0.25)
-        humanoid_face(False)
+        face(False)
         time.sleep(0.25)
 
     os.remove(audio_file)
 
-st.markdown("<center style='color:gray;'>Powered by GlobalInternet.py</center>", unsafe_allow_html=True)
+st.markdown("<center style='color:gray;'>GlobalInternet.py AI System 🇭🇹</center>", unsafe_allow_html=True)
