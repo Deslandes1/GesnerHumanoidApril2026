@@ -52,7 +52,7 @@ Por el país, por los ancestros."""
 }
 
 # -----------------------------
-# CREATE ROBOT FACE (smaller for compact layout)
+# CREATE ROBOT FACE (compact)
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (300, 300), "white")
@@ -103,7 +103,6 @@ def estimate_duration(text):
 # -----------------------------
 # COMPACT LAYOUT – ALL VISIBLE WITHOUT SCROLLING
 # -----------------------------
-# Use three columns with equal width but reduce internal margins
 col_flag, col_humanoid, col_lyrics = st.columns([1, 1.5, 1.5])
 
 with col_flag:
@@ -118,7 +117,7 @@ with col_humanoid:
     frame = st.empty()
     frame.image(create_face(False), width=250)
     
-    if st.button("🔊 Recite", use_container_width=True):
+    if st.button("🔊 Speak", use_container_width=True):
         with st.spinner("Generating voice..."):
             generate_audio_sync(lyrics[language], voices[language])
             audio_file = open("speech.mp3", "rb")
@@ -126,6 +125,7 @@ with col_humanoid:
             duration = estimate_duration(lyrics[language])
             audio_file.close()
         
+        # Mouth moves while audio plays
         start = time.time()
         while time.time() - start < duration:
             frame.image(create_face(True), width=250)
@@ -134,6 +134,7 @@ with col_humanoid:
             time.sleep(0.2)
         frame.image(create_face(False), width=250)
         
+        # Clean up
         if os.path.exists("speech.mp3"):
             os.remove("speech.mp3")
 
@@ -150,5 +151,4 @@ with col_lyrics:
     </div>
     """, unsafe_allow_html=True)
 
-# Remove the extra footer divider to save vertical space
 st.markdown("© 2026 GlobalInternet.py – All rights reserved")
