@@ -5,6 +5,7 @@ import edge_tts
 import time
 from mutagen.mp3 import MP3
 import base64
+import random
 
 # -----------------------------
 # PAGE CONFIG
@@ -51,26 +52,31 @@ Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# HUMANOID FACE
+# HUMANOID FACE (REALISTIC MOUTH)
 # -----------------------------
-def create_face(mouth_open=False):
+def create_face(mouth_level=0):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
+    # Head
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=4)
 
+    # Eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    if mouth_open:
-        draw.ellipse((170, 240, 230, 300), outline="black", width=4)
-    else:
-        draw.arc((150, 230, 250, 300), start=0, end=180, fill="black", width=4)
+    # 🔥 REALISTIC MOUTH (VARIABLE OPENING)
+    top = 240
+    bottom = 240 + int(20 + mouth_level * 40)
 
+    draw.ellipse((170, top, 230, bottom), outline="black", width=4)
+
+    # Antenna
     draw.line((200, 80, 200, 40), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
 
+    # Side panels
     draw.rectangle((40, 180, 70, 260), outline="black", width=3)
     draw.rectangle((330, 180, 360, 260), outline="black", width=3)
 
@@ -107,30 +113,23 @@ with left:
 
     st.title("🤖 Gesner Humanoid AI")
 
-    # 🇭🇹 FLAG
     st.markdown(
         "<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>",
         unsafe_allow_html=True
     )
 
-    # Language selector
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
 
-    # Face
     frame = st.empty()
-    frame.image(create_face(False))
+    frame.image(create_face(0))
 
-    # -----------------------------
-    # SPEAK BUTTON (FIXED)
-    # -----------------------------
     if st.button("▶️ Speak"):
 
-        # Generate voice
         asyncio.run(generate_voice(texts[language], voices[language]))
 
         audio_file = "voice.mp3"
 
-        # 🔥 AUTO PLAY AUDIO
+        # 🔥 AUTO PLAY
         with open(audio_file, "rb") as f:
             audio_bytes = f.read()
         audio_base64 = base64.b64encode(audio_bytes).decode()
@@ -144,16 +143,19 @@ with left:
             unsafe_allow_html=True
         )
 
-        # 🔥 GET REAL AUDIO DURATION
+        # 🔥 REAL AUDIO LENGTH
         duration = MP3(audio_file).info.length
 
-        # 🔥 MOUTH MOVEMENT (FULL SYNC TIME)
+        # 🔥 NATURAL TALKING EFFECT
         start = time.time()
-        mouth = False
 
         while time.time() - start < duration:
-            mouth = not mouth
-            frame.image(create_face(mouth))
-            time.sleep(0.08)
+            # random talking intensity (like real speech)
+            mouth_level = random.uniform(0.1, 1.0)
 
-        frame.image(create_face(False))
+            frame.image(create_face(mouth_level))
+
+            # variable speed (speech rhythm)
+            time.sleep(random.uniform(0.05, 0.12))
+
+        frame.image(create_face(0))
