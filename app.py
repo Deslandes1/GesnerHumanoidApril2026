@@ -1,12 +1,13 @@
 import streamlit as st
 from PIL import Image, ImageDraw
-import asyncio
 import edge_tts
 import time
-from mutagen.mp3 import MP3
 import base64
 import math
-from gtts import gTTS
+import threading
+import tempfile
+import os
+from mutagen.mp3 import MP3
 
 # -----------------------------
 # PAGE CONFIG
@@ -46,58 +47,42 @@ Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# FACE DESIGN (SMOOTH TALKING MOUTH)
+# FACE DESIGN
 # -----------------------------
 def create_face(mouth_open=0):
-    """
-    mouth_open: 0.0 (closed) to 1.0 (fully open)
-    """
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # head
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
-
-    # inner face
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
-
-    # eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # 🔥 REALISTIC MOUTH – opens linearly with mouth_open
-    mouth_height = 10 + mouth_open * 40  # from 10px to 50px
-    draw.ellipse(
-        (170, 240, 230, 240 + mouth_height),
-        outline="black",
-        width=4
-    )
+    mouth_height = 10 + mouth_open * 40
+    draw.ellipse((170, 240, 230, 240 + mouth_height), outline="black", width=4)
 
-    # antenna
     draw.line((200, 80, 200, 40), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
-
-    # side panels
     draw.rectangle((40, 180, 70, 260), outline="black", width=3)
     draw.rectangle((330, 180, 360, 260), outline="black", width=3)
 
     return img
 
 # -----------------------------
-# VOICE GENERATION
+# THREADED VOICE GENERATION
 # -----------------------------
-async def generate_voice(text, voice):
-    communicate = edge_tts.Communicate(text, voice)
-    await communicate.save("voice.mp3")
+def generate_voice_thread(text, voice, audio_path):
+    async def _generate():
+        communicate = edge_tts.Communicate(text, voice)
+        await communicate.save(audio_path)
+    import asyncio
+    asyncio.run(_generate())
 
 # -----------------------------
 # LAYOUT
 # -----------------------------
 left, right = st.columns([3, 1])
 
-# -----------------------------
-# RIGHT PANEL
-# -----------------------------
 with right:
     st.markdown("## 🌐 GlobalInternet.py")
     st.markdown("Owner: Gesner Deslandes")
@@ -107,38 +92,36 @@ with right:
     st.markdown("---")
     st.success("AI & Software Solutions 🇭🇹")
 
-# -----------------------------
-# LEFT PANEL
-# -----------------------------
 with left:
-
     st.title("🤖 Gesner Humanoid AI")
-
     st.markdown(
         "<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>",
         unsafe_allow_html=True
     )
 
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
-
     frame = st.empty()
     frame.image(create_face(0))
 
-    # -----------------------------
-    # SPEAK BUTTON
-    # -----------------------------
     if st.button("▶️ Speak"):
+        # Generate audio in a background thread (so Streamlit doesn't freeze)
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
+            audio_path = tmp.name
 
-        asyncio.run(generate_voice(texts[language], voices[language]))
+        # Run voice generation in a separate thread
+        thread = threading.Thread(
+            target=generate_voice_thread,
+            args=(texts[language], voices[language], audio_path)
+        )
+        thread.start()
+        # Wait for generation to complete (simple spinner)
+        with st.spinner("Generating voice..."):
+            thread.join()
 
-        audio_file = "voice.mp3"
-
-        # autoplay audio
-        with open(audio_file, "rb") as f:
+        # Autoplay audio
+        with open(audio_path, "rb") as f:
             audio_bytes = f.read()
-
         audio_base64 = base64.b64encode(audio_bytes).decode()
-
         st.markdown(
             f"""
             <audio autoplay>
@@ -148,39 +131,24 @@ with left:
             unsafe_allow_html=True
         )
 
-        # -----------------------------
-        # AUDIO LENGTH
-        # -----------------------------
-        duration = MP3(audio_file).info.length
+        # Get duration
+        duration = MP3(audio_path).info.length
 
-        # -----------------------------
-        # 🔥 SMOOTH TALKING LOOP – mouth moves instantly with audio
-        # -----------------------------
+        # Animate mouth while audio plays
         start = time.time()
-        # We'll simulate a realistic speech envelope using a mix of frequencies
-        # This makes the mouth open and close naturally while speaking.
-        while True:
+        while time.time() - start < duration:
             elapsed = time.time() - start
-            if elapsed >= duration:
-                break
-
-            # Speech amplitude simulation – varies between 0.2 and 1.0
-            # to mimic natural mouth movement during speech.
-            # A faster frequency (around 10 Hz) makes it look like talking.
-            t = elapsed * 12  # speed of mouth movement (tune as desired)
-            # Use a combination of sine waves to avoid unnatural robotic opening
+            t = elapsed * 12
             mouth_level = (math.sin(t) * 0.3 +
                            math.sin(t * 2.3) * 0.2 +
                            math.sin(t * 5.7) * 0.1 +
-                           0.4)  # base open slightly
-            # Clamp between 0 and 1
+                           0.4)
             mouth_level = max(0.0, min(1.0, mouth_level))
-
-            # Update the face with current mouth opening
             frame.image(create_face(mouth_level))
-
-            # Small delay for smooth animation (30 fps)
             time.sleep(0.033)
 
-        # Ensure mouth is closed after audio ends
+        # Close mouth
         frame.image(create_face(0))
+
+        # Cleanup temp file
+        os.unlink(audio_path)
