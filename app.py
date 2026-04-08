@@ -20,72 +20,32 @@ voices = {
 }
 
 # -----------------------------
-# WEBSITE PROMOTION SCRIPT
+# SCRIPT
 # -----------------------------
 texts = {
-
     "English": """Welcome to GlobalInternet.py.
-
 This is Gesner Deslandes, owner of an online software company based in Haiti.
-
-We are proud to introduce our official website.
-
-Visit now:
+Visit our official website now.
 globalinternetsitepy dash abh7v6tnmskxxnuplrdcgk dot streamlit dot app.
-
-On our website, you will discover our services, our projects, and powerful software solutions built with Python and artificial intelligence.
-
-We build complete software systems and deliver them directly to you by email within twenty four hours.
-
-If you need a website, a custom application, or any software solution, contact us now.
-
+We build and deliver complete software solutions within 24 hours.
+Contact us today.
 Phone: five zero nine, four seven three, eight five six six three.
-
 Email: deslandes seventy eight at gmail dot com.
-
-GlobalInternet.py, your online software company, building solutions for the world from Haiti.""",
+GlobalInternet.py, building software for the world.""",
 
     "French": """Bienvenue sur GlobalInternet.py.
-
-Je suis Gesner Deslandes, propriétaire d'une entreprise de logiciels en ligne basée en Haïti.
-
-Nous sommes fiers de vous présenter notre site officiel.
-
-Visitez maintenant :
+Je suis Gesner Deslandes, propriétaire d’une entreprise de logiciels en ligne.
+Visitez notre site officiel maintenant.
 globalinternetsitepy tiret abh7v6tnmskxxnuplrdcgk point streamlit point app.
-
-Sur notre site, vous découvrirez nos services, nos projets et des solutions puissantes basées sur Python et l’intelligence artificielle.
-
-Nous créons des logiciels complets et les livrons par email en vingt-quatre heures.
-
-Si vous avez besoin d’un site web ou d’un logiciel personnalisé, contactez-nous.
-
-Téléphone : cinq zéro neuf, quatre sept trois, huit cinq six six trois.
-
-Email : deslandes soixante-dix-huit arrobase gmail point com.
-
-GlobalInternet.py, votre entreprise de logiciels en ligne depuis Haïti vers le monde.""",
+Nous livrons des logiciels complets en 24 heures.
+Contactez-nous dès aujourd’hui.""",
 
     "Spanish": """Bienvenido a GlobalInternet.py.
-
-Soy Gesner Deslandes, propietario de una empresa de software en línea en Haití.
-
-Estamos orgullosos de presentar nuestro sitio web oficial.
-
-Visita ahora:
+Soy Gesner Deslandes, propietario de una empresa de software en línea.
+Visita nuestro sitio web ahora.
 globalinternetsitepy guion abh7v6tnmskxxnuplrdcgk punto streamlit punto app.
-
-En nuestro sitio encontrarás servicios, proyectos y soluciones de software con Python e inteligencia artificial.
-
-Creamos software completo y lo entregamos por correo electrónico en veinticuatro horas.
-
-Si necesitas un sitio web o una aplicación personalizada, contáctanos.
-
-Teléfono: cinco cero nueve, cuatro siete tres, ocho cinco seis seis tres.
-
-Correo: deslandes setenta y ocho arroba gmail punto com.
-
-GlobalInternet.py, tu empresa de software en línea desde Haití para el mundo."""
+Entregamos software completo en 24 horas.
+Contáctanos hoy."""
 }
 
 # -----------------------------
@@ -121,24 +81,20 @@ async def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
     await communicate.save("voice.mp3")
 
-def get_audio_duration(file_path):
-    return MP3(file_path).info.length
+def get_audio_duration(file):
+    return MP3(file).info.length
 
 # -----------------------------
 # UI
 # -----------------------------
 left, right = st.columns([3, 1])
 
-# RIGHT PANEL
 with right:
     st.markdown("## 🌐 GlobalInternet.py")
-    st.markdown("Owner: Gesner Deslandes")
+    st.markdown("Gesner Deslandes")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
-    st.markdown("---")
-    st.success("Visit our website")
 
-# LEFT PANEL
 with left:
 
     st.title("🤖 Gesner Humanoid AI")
@@ -151,22 +107,37 @@ with left:
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
 
     frame = st.empty()
+
+    # initial face
     frame.image(create_face(False))
 
     if st.button("▶️ Speak"):
 
+        # generate voice
         asyncio.run(generate_voice(texts[language], voices[language]))
 
         audio_file = "voice.mp3"
-        st.audio(open(audio_file, "rb").read(), autoplay=True)
 
+        # get duration
         duration = get_audio_duration(audio_file)
-        start = time.time()
 
+        # play audio (non-blocking)
+        st.markdown(
+            f"""
+            <audio autoplay>
+            <source src="data:audio/mp3;base64,{open(audio_file, "rb").read().hex()}">
+            </audio>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # 🔥 FORCE LIVE ANIMATION
+        start = time.time()
         mouth = False
+
         while time.time() - start < duration:
             mouth = not mouth
             frame.image(create_face(mouth))
-            time.sleep(0.12)
+            time.sleep(0.1)
 
         frame.image(create_face(False))
