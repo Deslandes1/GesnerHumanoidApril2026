@@ -4,7 +4,6 @@ import asyncio
 import edge_tts
 import time
 from mutagen.mp3 import MP3
-import base64
 
 # -----------------------------
 # PAGE CONFIG
@@ -82,11 +81,13 @@ def get_audio_duration(file):
     return MP3(file).info.length
 
 # -----------------------------
-# UI LAYOUT (UNCHANGED)
+# UI LAYOUT
 # -----------------------------
 left, right = st.columns([3, 1])
 
+# -----------------------------
 # RIGHT PANEL (UNCHANGED)
+# -----------------------------
 with right:
     st.markdown("## 🌐 GlobalInternet.py")
     st.markdown("Owner: Gesner Deslandes")
@@ -96,7 +97,9 @@ with right:
     st.markdown("---")
     st.success("AI & Software Solutions 🇭🇹")
 
+# -----------------------------
 # LEFT PANEL
+# -----------------------------
 with left:
 
     st.title("🤖 Gesner Humanoid AI")
@@ -111,37 +114,27 @@ with left:
     frame = st.empty()
     frame.image(create_face(False))
 
-    # ✅ SPEAK BUTTON (FIXED POSITION)
+    # ✅ BUTTON BACK
     if st.button("▶️ Speak"):
 
+        # Generate voice
         asyncio.run(generate_voice(texts[language], voices[language]))
 
         audio_file = "voice.mp3"
 
-        # Base64 audio (non-blocking)
-        with open(audio_file, "rb") as f:
-            audio_bytes = f.read()
-        audio_base64 = base64.b64encode(audio_bytes).decode()
+        # ✅ NORMAL AUDIO (VISIBLE PLAYER)
+        st.audio(open(audio_file, "rb").read(), format="audio/mp3")
 
-        st.markdown(
-            f"""
-            <audio autoplay>
-            <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-            </audio>
-            """,
-            unsafe_allow_html=True
-        )
-
-        # REAL duration
+        # ✅ REAL DURATION
         duration = get_audio_duration(audio_file)
 
-        # 🔥 PERFECT LIP SYNC
+        # 🔥 MOUTH MOVES UNTIL END
         start = time.time()
         mouth = False
 
         while time.time() - start < duration:
             mouth = not mouth
             frame.image(create_face(mouth))
-            time.sleep(0.08)
+            time.sleep(0.1)
 
         frame.image(create_face(False))
