@@ -23,7 +23,6 @@ voices = {
 # MOTIVATION SPEECH
 # -----------------------------
 texts = {
-
     "English": """Outstanding Determination.
 
 You can make mistakes while trying to do what is right. Not everybody will understand you.
@@ -34,61 +33,61 @@ Not to please people, but to become what you were truly meant to be.
 
 Do not ever let disappointment discourage you or bring you down. Instead, use it as fuel to move forward.
 
-Be unstoppable. Be yourself. Use your mind, and most importantly, control your mind.
+Be unstoppable. Be yourself. Use your mind, and control your mind.
 
 Your inner world is more powerful than your outside world.
 
-People want to see results. They do not need to know your daily struggles.
+People want results. They do not need to know your daily struggles.
 
-So take time for yourself. Love yourself. Forgive yourself.
+Take time for yourself. Love yourself. Forgive yourself.
 
-And move forward with yourself.
+Move forward with yourself.
 
-Because remember this: you came into this world alone, and you will leave it alone, with all your flaws and all your greatness.""",
+Remember: you came into this world alone, and you will leave it alone, with your flaws and your greatness.""",
 
     "French": """Détermination exceptionnelle.
 
 Vous pouvez faire des erreurs en essayant de faire ce qui est juste. Tout le monde ne vous comprendra pas.
 
-Mais si vous vous comprenez vous-même, vous pouvez recommencer. Vous pouvez reconstruire la meilleure version de vous-même.
+Mais si vous vous comprenez, vous pouvez recommencer et reconstruire la meilleure version de vous-même.
 
-Non pas pour plaire aux autres, mais pour devenir ce que vous êtes réellement destiné à être.
+Pas pour plaire aux autres, mais pour devenir ce que vous devez être.
 
-Ne laissez jamais la déception vous décourager ou vous abattre. Utilisez-la comme un carburant pour avancer.
+N’ayez pas peur de la déception. Utilisez-la comme carburant pour avancer.
 
-Soyez inarrêtable. Soyez vous-même. Utilisez votre esprit et surtout contrôlez-le.
+Soyez vous-même. Soyez fort. Contrôlez votre esprit.
 
-Votre monde intérieur est plus puissant que votre monde extérieur.
+Votre monde intérieur est plus puissant que le monde extérieur.
 
-Les gens veulent voir les résultats. Ils n’ont pas besoin de connaître vos luttes quotidiennes.
+Les gens veulent des résultats, pas vos luttes.
 
 Prenez du temps pour vous. Aimez-vous. Pardonnez-vous.
 
-Et avancez avec vous-même.
+Avancez.
 
-Rappelez-vous ceci : vous êtes venu seul dans ce monde, et vous en repartirez seul, avec vos défauts et votre grandeur.""",
+Rappelez-vous : vous êtes venu seul et vous partirez seul, avec vos défauts et votre grandeur.""",
 
     "Spanish": """Determinación extraordinaria.
 
-Puedes cometer errores al intentar hacer lo correcto. No todos te van a entender.
+Puedes cometer errores intentando hacer lo correcto. No todos te entenderán.
 
-Pero si tú te entiendes a ti mismo, puedes comenzar de nuevo. Puedes reconstruir la mejor versión de ti.
+Pero si te entiendes, puedes empezar de nuevo y reconstruir la mejor versión de ti.
 
-No para complacer a otros, sino para convertirte en lo que realmente estás destinado a ser.
+No para agradar a otros, sino para convertirte en quien debes ser.
 
-No dejes que la decepción te desanime ni te derribe. Úsala como combustible para seguir adelante.
+No dejes que la decepción te detenga. Úsala como combustible.
 
-Sé imparable. Sé tú mismo. Usa tu mente y, sobre todo, contrólala.
+Sé fuerte. Sé tú mismo. Controla tu mente.
 
-Tu mundo interior es más poderoso que tu mundo exterior.
+Tu mundo interior es más poderoso que el exterior.
 
-La gente quiere ver resultados. No necesitan conocer tus luchas diarias.
+La gente quiere resultados, no tus luchas.
 
-Tómate tiempo para ti. Ámate. Perdónate.
+Tómate tiempo. Ámate. Perdónate.
 
-Y sigue avanzando contigo mismo.
+Sigue adelante.
 
-Recuerda esto: viniste solo a este mundo y te irás solo, con tus defectos y tu grandeza."""
+Recuerda: viniste solo y te irás solo, con tus defectos y tu grandeza."""
 }
 
 # -----------------------------
@@ -132,12 +131,24 @@ def get_audio_duration(file_path):
 # -----------------------------
 left, right = st.columns([3, 1])
 
+# 🔥 RIGHT PANEL (ENCOURAGEMENT SYMBOL)
 with right:
-    st.markdown("### 🏢 GlobalInternet.py")
-    st.markdown("Gesner Deslandes")
-    st.markdown("📱 (509)-47385663")
-    st.markdown("📧 deslandes78@gmail.com")
+    st.markdown("## 🦁🔥⚡")
 
+    st.markdown("### **OUTSTANDING**")
+    st.markdown("### **DETERMINATION**")
+
+    st.markdown("---")
+
+    st.success("Be Strong")
+    st.info("Control Your Mind")
+    st.warning("Never Give Up")
+
+    st.markdown("---")
+
+    st.markdown("🇭🇹 Built from Haiti to the World")
+
+# LEFT PANEL
 with left:
 
     st.title("🤖 Gesner Humanoid AI")
