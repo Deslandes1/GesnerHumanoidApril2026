@@ -20,72 +20,81 @@ voices = {
 }
 
 # -----------------------------
-# WEBSITE PROMO SPEECH
+# PERSONAL MESSAGE (ALL LANGUAGES)
 # -----------------------------
 texts = {
 
-    "English": """Discover GlobalInternet.py – Your Python Software Partner.
+    "English": """Junior, my firstborn, now you must replace my presence to protect and guide your little brothers and your only sister.
 
-We just launched our official company website, and it is now fully multilingual in Haitian Creole, French, English, and Spanish.
+We must teach ourselves how to use artificial intelligence in the right way.
 
-Here is what you will find on the site.
+As I told you, Junior, I will do my best to send you to school next year. With God's help, you will learn English and computing so you can prepare to work with me in our company, GlobalInternet.py.
 
-About us – founded by Gesner Deslandes, building Python software on demand.
+Together, we will build software for the world, not only in Haiti.
 
-Our services – artificial intelligence, election systems, dashboards, web applications, and 24 hour delivery.
+I, your father, Gesner Deslandes, am a living warrior who is about to conquer economic independence.
 
-Projects for sale – complete software packages including Haiti Voting System, Business Dashboard, AI Chatbot, School Management System, Point of Sale, and Web Scraper.
+My symbol is the lion, strong and fearless. I am a real fighter, and I will never lose any fight.
 
-Support us – you can donate easily using Moncash with Prisme transfer, up to one hundred thousand Haitian gourdes.
+Roosevelt, Babas, and Zendaya, I think about you every single day. I want to make your lives better and happy.
 
-Contact – phone, WhatsApp, and email. We deliver full software code by email.
+We will do this together. And as I always say, I will never give up on you.
 
-Visit now:
-globalinternetsitepy dash abh7v6tnmskxxnuplrdcgk dot streamlit dot app.
+I am a special dad. I am the father I never had.
 
-Proudly Haitian, serving the world with Python and artificial intelligence.""",
+Do not be afraid of anything. Instead, let everything be afraid of you, because you are my children, growing strong in Meriken City, Port-au-Prince.
 
-    "French": """Découvrez GlobalInternet.py – votre partenaire logiciel Python.
+You must start to be proud of me, proud of yourselves, and proud of our future.
 
-Nous venons de lancer notre site officiel, désormais disponible en créole haïtien, français, anglais et espagnol.
+Your dad, Gesner Deslandes, the lion heart.""",
 
-Voici ce que vous trouverez sur le site.
+    "French": """Junior, mon premier fils, tu dois maintenant remplacer ma présence pour protéger et guider tes petits frères et ta seule sœur.
 
-À propos – fondé par Gesner Deslandes, créant des logiciels Python à la demande.
+Nous devons apprendre à utiliser l’intelligence artificielle de la bonne manière.
 
-Nos services – intelligence artificielle, systèmes électoraux, tableaux de bord, applications web et livraison en 24 heures.
+Comme je te l’ai dit, Junior, je ferai de mon mieux pour t’envoyer à l’école l’année prochaine. Avec l’aide de Dieu, tu apprendras l’anglais et l’informatique pour te préparer à travailler avec moi dans notre entreprise GlobalInternet.py.
 
-Projets à vendre – solutions complètes incluant système de vote haïtien, tableau de bord, chatbot IA, gestion scolaire, point de vente et extraction de données web.
+Ensemble, nous construirons des logiciels pour le monde, pas seulement pour Haïti.
 
-Soutenez-nous – vous pouvez faire un don facilement via Moncash avec transfert Prisme jusqu’à cent mille gourdes.
+Moi, ton père Gesner Deslandes, je suis un combattant vivant prêt à atteindre l’indépendance économique.
 
-Contact – téléphone, WhatsApp et email. Nous livrons le code complet par email.
+Mon symbole est le lion, fort et courageux. Je suis un vrai combattant et je ne perdrai jamais aucun combat.
 
-Visitez maintenant:
-globalinternetsitepy tiret abh7v6tnmskxxnuplrdcgk point streamlit point app.
+Roosevelt, Babas et Zendaya, je pense à vous chaque jour pour améliorer votre vie et vous rendre heureux.
 
-Fièrement haïtien, au service du monde avec Python et l’intelligence artificielle.""",
+Nous allons le faire ensemble. Et comme je le dis toujours, je n’abandonnerai jamais.
 
-    "Spanish": """Descubre GlobalInternet.py – tu socio en software Python.
+Je suis un père spécial. Je suis le père que je n’ai jamais eu.
 
-Acabamos de lanzar nuestro sitio web oficial, ahora disponible en criollo haitiano, francés, inglés y español.
+N’ayez peur de rien. Au contraire, que tout ait peur de vous, car vous êtes mes enfants, grandissant à Meriken City, Port-au-Prince.
 
-Esto es lo que encontrarás en el sitio.
+Soyez fiers de moi, fiers de vous-mêmes et fiers de notre avenir.
 
-Sobre nosotros – fundado por Gesner Deslandes, desarrollando software en Python a pedido.
+Votre père, Gesner Deslandes, au cœur de lion.""",
 
-Nuestros servicios – inteligencia artificial, sistemas electorales, paneles, aplicaciones web y entrega en 24 horas.
+    "Spanish": """Junior, mi hijo mayor, ahora debes reemplazar mi presencia para proteger y guiar a tus hermanos menores y a tu única hermana.
 
-Proyectos en venta – paquetes completos incluyendo sistema de votación de Haití, panel empresarial, chatbot de IA, gestión escolar, punto de venta y web scraper.
+Debemos aprender a usar la inteligencia artificial de la manera correcta.
 
-Apóyanos – puedes donar fácilmente usando Moncash con transferencia Prisme hasta cien mil gourdes haitianos.
+Como te dije, Junior, haré todo lo posible para enviarte a la escuela el próximo año. Con la ayuda de Dios, aprenderás inglés e informática para prepararte y trabajar conmigo en nuestra empresa GlobalInternet.py.
 
-Contacto – teléfono, WhatsApp y correo electrónico. Entregamos el código completo por email.
+Juntos construiremos software para el mundo, no solo para Haití.
 
-Visita ahora:
-globalinternetsitepy guion abh7v6tnmskxxnuplrdcgk punto streamlit punto app.
+Yo, tu padre Gesner Deslandes, soy un luchador que está a punto de conquistar la independencia económica.
 
-Orgullosamente haitiano, sirviendo al mundo con Python e inteligencia artificial."""
+Mi símbolo es el león, fuerte y valiente. Soy un verdadero luchador y nunca perderé ninguna batalla.
+
+Roosevelt, Babas y Zendaya, pienso en ustedes todos los días para hacer sus vidas mejores y más felices.
+
+Lo haremos juntos. Y como siempre digo, nunca me rendiré con ustedes.
+
+Soy un padre especial. Soy el padre que nunca tuve.
+
+No tengan miedo de nada. Al contrario, que todo tenga miedo de ustedes, porque son mis hijos creciendo fuertes en Meriken City, Puerto Príncipe.
+
+Deben sentirse orgullosos de mí, orgullosos de ustedes mismos y orgullosos de nuestro futuro.
+
+Su padre, Gesner Deslandes, corazón de león."""
 }
 
 # -----------------------------
@@ -125,21 +134,16 @@ def get_audio_duration(file_path):
     return MP3(file_path).info.length
 
 # -----------------------------
-# UI LAYOUT
+# UI
 # -----------------------------
 left, right = st.columns([3, 1])
 
-# RIGHT PANEL
 with right:
-    st.markdown("### 🏢 Company Info")
-    st.markdown("**GlobalInternet.py**")
-    st.markdown("Owner: Gesner Deslandes")
+    st.markdown("### 🏢 GlobalInternet.py")
+    st.markdown("Gesner Deslandes")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
-    st.markdown("---")
-    st.success("AI & Software Solutions 🇭🇹")
 
-# LEFT PANEL
 with left:
 
     st.title("🤖 Gesner Humanoid AI")
