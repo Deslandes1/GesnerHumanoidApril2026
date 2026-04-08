@@ -20,50 +20,76 @@ voices = {
 }
 
 # -----------------------------
-# SPEECH TEXT (SHORTENED FORMAT SAFE FOR STREAMLIT)
+# WEBSITE PROMO SPEECH
 # -----------------------------
-english_text = (
-"GlobalInternet.py – Build with Python. Deliver with Speed. "
-"We build complete production-ready software delivered within 24 hours. "
-"After your order, we send you an email with a zip file containing app.py, requirements, and a guide. "
-"Download, extract, install requirements, and run using Streamlit or Python. "
-"You can upload to GitHub and use Streamlit Cloud to access it anywhere. "
-"You can store passwords securely using Streamlit secrets. "
-"Contact us now if you need a website or custom software. "
-"We build based on your needs and integrate your company logo professionally. "
-"GlobalInternet.py – Your Python partner from Haiti to the world."
-)
-
-french_text = (
-"GlobalInternet.py – Construisez avec Python. Livrez avec rapidité. "
-"Nous créons des logiciels complets livrés en moins de 24 heures. "
-"Après votre commande, nous envoyons un email avec un fichier zip contenant app.py, les dépendances et un guide. "
-"Téléchargez, extrayez, installez et exécutez avec Streamlit ou Python. "
-"Vous pouvez utiliser GitHub et Streamlit Cloud pour l'accès en ligne. "
-"Utilisez les secrets Streamlit pour sécuriser vos mots de passe. "
-"Contactez-nous pour un site web ou logiciel personnalisé. "
-"Nous intégrons aussi votre logo professionnellement."
-)
-
-spanish_text = (
-"GlobalInternet.py – Construye con Python. Entrega con rapidez. "
-"Creamos software completo entregado en 24 horas. "
-"Recibirás un email con un archivo zip que contiene app.py, dependencias y guía. "
-"Descarga, extrae, instala y ejecuta con Streamlit o Python. "
-"Puedes usar GitHub y Streamlit Cloud para acceso en línea. "
-"Guarda contraseñas con seguridad usando Streamlit secrets. "
-"Contáctanos para crear tu sitio web o software personalizado. "
-"Integramos tu logo profesionalmente."
-)
-
 texts = {
-    "English": english_text,
-    "French": french_text,
-    "Spanish": spanish_text
+
+    "English": """Discover GlobalInternet.py – Your Python Software Partner.
+
+We just launched our official company website, and it is now fully multilingual in Haitian Creole, French, English, and Spanish.
+
+Here is what you will find on the site.
+
+About us – founded by Gesner Deslandes, building Python software on demand.
+
+Our services – artificial intelligence, election systems, dashboards, web applications, and 24 hour delivery.
+
+Projects for sale – complete software packages including Haiti Voting System, Business Dashboard, AI Chatbot, School Management System, Point of Sale, and Web Scraper.
+
+Support us – you can donate easily using Moncash with Prisme transfer, up to one hundred thousand Haitian gourdes.
+
+Contact – phone, WhatsApp, and email. We deliver full software code by email.
+
+Visit now:
+globalinternetsitepy dash abh7v6tnmskxxnuplrdcgk dot streamlit dot app.
+
+Proudly Haitian, serving the world with Python and artificial intelligence.""",
+
+    "French": """Découvrez GlobalInternet.py – votre partenaire logiciel Python.
+
+Nous venons de lancer notre site officiel, désormais disponible en créole haïtien, français, anglais et espagnol.
+
+Voici ce que vous trouverez sur le site.
+
+À propos – fondé par Gesner Deslandes, créant des logiciels Python à la demande.
+
+Nos services – intelligence artificielle, systèmes électoraux, tableaux de bord, applications web et livraison en 24 heures.
+
+Projets à vendre – solutions complètes incluant système de vote haïtien, tableau de bord, chatbot IA, gestion scolaire, point de vente et extraction de données web.
+
+Soutenez-nous – vous pouvez faire un don facilement via Moncash avec transfert Prisme jusqu’à cent mille gourdes.
+
+Contact – téléphone, WhatsApp et email. Nous livrons le code complet par email.
+
+Visitez maintenant:
+globalinternetsitepy tiret abh7v6tnmskxxnuplrdcgk point streamlit point app.
+
+Fièrement haïtien, au service du monde avec Python et l’intelligence artificielle.""",
+
+    "Spanish": """Descubre GlobalInternet.py – tu socio en software Python.
+
+Acabamos de lanzar nuestro sitio web oficial, ahora disponible en criollo haitiano, francés, inglés y español.
+
+Esto es lo que encontrarás en el sitio.
+
+Sobre nosotros – fundado por Gesner Deslandes, desarrollando software en Python a pedido.
+
+Nuestros servicios – inteligencia artificial, sistemas electorales, paneles, aplicaciones web y entrega en 24 horas.
+
+Proyectos en venta – paquetes completos incluyendo sistema de votación de Haití, panel empresarial, chatbot de IA, gestión escolar, punto de venta y web scraper.
+
+Apóyanos – puedes donar fácilmente usando Moncash con transferencia Prisme hasta cien mil gourdes haitianos.
+
+Contacto – teléfono, WhatsApp y correo electrónico. Entregamos el código completo por email.
+
+Visita ahora:
+globalinternetsitepy guion abh7v6tnmskxxnuplrdcgk punto streamlit punto app.
+
+Orgullosamente haitiano, sirviendo al mundo con Python e inteligencia artificial."""
 }
 
 # -----------------------------
-# FACE
+# HUMANOID FACE
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
@@ -99,29 +125,22 @@ def get_audio_duration(file_path):
     return MP3(file_path).info.length
 
 # -----------------------------
-# LAYOUT FIX (CRITICAL)
+# UI LAYOUT
 # -----------------------------
-col1, col2 = st.columns([2.8, 1.2], gap="large")
+left, right = st.columns([3, 1])
 
-# -----------------------------
-# RIGHT PANEL (LOCKED)
-# -----------------------------
-with col2:
+# RIGHT PANEL
+with right:
     st.markdown("### 🏢 Company Info")
     st.markdown("**GlobalInternet.py**")
     st.markdown("Owner: Gesner Deslandes")
-
-    st.markdown("---")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
-
     st.markdown("---")
-    st.success("Always available for projects")
+    st.success("AI & Software Solutions 🇭🇹")
 
-# -----------------------------
 # LEFT PANEL
-# -----------------------------
-with col1:
+with left:
 
     st.title("🤖 Gesner Humanoid AI")
 
