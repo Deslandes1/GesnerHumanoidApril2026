@@ -23,75 +23,41 @@ voices = {
 # MOTIVATION SPEECH
 # -----------------------------
 texts = {
-    "English": """Outstanding Determination.
+    "English": """Outstanding Determination...
+You can make mistakes while trying to do what is right...
+But if you understand yourself, you can start over...
+Rebuild the best version of yourself...
+Do not let disappointment stop you...
+Use it as fuel...
+Be unstoppable. Be yourself. Control your mind...
+Your inner world is more powerful than your outside world...
+Take time for yourself. Love yourself. Forgive yourself...
+Move forward...
+You came alone, you leave alone, with your greatness.""",
 
-You can make mistakes while trying to do what is right. Not everybody will understand you.
+    "French": """Détermination exceptionnelle...
+Vous pouvez faire des erreurs...
+Mais vous pouvez recommencer...
+Reconstruire votre meilleure version...
+Utilisez la déception comme carburant...
+Soyez fort, contrôlez votre esprit...
+Votre monde intérieur est puissant...
+Aimez-vous, pardonnez-vous...
+Avancez toujours...""",
 
-But if you understand yourself, you can start over. You can rebuild and reinstall the best version of yourself.
-
-Not to please people, but to become what you were truly meant to be.
-
-Do not ever let disappointment discourage you or bring you down. Instead, use it as fuel to move forward.
-
-Be unstoppable. Be yourself. Use your mind, and control your mind.
-
-Your inner world is more powerful than your outside world.
-
-People want results. They do not need to know your daily struggles.
-
-Take time for yourself. Love yourself. Forgive yourself.
-
-Move forward with yourself.
-
-Remember: you came into this world alone, and you will leave it alone, with your flaws and your greatness.""",
-
-    "French": """Détermination exceptionnelle.
-
-Vous pouvez faire des erreurs en essayant de faire ce qui est juste. Tout le monde ne vous comprendra pas.
-
-Mais si vous vous comprenez, vous pouvez recommencer et reconstruire la meilleure version de vous-même.
-
-Pas pour plaire aux autres, mais pour devenir ce que vous devez être.
-
-N’ayez pas peur de la déception. Utilisez-la comme carburant pour avancer.
-
-Soyez vous-même. Soyez fort. Contrôlez votre esprit.
-
-Votre monde intérieur est plus puissant que le monde extérieur.
-
-Les gens veulent des résultats, pas vos luttes.
-
-Prenez du temps pour vous. Aimez-vous. Pardonnez-vous.
-
-Avancez.
-
-Rappelez-vous : vous êtes venu seul et vous partirez seul, avec vos défauts et votre grandeur.""",
-
-    "Spanish": """Determinación extraordinaria.
-
-Puedes cometer errores intentando hacer lo correcto. No todos te entenderán.
-
-Pero si te entiendes, puedes empezar de nuevo y reconstruir la mejor versión de ti.
-
-No para agradar a otros, sino para convertirte en quien debes ser.
-
-No dejes que la decepción te detenga. Úsala como combustible.
-
-Sé fuerte. Sé tú mismo. Controla tu mente.
-
-Tu mundo interior es más poderoso que el exterior.
-
-La gente quiere resultados, no tus luchas.
-
-Tómate tiempo. Ámate. Perdónate.
-
-Sigue adelante.
-
-Recuerda: viniste solo y te irás solo, con tus defectos y tu grandeza."""
+    "Spanish": """Determinación extraordinaria...
+Puedes cometer errores...
+Pero puedes empezar de nuevo...
+Reconstruir tu mejor versión...
+Usa la decepción como combustible...
+Sé fuerte, controla tu mente...
+Tu mundo interior es poderoso...
+Ámate, perdónate...
+Sigue adelante..."""
 }
 
 # -----------------------------
-# HUMANOID FACE
+# FACE
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
@@ -131,22 +97,12 @@ def get_audio_duration(file_path):
 # -----------------------------
 left, right = st.columns([3, 1])
 
-# 🔥 RIGHT PANEL (ENCOURAGEMENT SYMBOL)
+# RIGHT PANEL (SYMBOL)
 with right:
     st.markdown("## 🦁🔥⚡")
-
-    st.markdown("### **OUTSTANDING**")
-    st.markdown("### **DETERMINATION**")
-
-    st.markdown("---")
-
-    st.success("Be Strong")
-    st.info("Control Your Mind")
-    st.warning("Never Give Up")
-
-    st.markdown("---")
-
-    st.markdown("🇭🇹 Built from Haiti to the World")
+    st.markdown("### OUTSTANDING")
+    st.markdown("### DETERMINATION")
+    st.success("Never Give Up")
 
 # LEFT PANEL
 with left:
@@ -165,18 +121,32 @@ with left:
 
     if st.button("▶️ Speak"):
 
+        # Generate voice
         asyncio.run(generate_voice(texts[language], voices[language]))
 
         audio_file = "voice.mp3"
+
+        # Get REAL duration
+        duration = get_audio_duration(audio_file)
+
+        # Play audio
         st.audio(open(audio_file, "rb").read(), autoplay=True)
 
-        duration = get_audio_duration(audio_file)
-        start = time.time()
+        # 🔥 PERFECT LIP SYNC LOOP
+        start_time = time.time()
+        mouth_open = False
 
-        while time.time() - start < duration:
-            frame.image(create_face(True))
-            time.sleep(0.15)
-            frame.image(create_face(False))
-            time.sleep(0.15)
+        while True:
+            elapsed = time.time() - start_time
 
+            if elapsed >= duration:
+                break
+
+            mouth_open = not mouth_open
+            frame.image(create_face(mouth_open))
+
+            # Faster animation = more realistic
+            time.sleep(0.12)
+
+        # End state
         frame.image(create_face(False))
