@@ -44,7 +44,7 @@ Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# FACE DESIGN (BLACK LIPS - STABLE)
+# FACE DESIGN (AGGRESSIVE BLACK LIPS)
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
@@ -58,15 +58,15 @@ def create_face(mouth_open=False):
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # --- THE MOUTH (BLACK COLOR) ---
+    # --- THE MOUTH (AGGRESSIVE BLACK MOTION) ---
     center_y = 260
     
     if mouth_open:
-        # Open state: A clear black oval
-        draw.ellipse((150, center_y - 25, 250, center_y + 25), outline="black", width=8)
+        # OPEN: Big black oval to show aggressive talking
+        draw.ellipse((150, center_y - 30, 250, center_y + 30), outline="black", fill="black", width=2)
     else:
-        # Closed state: A flat black line
-        draw.line((160, center_y, 240, center_y), fill="black", width=6)
+        # CLOSED: Thick black line
+        draw.line((160, center_y, 240, center_y), fill="black", width=10)
 
     # Robot details
     draw.line((200, 80, 200, 40), fill="black", width=4)
@@ -84,7 +84,7 @@ async def generate_voice(text, voice, path):
     await communicate.save(path)
 
 # -----------------------------
-# UI LAYOUT
+# LAYOUT
 # -----------------------------
 left, right = st.columns([3, 1])
 
@@ -100,7 +100,7 @@ with right:
 with left:
     st.title("🤖 Gesner Humanoid AI")
     
-    # HAITIAN FLAG RESTORED
+    # THE HAITIAN FLAG
     st.markdown(
         "<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>",
         unsafe_allow_html=True
@@ -115,32 +115,31 @@ with left:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Preparing speech..."):
+        with st.spinner("Generating audio..."):
             asyncio.run(generate_voice(texts[language], voices[language], audio_path))
 
-        # Start Audio via HTML
+        # Start Audio
         with open(audio_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
             st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
-        # Get Duration
         duration = MP3(audio_path).info.length
         start_time = time.time()
 
-        # --- ANIMATION LOOP ---
+        # --- THE AGGRESSIVE ANIMATION LOOP ---
         counter = 0
         while (time.time() - start_time) < duration:
-            # Alternates the mouth state every few frames for a flickering "talk" effect
+            # Flips state rapidly: Open for 2 ticks, Closed for 2 ticks
             is_open = (counter % 4 < 2) 
             
             face_frame.image(create_face(mouth_open=is_open))
             
             counter += 1
-            time.sleep(0.06)
+            # 0.05 is the "Sweet Spot" for aggressive visibility in Streamlit
+            time.sleep(0.05)
 
-        # Ensure mouth is closed at the end
+        # Ensure mouth is closed
         face_frame.image(create_face(mouth_open=False))
         
-        # Cleanup
         if os.path.exists(audio_path):
             os.remove(audio_path)
