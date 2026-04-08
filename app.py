@@ -46,9 +46,12 @@ Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# FACE DESIGN (FAST TALKING MOUTH)
+# FACE DESIGN (SMOOTH TALKING MOUTH)
 # -----------------------------
-def create_face(mouth_level=0):
+def create_face(mouth_open=0):
+    """
+    mouth_open: 0.0 (closed) to 1.0 (fully open)
+    """
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
@@ -62,13 +65,10 @@ def create_face(mouth_level=0):
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # 🔥 FAST REALISTIC TALKING MOUTH
-    mouth_level = max(0.0, min(1.0, mouth_level))
-
-    mouth_open = 10 + abs(math.sin(mouth_level * 25 * math.pi)) * 40
-
+    # 🔥 REALISTIC MOUTH – opens linearly with mouth_open
+    mouth_height = 10 + mouth_open * 40  # from 10px to 50px
     draw.ellipse(
-        (170, 240, 230, 240 + mouth_open),
+        (170, 240, 230, 240 + mouth_height),
         outline="black",
         width=4
     )
@@ -154,28 +154,33 @@ with left:
         duration = MP3(audio_file).info.length
 
         # -----------------------------
-        # 🔥 FAST TALKING LOOP (REALISTIC SPEECH SPEED)
+        # 🔥 SMOOTH TALKING LOOP – mouth moves instantly with audio
         # -----------------------------
         start = time.time()
-
+        # We'll simulate a realistic speech envelope using a mix of frequencies
+        # This makes the mouth open and close naturally while speaking.
         while True:
             elapsed = time.time() - start
-
             if elapsed >= duration:
                 break
 
-            # 🔥 high-speed speech simulation
-            t = elapsed
+            # Speech amplitude simulation – varies between 0.2 and 1.0
+            # to mimic natural mouth movement during speech.
+            # A faster frequency (around 10 Hz) makes it look like talking.
+            t = elapsed * 12  # speed of mouth movement (tune as desired)
+            # Use a combination of sine waves to avoid unnatural robotic opening
+            mouth_level = (math.sin(t) * 0.3 +
+                           math.sin(t * 2.3) * 0.2 +
+                           math.sin(t * 5.7) * 0.1 +
+                           0.4)  # base open slightly
+            # Clamp between 0 and 1
+            mouth_level = max(0.0, min(1.0, mouth_level))
 
-            mouth_level = (
-                math.sin(t * 30) * 0.5 +
-                math.sin(t * 55) * 0.3 +
-                math.sin(t * 80) * 0.2 +
-                0.5
-            )
-
+            # Update the face with current mouth opening
             frame.image(create_face(mouth_level))
 
-            time.sleep(0.02)  # very smooth animation
+            # Small delay for smooth animation (30 fps)
+            time.sleep(0.033)
 
+        # Ensure mouth is closed after audio ends
         frame.image(create_face(0))
