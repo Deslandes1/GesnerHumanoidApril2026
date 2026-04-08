@@ -25,7 +25,7 @@ voices = {
 }
 
 # -----------------------------
-# TEXTS (Restored with your full details)
+# TEXTS
 # -----------------------------
 texts = {
     "English": """Discover GlobalInternet.py – Your Python Software Partner.
@@ -48,9 +48,9 @@ Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# FACE DESIGN (Talking Lips Logic)
+# FACE DESIGN (Talking Lips)
 # -----------------------------
-def create_face(mouth_open=0):
+def create_face(mouth_open=0.0):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
@@ -62,10 +62,15 @@ def create_face(mouth_open=0):
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # --- ANIMATED MOUTH ---
-    # The mouth expands vertically based on the mouth_open value
-    mouth_height = 10 + (mouth_open * 50)
-    draw.ellipse((170, 240, 230, 240 + mouth_height), outline="black", width=4)
+    # --- UPDATED MOUTH LOGIC ---
+    # We ensure the mouth has a clear "open" and "closed" state
+    mouth_base_y = 245
+    # Max height for the mouth opening
+    max_open = 60 
+    current_height = 5 + (mouth_open * max_open)
+    
+    # Drawing the "talking lips"
+    draw.ellipse((165, mouth_base_y, 235, mouth_base_y + current_height), outline="black", width=5)
 
     # Antenna & Ears
     draw.line((200, 80, 200, 40), fill="black", width=4)
@@ -91,10 +96,10 @@ left, right = st.columns([3, 1])
 
 with right:
     st.markdown("## 🌐 GlobalInternet.py")
-    st.markdown("Owner: Gesner Deslandes")
+    st.markdown("**Owner:** Gesner Deslandes")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
-    st.markdown("🔗 [Click here to visit site](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
+    st.markdown("🔗 [Main Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.markdown("---")
     st.success("AI & Software Solutions 🇭🇹")
 
@@ -106,14 +111,16 @@ with left:
     )
 
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
+    
+    # This placeholder must exist before the loop
     frame = st.empty()
-    frame.image(create_face(0))
+    frame.image(create_face(0.0))
 
     if st.button("▶️ Speak"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Generating voice..."):
+        with st.spinner("Preparing response..."):
             thread = threading.Thread(
                 target=generate_voice_thread,
                 args=(texts[language], voices[language], audio_path)
@@ -121,36 +128,37 @@ with left:
             thread.start()
             thread.join()
 
-        # Autoplay audio
+        # Start Audio
         with open(audio_path, "rb") as f:
             audio_bytes = f.read()
         audio_base64 = base64.b64encode(audio_bytes).decode()
+        
         st.markdown(
-            f"""
-            <audio autoplay>
-            <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-            </audio>
-            """,
+            f'<audio autoplay><source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3"></audio>',
             unsafe_allow_html=True
         )
 
-        # Get duration for the animation loop
+        # Get Duration
         duration = MP3(audio_path).info.length
 
-        # --- RE-BUILT ANIMATION LOOP ---
-        start = time.time()
-        while time.time() - start < duration:
-            elapsed = time.time() - start
-            # Fast sine wave for "talking" movement
-            # We use abs() so the mouth value stays between 0 and 1
-            mouth_val = abs(math.sin(elapsed * 12)) 
+        # --- FORCED ANIMATION LOOP ---
+        start_time = time.time()
+        while time.time() - start_time < duration:
+            elapsed = time.time() - start_time
             
+            # Using a varied sine wave to make the mouth look like it's saying words
+            # (Oscillates between 0.1 and 1.0)
+            mouth_val = abs(math.sin(elapsed * 18)) * 0.8 + 0.1
+            
+            # Update the specific image placeholder
             frame.image(create_face(mouth_val))
-            time.sleep(0.05) 
+            
+            # Small sleep to allow Streamlit to render the new frame
+            time.sleep(0.04)
 
-        # Close mouth at the end
-        frame.image(create_face(0))
+        # Reset to neutral mouth after talking
+        frame.image(create_face(0.0))
 
         # Cleanup
         if os.path.exists(audio_path):
-            os.unlink(audio_path)
+            os.remove(audio_path)
