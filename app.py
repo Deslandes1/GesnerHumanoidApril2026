@@ -6,6 +6,7 @@ import time
 from mutagen.mp3 import MP3
 import base64
 import math
+from gtts import gTTS
 
 # -----------------------------
 # PAGE CONFIG
@@ -61,8 +62,9 @@ def create_face(mouth_level=0):
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # 🔥 REAL TALKING MOUTH (smooth dynamic opening)
-    mouth_open = 20 + (math.sin(mouth_level * math.pi) * 25)
+    # 🔥 SMOOTHER TALKING MOUTH
+    mouth_level = max(0.0, min(1.0, mouth_level))
+    mouth_open = 10 + (math.sin(mouth_level * math.pi * 2) * 15)
 
     draw.ellipse(
         (170, 240, 230, 240 + mouth_open),
@@ -130,7 +132,6 @@ with left:
 
         audio_file = "voice.mp3"
 
-        # 🔥 AUTO PLAY AUDIO
         with open(audio_file, "rb") as f:
             audio_bytes = f.read()
 
@@ -151,19 +152,32 @@ with left:
         duration = MP3(audio_file).info.length
 
         # -----------------------------
-        # 🔥 REAL TALKING MOUTH LOOP
+        # 🔥 IMPROVED TALKING LOOP (SMOOTHER + STABLE TIMING)
         # -----------------------------
         start = time.time()
 
-        while time.time() - start < duration:
+        while True:
+            elapsed = time.time() - start
 
-            # speech-like wave movement (not random)
-            t = (time.time() - start)
+            if elapsed >= duration:
+                break
 
-            mouth_level = (math.sin(t * 12) + math.sin(t * 7)) * 0.5 + 0.5
+            # smoother speech wave simulation
+            t = elapsed
+
+            mouth_level = (
+                math.sin(t * 10) * 0.5 +
+                math.sin(t * 6) * 0.3 +
+                0.5
+            )
 
             frame.image(create_face(mouth_level))
 
-            time.sleep(0.03)
+            time.sleep(0.04)
 
         frame.image(create_face(0))
+
+# requirements:
+# streamlit
+# pillow
+# gTTS
