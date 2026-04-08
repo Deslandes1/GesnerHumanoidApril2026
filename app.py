@@ -5,7 +5,7 @@ import edge_tts
 import time
 from mutagen.mp3 import MP3
 import base64
-import random
+import math
 
 # -----------------------------
 # PAGE CONFIG
@@ -13,7 +13,7 @@ import random
 st.set_page_config(layout="wide")
 
 # -----------------------------
-# VOICE SETTINGS
+# VOICES
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
@@ -22,75 +22,73 @@ voices = {
 }
 
 # -----------------------------
-# YOUR SCRIPT
+# TEXTS
 # -----------------------------
 texts = {
     "English": """Discover GlobalInternet.py – Your Python Software Partner.
-Visit our official website:
 https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
 We build software and deliver it in 24 hours.
-Contact us now.
 Phone: (509)-47385663
-Email: deslandes78@gmail.com
-GlobalInternet.py – Your Python partner from Haiti to the world.""",
+Email: deslandes78@gmail.com""",
 
     "French": """Découvrez GlobalInternet.py – votre partenaire logiciel Python.
-Visitez notre site officiel:
 https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
 Nous développons des logiciels livrés en 24 heures.
-Contactez-nous maintenant.
 Téléphone: (509)-47385663
 Email: deslandes78@gmail.com""",
 
     "Spanish": """Descubre GlobalInternet.py – tu socio de software en Python.
-Visita nuestro sitio web:
 https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
 Creamos software y lo entregamos en 24 horas.
-Contáctanos ahora.
 Teléfono: (509)-47385663
 Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# HUMANOID FACE (REALISTIC MOUTH)
+# FACE DESIGN
 # -----------------------------
 def create_face(mouth_level=0):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # Head
+    # head
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
-    draw.ellipse((90, 120, 310, 320), outline="black", width=4)
 
-    # Eyes
+    # inner face
+    draw.ellipse((90, 120, 310, 320), outline="black", width=3)
+
+    # eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # 🔥 REALISTIC MOUTH (VARIABLE OPENING)
-    top = 240
-    bottom = 240 + int(20 + mouth_level * 40)
+    # 🔥 REAL TALKING MOUTH (smooth dynamic opening)
+    mouth_open = 20 + (math.sin(mouth_level * math.pi) * 25)
 
-    draw.ellipse((170, top, 230, bottom), outline="black", width=4)
+    draw.ellipse(
+        (170, 240, 230, 240 + mouth_open),
+        outline="black",
+        width=4
+    )
 
-    # Antenna
+    # antenna
     draw.line((200, 80, 200, 40), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
 
-    # Side panels
+    # side panels
     draw.rectangle((40, 180, 70, 260), outline="black", width=3)
     draw.rectangle((330, 180, 360, 260), outline="black", width=3)
 
     return img
 
 # -----------------------------
-# GENERATE VOICE
+# VOICE GENERATION
 # -----------------------------
 async def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
     await communicate.save("voice.mp3")
 
 # -----------------------------
-# UI LAYOUT
+# LAYOUT
 # -----------------------------
 left, right = st.columns([3, 1])
 
@@ -123,15 +121,19 @@ with left:
     frame = st.empty()
     frame.image(create_face(0))
 
+    # -----------------------------
+    # SPEAK BUTTON
+    # -----------------------------
     if st.button("▶️ Speak"):
 
         asyncio.run(generate_voice(texts[language], voices[language]))
 
         audio_file = "voice.mp3"
 
-        # 🔥 AUTO PLAY
+        # 🔥 AUTO PLAY AUDIO
         with open(audio_file, "rb") as f:
             audio_bytes = f.read()
+
         audio_base64 = base64.b64encode(audio_bytes).decode()
 
         st.markdown(
@@ -143,19 +145,25 @@ with left:
             unsafe_allow_html=True
         )
 
-        # 🔥 REAL AUDIO LENGTH
+        # -----------------------------
+        # AUDIO LENGTH
+        # -----------------------------
         duration = MP3(audio_file).info.length
 
-        # 🔥 NATURAL TALKING EFFECT
+        # -----------------------------
+        # 🔥 REAL TALKING MOUTH LOOP
+        # -----------------------------
         start = time.time()
 
         while time.time() - start < duration:
-            # random talking intensity (like real speech)
-            mouth_level = random.uniform(0.1, 1.0)
+
+            # speech-like wave movement (not random)
+            t = (time.time() - start)
+
+            mouth_level = (math.sin(t * 12) + math.sin(t * 7)) * 0.5 + 0.5
 
             frame.image(create_face(mouth_level))
 
-            # variable speed (speech rhythm)
-            time.sleep(random.uniform(0.05, 0.12))
+            time.sleep(0.03)
 
         frame.image(create_face(0))
