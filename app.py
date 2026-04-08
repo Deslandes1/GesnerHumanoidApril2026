@@ -20,81 +20,75 @@ voices = {
 }
 
 # -----------------------------
-# PERSONAL MESSAGE (ALL LANGUAGES)
+# MOTIVATION SPEECH
 # -----------------------------
 texts = {
 
-    "English": """Junior, my firstborn, now you must replace my presence to protect and guide your little brothers and your only sister.
+    "English": """Outstanding Determination.
 
-We must teach ourselves how to use artificial intelligence in the right way.
+You can make mistakes while trying to do what is right. Not everybody will understand you.
 
-As I told you, Junior, I will do my best to send you to school next year. With God's help, you will learn English and computing so you can prepare to work with me in our company, GlobalInternet.py.
+But if you understand yourself, you can start over. You can rebuild and reinstall the best version of yourself.
 
-Together, we will build software for the world, not only in Haiti.
+Not to please people, but to become what you were truly meant to be.
 
-I, your father, Gesner Deslandes, am a living warrior who is about to conquer economic independence.
+Do not ever let disappointment discourage you or bring you down. Instead, use it as fuel to move forward.
 
-My symbol is the lion, strong and fearless. I am a real fighter, and I will never lose any fight.
+Be unstoppable. Be yourself. Use your mind, and most importantly, control your mind.
 
-Roosevelt, Babas, and Zendaya, I think about you every single day. I want to make your lives better and happy.
+Your inner world is more powerful than your outside world.
 
-We will do this together. And as I always say, I will never give up on you.
+People want to see results. They do not need to know your daily struggles.
 
-I am a special dad. I am the father I never had.
+So take time for yourself. Love yourself. Forgive yourself.
 
-Do not be afraid of anything. Instead, let everything be afraid of you, because you are my children, growing strong in Meriken City, Port-au-Prince.
+And move forward with yourself.
 
-You must start to be proud of me, proud of yourselves, and proud of our future.
+Because remember this: you came into this world alone, and you will leave it alone, with all your flaws and all your greatness.""",
 
-Your dad, Gesner Deslandes, the lion heart.""",
+    "French": """Détermination exceptionnelle.
 
-    "French": """Junior, mon premier fils, tu dois maintenant remplacer ma présence pour protéger et guider tes petits frères et ta seule sœur.
+Vous pouvez faire des erreurs en essayant de faire ce qui est juste. Tout le monde ne vous comprendra pas.
 
-Nous devons apprendre à utiliser l’intelligence artificielle de la bonne manière.
+Mais si vous vous comprenez vous-même, vous pouvez recommencer. Vous pouvez reconstruire la meilleure version de vous-même.
 
-Comme je te l’ai dit, Junior, je ferai de mon mieux pour t’envoyer à l’école l’année prochaine. Avec l’aide de Dieu, tu apprendras l’anglais et l’informatique pour te préparer à travailler avec moi dans notre entreprise GlobalInternet.py.
+Non pas pour plaire aux autres, mais pour devenir ce que vous êtes réellement destiné à être.
 
-Ensemble, nous construirons des logiciels pour le monde, pas seulement pour Haïti.
+Ne laissez jamais la déception vous décourager ou vous abattre. Utilisez-la comme un carburant pour avancer.
 
-Moi, ton père Gesner Deslandes, je suis un combattant vivant prêt à atteindre l’indépendance économique.
+Soyez inarrêtable. Soyez vous-même. Utilisez votre esprit et surtout contrôlez-le.
 
-Mon symbole est le lion, fort et courageux. Je suis un vrai combattant et je ne perdrai jamais aucun combat.
+Votre monde intérieur est plus puissant que votre monde extérieur.
 
-Roosevelt, Babas et Zendaya, je pense à vous chaque jour pour améliorer votre vie et vous rendre heureux.
+Les gens veulent voir les résultats. Ils n’ont pas besoin de connaître vos luttes quotidiennes.
 
-Nous allons le faire ensemble. Et comme je le dis toujours, je n’abandonnerai jamais.
+Prenez du temps pour vous. Aimez-vous. Pardonnez-vous.
 
-Je suis un père spécial. Je suis le père que je n’ai jamais eu.
+Et avancez avec vous-même.
 
-N’ayez peur de rien. Au contraire, que tout ait peur de vous, car vous êtes mes enfants, grandissant à Meriken City, Port-au-Prince.
+Rappelez-vous ceci : vous êtes venu seul dans ce monde, et vous en repartirez seul, avec vos défauts et votre grandeur.""",
 
-Soyez fiers de moi, fiers de vous-mêmes et fiers de notre avenir.
+    "Spanish": """Determinación extraordinaria.
 
-Votre père, Gesner Deslandes, au cœur de lion.""",
+Puedes cometer errores al intentar hacer lo correcto. No todos te van a entender.
 
-    "Spanish": """Junior, mi hijo mayor, ahora debes reemplazar mi presencia para proteger y guiar a tus hermanos menores y a tu única hermana.
+Pero si tú te entiendes a ti mismo, puedes comenzar de nuevo. Puedes reconstruir la mejor versión de ti.
 
-Debemos aprender a usar la inteligencia artificial de la manera correcta.
+No para complacer a otros, sino para convertirte en lo que realmente estás destinado a ser.
 
-Como te dije, Junior, haré todo lo posible para enviarte a la escuela el próximo año. Con la ayuda de Dios, aprenderás inglés e informática para prepararte y trabajar conmigo en nuestra empresa GlobalInternet.py.
+No dejes que la decepción te desanime ni te derribe. Úsala como combustible para seguir adelante.
 
-Juntos construiremos software para el mundo, no solo para Haití.
+Sé imparable. Sé tú mismo. Usa tu mente y, sobre todo, contrólala.
 
-Yo, tu padre Gesner Deslandes, soy un luchador que está a punto de conquistar la independencia económica.
+Tu mundo interior es más poderoso que tu mundo exterior.
 
-Mi símbolo es el león, fuerte y valiente. Soy un verdadero luchador y nunca perderé ninguna batalla.
+La gente quiere ver resultados. No necesitan conocer tus luchas diarias.
 
-Roosevelt, Babas y Zendaya, pienso en ustedes todos los días para hacer sus vidas mejores y más felices.
+Tómate tiempo para ti. Ámate. Perdónate.
 
-Lo haremos juntos. Y como siempre digo, nunca me rendiré con ustedes.
+Y sigue avanzando contigo mismo.
 
-Soy un padre especial. Soy el padre que nunca tuve.
-
-No tengan miedo de nada. Al contrario, que todo tenga miedo de ustedes, porque son mis hijos creciendo fuertes en Meriken City, Puerto Príncipe.
-
-Deben sentirse orgullosos de mí, orgullosos de ustedes mismos y orgullosos de nuestro futuro.
-
-Su padre, Gesner Deslandes, corazón de león."""
+Recuerda esto: viniste solo a este mundo y te irás solo, con tus defectos y tu grandeza."""
 }
 
 # -----------------------------
