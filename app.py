@@ -46,7 +46,7 @@ Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# FACE DESIGN
+# FACE DESIGN (FAST TALKING MOUTH)
 # -----------------------------
 def create_face(mouth_level=0):
     img = Image.new("RGB", (400, 400), "white")
@@ -62,9 +62,10 @@ def create_face(mouth_level=0):
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # 🔥 SMOOTHER TALKING MOUTH
+    # 🔥 FAST REALISTIC TALKING MOUTH
     mouth_level = max(0.0, min(1.0, mouth_level))
-    mouth_open = 10 + (math.sin(mouth_level * math.pi * 2) * 15)
+
+    mouth_open = 10 + abs(math.sin(mouth_level * 25 * math.pi)) * 40
 
     draw.ellipse(
         (170, 240, 230, 240 + mouth_open),
@@ -95,7 +96,7 @@ async def generate_voice(text, voice):
 left, right = st.columns([3, 1])
 
 # -----------------------------
-# RIGHT PANEL (UNCHANGED)
+# RIGHT PANEL
 # -----------------------------
 with right:
     st.markdown("## 🌐 GlobalInternet.py")
@@ -132,6 +133,7 @@ with left:
 
         audio_file = "voice.mp3"
 
+        # autoplay audio
         with open(audio_file, "rb") as f:
             audio_bytes = f.read()
 
@@ -152,7 +154,7 @@ with left:
         duration = MP3(audio_file).info.length
 
         # -----------------------------
-        # 🔥 IMPROVED TALKING LOOP (SMOOTHER + STABLE TIMING)
+        # 🔥 FAST TALKING LOOP (REALISTIC SPEECH SPEED)
         # -----------------------------
         start = time.time()
 
@@ -162,22 +164,18 @@ with left:
             if elapsed >= duration:
                 break
 
-            # smoother speech wave simulation
+            # 🔥 high-speed speech simulation
             t = elapsed
 
             mouth_level = (
-                math.sin(t * 10) * 0.5 +
-                math.sin(t * 6) * 0.3 +
+                math.sin(t * 30) * 0.5 +
+                math.sin(t * 55) * 0.3 +
+                math.sin(t * 80) * 0.2 +
                 0.5
             )
 
             frame.image(create_face(mouth_level))
 
-            time.sleep(0.04)
+            time.sleep(0.02)  # very smooth animation
 
         frame.image(create_face(0))
-
-# requirements:
-# streamlit
-# pillow
-# gTTS
