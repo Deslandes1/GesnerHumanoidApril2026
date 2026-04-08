@@ -44,14 +44,13 @@ Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# FACE DESIGN (LIPS FIXED & STABLE)
+# FACE DESIGN (MOUTH ANIMATION)
 # -----------------------------
 def create_face(mouth_open=0.0):
-    # Create white canvas
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # Face Shape (Robot Head)
+    # Face Outlines
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
     
@@ -59,35 +58,33 @@ def create_face(mouth_open=0.0):
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # --- MOUTH LOGIC (TALKING LIPS) ---
-    # Fixed top position so it doesn't "jump"
-    y0 = 260
-    # y1 increases as mouth_open increases (0.0 to 1.0)
-    # Adding max(2, ...) ensures y1 is always greater than y0
-    y1 = y0 + max(5, int(mouth_open * 60))
+    # --- THE MOUTH ---
+    # Top of the mouth is fixed at 255
+    y_top = 255
+    # The bottom moves based on mouth_open (val between 0 and 1)
+    # We ensure y_bottom is always at least 5 pixels below y_top
+    y_bottom = y_top + 5 + int(mouth_open * 55)
     
-    # Draw the mouth ellipse (the lips)
-    draw.ellipse((160, y0, 240, y1), outline="black", width=5)
+    # Draw the animated lips
+    draw.ellipse((165, y_top, 235, y_bottom), outline="black", width=5)
 
-    # Antenna
+    # Robot details
     draw.line((200, 80, 200, 40), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
-    
-    # Ears
     draw.rectangle((40, 180, 70, 260), outline="black", width=3)
     draw.rectangle((330, 180, 360, 260), outline="black", width=3)
 
     return img
 
 # -----------------------------
-# ASYNC VOICE GENERATION
+# VOICE ENGINE
 # -----------------------------
 async def generate_voice(text, voice, path):
     communicate = edge_tts.Communicate(text, voice)
     await communicate.save(path)
 
 # -----------------------------
-# UI LAYOUT
+# UI STRUCTURE
 # -----------------------------
 left, right = st.columns([3, 1])
 
@@ -102,53 +99,52 @@ with right:
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
-    # Flag removed as requested
     
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
     
-    # Initialize the image frame
-    frame = st.empty()
-    frame.image(create_face(0))
+    # The placeholder for the robot face
+    face_placeholder = st.empty()
+    face_placeholder.image(create_face(0.0))
 
-    if st.button("▶️ Start Talking"):
-        # Create temp audio file
+    if st.button("▶️ Start Speaking"):
+        # Create temporary audio storage
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Preparing response..."):
-            # Run the voice generator
+        with st.spinner("Gesner AI is thinking..."):
             asyncio.run(generate_voice(texts[language], voices[language], audio_path))
 
-        # Encode audio to base64 for autoplay
+        # Play audio immediately
         with open(audio_path, "rb") as f:
-            data = f.read()
-            b64 = base64.b64encode(data).decode()
+            audio_bytes = f.read()
+            b64_audio = base64.b64encode(audio_bytes).decode()
             st.markdown(
-                f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', 
+                f'<audio autoplay><source src="data:audio/mp3;base64,{b64_audio}" type="audio/mp3"></audio>', 
                 unsafe_allow_html=True
             )
 
-        # Get audio length using mutagen
-        audio = MP3(audio_path)
-        duration = audio.info.length
-        start_time = time.time()
-
-        # --- ANIMATION LOOP ---
-        while time.time() - start_time < duration:
-            elapsed = time.time() - start_time
-            # Create a rhythmic "up and down" motion for the lips
-            # val goes from 0 to 1 based on sine wave
-            val = abs(math.sin(elapsed * 18)) 
-            
-            # Update the robot face image
-            frame.image(create_face(val))
-            
-            # Control the frame rate (approx 20 FPS)
-            time.sleep(0.05)
-
-        # Ensure mouth is closed when done
-        frame.image(create_face(0))
+        # Calculate exact duration
+        audio_info = MP3(audio_path)
+        duration = audio_info.info.length
         
-        # Delete temp file
+        # --- SUSTAINED ANIMATION LOOP ---
+        start_time = time.time()
+        while (time.time() - start_time) < duration:
+            current_elapsed = time.time() - start_time
+            
+            # Using absolute sine for high-speed mouth chatter (up and down)
+            # Speed is set to 20 for a very responsive look
+            mouth_pos = abs(math.sin(current_elapsed * 20))
+            
+            # Re-render face with the new mouth position
+            face_placeholder.image(create_face(mouth_pos))
+            
+            # Frame rate control
+            time.sleep(0.04)
+
+        # Close the mouth completely once audio is done
+        face_placeholder.image(create_face(0.0))
+        
+        # Clean up the file system
         if os.path.exists(audio_path):
             os.remove(audio_path)
