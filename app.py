@@ -44,7 +44,7 @@ Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# FACE DESIGN (FORCEFUL MOTION)
+# FACE DESIGN (BLACK LIPS - STABLE)
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
@@ -58,15 +58,15 @@ def create_face(mouth_open=False):
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # --- THE MOUTH (SQUARE-WAVE MOTION) ---
+    # --- THE MOUTH (BLACK COLOR) ---
     center_y = 260
     
     if mouth_open:
-        # Open state: A big, visible red oval
-        draw.ellipse((150, center_y - 25, 250, center_y + 25), outline="red", width=8)
+        # Open state: A clear black oval
+        draw.ellipse((150, center_y - 25, 250, center_y + 25), outline="black", width=8)
     else:
-        # Closed state: A flat thin red line
-        draw.line((160, center_y, 240, center_y), fill="red", width=6)
+        # Closed state: A flat black line
+        draw.line((160, center_y, 240, center_y), fill="black", width=6)
 
     # Robot details
     draw.line((200, 80, 200, 40), fill="black", width=4)
@@ -84,7 +84,7 @@ async def generate_voice(text, voice, path):
     await communicate.save(path)
 
 # -----------------------------
-# LAYOUT
+# UI LAYOUT
 # -----------------------------
 left, right = st.columns([3, 1])
 
@@ -100,7 +100,7 @@ with right:
 with left:
     st.title("🤖 Gesner Humanoid AI")
     
-    # THE HAITIAN FLAG
+    # HAITIAN FLAG RESTORED
     st.markdown(
         "<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>",
         unsafe_allow_html=True
@@ -115,32 +115,32 @@ with left:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Generating audio..."):
+        with st.spinner("Preparing speech..."):
             asyncio.run(generate_voice(texts[language], voices[language], audio_path))
 
-        # Start Audio
+        # Start Audio via HTML
         with open(audio_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
             st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
+        # Get Duration
         duration = MP3(audio_path).info.length
         start_time = time.time()
 
-        # --- THE FORCED ANIMATION LOOP ---
+        # --- ANIMATION LOOP ---
         counter = 0
         while (time.time() - start_time) < duration:
-            # We alternate states based on a counter to ensure visibility
-            # Every 3 loops, we flip the mouth state
+            # Alternates the mouth state every few frames for a flickering "talk" effect
             is_open = (counter % 4 < 2) 
             
             face_frame.image(create_face(mouth_open=is_open))
             
             counter += 1
-            # Slightly longer sleep so the browser can actually RENDER the frame
             time.sleep(0.06)
 
-        # Final reset
+        # Ensure mouth is closed at the end
         face_frame.image(create_face(mouth_open=False))
         
+        # Cleanup
         if os.path.exists(audio_path):
             os.remove(audio_path)
