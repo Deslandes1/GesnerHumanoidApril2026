@@ -24,36 +24,33 @@ voices = {
 }
 
 texts = {
-    "English": """Discover GlobalInternet.py – Your Python Software Partner.
-https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
-We build software and deliver it in 24 hours.
-Phone: (509)-47385663
+    "English": """Discover GlobalInternet.py – Your Python Software Partner. 
+https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/ 
+We build software and deliver it in 24 hours. 
+Phone: (509)-47385663 
 Email: deslandes78@gmail.com""",
 
-    "French": """Découvrez GlobalInternet.py – votre partenaire logiciel Python.
-https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
-Nous développons des logiciels livrés en 24 heures.
-Téléphone: (509)-47385663
+    "French": """Découvrez GlobalInternet.py – votre partenaire logiciel Python. 
+https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/ 
+Nous développons des logiciels livrés en 24 heures. 
+Téléphone: (509)-47385663 
 Email: deslandes78@gmail.com""",
 
-    "Spanish": """Descubre GlobalInternet.py – tu socio de software en Python.
-https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
-Creamos software y lo entregamos en 24 horas.
-Teléfono: (509)-47385663
+    "Spanish": """Descubre GlobalInternet.py – tu socio de software en Python. 
+https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/ 
+Creamos software y lo entregamos en 24 horas. 
+Teléfono: (509)-47385663 
 Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# FACE DESIGN (REAL TALKING LIPS)
+# FACE DESIGN (HIGH-VISIBILITY MOUTH)
 # -----------------------------
 def create_face(mouth_val=0.0):
-    """
-    mouth_val: 0.0 (closed) to 1.0 (fully open)
-    """
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # Face Outlines
+    # Face Shape
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
     
@@ -61,18 +58,18 @@ def create_face(mouth_val=0.0):
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # --- THE TALKING LIPS ---
-    center_y = 265
-    # Mouth expands both UP and DOWN from the center line
-    half_height = 2 + (mouth_val * 25) 
+    # --- THE MOUTH (ANCHORED & DYNAMIC) ---
+    center_y = 260
+    # Make the opening very visible (up to 40 pixels)
+    opening = 2 + (mouth_val * 40)
     
-    y0 = center_y - half_height
-    y1 = center_y + half_height
+    y0 = center_y - (opening / 2)
+    y1 = center_y + (opening / 2)
     
-    # Draw the animated lips (Oval that grows/shrinks)
-    draw.ellipse((160, y0, 240, y1), outline="black", width=6)
+    # Red lips to make the motion even more obvious
+    draw.ellipse((150, y0, 250, y1), outline="red", width=6)
 
-    # Robot details
+    # Decoration
     draw.line((200, 80, 200, 40), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
     draw.rectangle((40, 180, 70, 260), outline="black", width=3)
@@ -81,14 +78,14 @@ def create_face(mouth_val=0.0):
     return img
 
 # -----------------------------
-# VOICE ENGINE
+# VOICE GENERATOR
 # -----------------------------
 async def generate_voice(text, voice, path):
     communicate = edge_tts.Communicate(text, voice)
     await communicate.save(path)
 
 # -----------------------------
-# UI STRUCTURE
+# LAYOUT
 # -----------------------------
 left, right = st.columns([3, 1])
 
@@ -97,14 +94,14 @@ with right:
     st.markdown("**Owner:** Gesner Deslandes")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
-    st.markdown("🔗 [Main Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
+    st.markdown("🔗 [Click for Site](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.markdown("---")
     st.success("AI & Software Solutions 🇭🇹")
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
     
-    # RESTORED HAITIAN FLAG
+    # THE HAITIAN FLAG
     st.markdown(
         "<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>",
         unsafe_allow_html=True
@@ -112,47 +109,45 @@ with left:
     
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
     
-    # The placeholder for the robot face
-    face_placeholder = st.empty()
-    face_placeholder.image(create_face(0.0))
+    # Placeholder for the face
+    face_frame = st.empty()
+    face_frame.image(create_face(0.0))
 
     if st.button("▶️ Start Speaking"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Gesner AI is preparing to speak..."):
+        with st.spinner("Generating audio..."):
             asyncio.run(generate_voice(texts[language], voices[language], audio_path))
 
-        # Audio Autoplay
+        # Start Audio via HTML
         with open(audio_path, "rb") as f:
-            audio_bytes = f.read()
-            b64_audio = base64.b64encode(audio_bytes).decode()
-            st.markdown(
-                f'<audio autoplay><source src="data:audio/mp3;base64,{b64_audio}" type="audio/mp3"></audio>', 
-                unsafe_allow_html=True
-            )
+            b64 = base64.b64encode(f.read()).decode()
+            st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
-        # Exact Duration
+        # Get total duration
         duration = MP3(audio_path).info.length
-        
-        # --- IMPROVED TALKING ANIMATION ---
         start_time = time.time()
-        while (time.time() - start_time) < duration:
-            elapsed = time.time() - start_time
-            
-            # Complex wave for more natural "speech" movement
-            # Mixing two frequencies (15 and 30) makes it look less like a robot and more like talking
-            wave = (math.sin(elapsed * 15) * 0.5) + (math.sin(elapsed * 30) * 0.5)
-            mouth_pos = abs(wave)
-            
-            face_placeholder.image(create_face(mouth_pos))
-            
-            # Keep the refresh rate high (approx 25 frames per second)
-            time.sleep(0.04)
 
-        # Reset to closed mouth
-        face_placeholder.image(create_face(0.0))
+        # --- THE FINAL ANIMATION LOOP ---
+        # We use a while loop that checks the clock against the audio duration
+        while True:
+            elapsed = time.time() - start_time
+            if elapsed >= duration:
+                break
+            
+            # Rapid sine wave for speech effect
+            mouth_movement = abs(math.sin(elapsed * 22))
+            
+            # Force the update
+            face_frame.image(create_face(mouth_movement))
+            
+            # Small delay to keep the CPU stable but the animation fast
+            time.sleep(0.03)
+
+        # Ensure mouth is closed at the exact end
+        face_frame.image(create_face(0.0))
         
-        # Clean up
+        # Cleanup
         if os.path.exists(audio_path):
             os.remove(audio_path)
