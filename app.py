@@ -20,40 +20,72 @@ voices = {
 }
 
 # -----------------------------
-# MOTIVATION SPEECH
+# WEBSITE PROMOTION SCRIPT
 # -----------------------------
 texts = {
-    "English": """Outstanding Determination...
-You can make mistakes while trying to do what is right...
-But if you understand yourself, you can start over...
-Rebuild the best version of yourself...
-Do not let disappointment stop you...
-Use it as fuel...
-Be unstoppable. Be yourself. Control your mind...
-Your inner world is more powerful than your outside world...
-Take time for yourself. Love yourself. Forgive yourself...
-Move forward...
-You came alone, you leave alone, with your greatness.""",
 
-    "French": """Détermination exceptionnelle...
-Vous pouvez faire des erreurs...
-Mais vous pouvez recommencer...
-Reconstruire votre meilleure version...
-Utilisez la déception comme carburant...
-Soyez fort, contrôlez votre esprit...
-Votre monde intérieur est puissant...
-Aimez-vous, pardonnez-vous...
-Avancez toujours...""",
+    "English": """Welcome to GlobalInternet.py.
 
-    "Spanish": """Determinación extraordinaria...
-Puedes cometer errores...
-Pero puedes empezar de nuevo...
-Reconstruir tu mejor versión...
-Usa la decepción como combustible...
-Sé fuerte, controla tu mente...
-Tu mundo interior es poderoso...
-Ámate, perdónate...
-Sigue adelante..."""
+This is Gesner Deslandes, owner of an online software company based in Haiti.
+
+We are proud to introduce our official website.
+
+Visit now:
+globalinternetsitepy dash abh7v6tnmskxxnuplrdcgk dot streamlit dot app.
+
+On our website, you will discover our services, our projects, and powerful software solutions built with Python and artificial intelligence.
+
+We build complete software systems and deliver them directly to you by email within twenty four hours.
+
+If you need a website, a custom application, or any software solution, contact us now.
+
+Phone: five zero nine, four seven three, eight five six six three.
+
+Email: deslandes seventy eight at gmail dot com.
+
+GlobalInternet.py, your online software company, building solutions for the world from Haiti.""",
+
+    "French": """Bienvenue sur GlobalInternet.py.
+
+Je suis Gesner Deslandes, propriétaire d'une entreprise de logiciels en ligne basée en Haïti.
+
+Nous sommes fiers de vous présenter notre site officiel.
+
+Visitez maintenant :
+globalinternetsitepy tiret abh7v6tnmskxxnuplrdcgk point streamlit point app.
+
+Sur notre site, vous découvrirez nos services, nos projets et des solutions puissantes basées sur Python et l’intelligence artificielle.
+
+Nous créons des logiciels complets et les livrons par email en vingt-quatre heures.
+
+Si vous avez besoin d’un site web ou d’un logiciel personnalisé, contactez-nous.
+
+Téléphone : cinq zéro neuf, quatre sept trois, huit cinq six six trois.
+
+Email : deslandes soixante-dix-huit arrobase gmail point com.
+
+GlobalInternet.py, votre entreprise de logiciels en ligne depuis Haïti vers le monde.""",
+
+    "Spanish": """Bienvenido a GlobalInternet.py.
+
+Soy Gesner Deslandes, propietario de una empresa de software en línea en Haití.
+
+Estamos orgullosos de presentar nuestro sitio web oficial.
+
+Visita ahora:
+globalinternetsitepy guion abh7v6tnmskxxnuplrdcgk punto streamlit punto app.
+
+En nuestro sitio encontrarás servicios, proyectos y soluciones de software con Python e inteligencia artificial.
+
+Creamos software completo y lo entregamos por correo electrónico en veinticuatro horas.
+
+Si necesitas un sitio web o una aplicación personalizada, contáctanos.
+
+Teléfono: cinco cero nueve, cuatro siete tres, ocho cinco seis seis tres.
+
+Correo: deslandes setenta y ocho arroba gmail punto com.
+
+GlobalInternet.py, tu empresa de software en línea desde Haití para el mundo."""
 }
 
 # -----------------------------
@@ -97,12 +129,14 @@ def get_audio_duration(file_path):
 # -----------------------------
 left, right = st.columns([3, 1])
 
-# RIGHT PANEL (SYMBOL)
+# RIGHT PANEL
 with right:
-    st.markdown("## 🦁🔥⚡")
-    st.markdown("### OUTSTANDING")
-    st.markdown("### DETERMINATION")
-    st.success("Never Give Up")
+    st.markdown("## 🌐 GlobalInternet.py")
+    st.markdown("Owner: Gesner Deslandes")
+    st.markdown("📱 (509)-47385663")
+    st.markdown("📧 deslandes78@gmail.com")
+    st.markdown("---")
+    st.success("Visit our website")
 
 # LEFT PANEL
 with left:
@@ -121,32 +155,18 @@ with left:
 
     if st.button("▶️ Speak"):
 
-        # Generate voice
         asyncio.run(generate_voice(texts[language], voices[language]))
 
         audio_file = "voice.mp3"
-
-        # Get REAL duration
-        duration = get_audio_duration(audio_file)
-
-        # Play audio
         st.audio(open(audio_file, "rb").read(), autoplay=True)
 
-        # 🔥 PERFECT LIP SYNC LOOP
-        start_time = time.time()
-        mouth_open = False
+        duration = get_audio_duration(audio_file)
+        start = time.time()
 
-        while True:
-            elapsed = time.time() - start_time
-
-            if elapsed >= duration:
-                break
-
-            mouth_open = not mouth_open
-            frame.image(create_face(mouth_open))
-
-            # Faster animation = more realistic
+        mouth = False
+        while time.time() - start < duration:
+            mouth = not mouth
+            frame.image(create_face(mouth))
             time.sleep(0.12)
 
-        # End state
         frame.image(create_face(False))
