@@ -44,9 +44,9 @@ Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# FACE DESIGN (HIGH-VISIBILITY MOUTH)
+# FACE DESIGN (FORCEFUL MOTION)
 # -----------------------------
-def create_face(mouth_val=0.0):
+def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
@@ -58,18 +58,17 @@ def create_face(mouth_val=0.0):
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # --- THE MOUTH (ANCHORED & DYNAMIC) ---
+    # --- THE MOUTH (SQUARE-WAVE MOTION) ---
     center_y = 260
-    # Make the opening very visible (up to 40 pixels)
-    opening = 2 + (mouth_val * 40)
     
-    y0 = center_y - (opening / 2)
-    y1 = center_y + (opening / 2)
-    
-    # Red lips to make the motion even more obvious
-    draw.ellipse((150, y0, 250, y1), outline="red", width=6)
+    if mouth_open:
+        # Open state: A big, visible red oval
+        draw.ellipse((150, center_y - 25, 250, center_y + 25), outline="red", width=8)
+    else:
+        # Closed state: A flat thin red line
+        draw.line((160, center_y, 240, center_y), fill="red", width=6)
 
-    # Decoration
+    # Robot details
     draw.line((200, 80, 200, 40), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
     draw.rectangle((40, 180, 70, 260), outline="black", width=3)
@@ -94,7 +93,7 @@ with right:
     st.markdown("**Owner:** Gesner Deslandes")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
-    st.markdown("🔗 [Click for Site](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
+    st.markdown("🔗 [Main Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.markdown("---")
     st.success("AI & Software Solutions 🇭🇹")
 
@@ -109,9 +108,8 @@ with left:
     
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
     
-    # Placeholder for the face
     face_frame = st.empty()
-    face_frame.image(create_face(0.0))
+    face_frame.image(create_face(mouth_open=False))
 
     if st.button("▶️ Start Speaking"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
@@ -120,34 +118,29 @@ with left:
         with st.spinner("Generating audio..."):
             asyncio.run(generate_voice(texts[language], voices[language], audio_path))
 
-        # Start Audio via HTML
+        # Start Audio
         with open(audio_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
             st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
-        # Get total duration
         duration = MP3(audio_path).info.length
         start_time = time.time()
 
-        # --- THE FINAL ANIMATION LOOP ---
-        # We use a while loop that checks the clock against the audio duration
-        while True:
-            elapsed = time.time() - start_time
-            if elapsed >= duration:
-                break
+        # --- THE FORCED ANIMATION LOOP ---
+        counter = 0
+        while (time.time() - start_time) < duration:
+            # We alternate states based on a counter to ensure visibility
+            # Every 3 loops, we flip the mouth state
+            is_open = (counter % 4 < 2) 
             
-            # Rapid sine wave for speech effect
-            mouth_movement = abs(math.sin(elapsed * 22))
+            face_frame.image(create_face(mouth_open=is_open))
             
-            # Force the update
-            face_frame.image(create_face(mouth_movement))
-            
-            # Small delay to keep the CPU stable but the animation fast
-            time.sleep(0.03)
+            counter += 1
+            # Slightly longer sleep so the browser can actually RENDER the frame
+            time.sleep(0.06)
 
-        # Ensure mouth is closed at the exact end
-        face_frame.image(create_face(0.0))
+        # Final reset
+        face_frame.image(create_face(mouth_open=False))
         
-        # Cleanup
         if os.path.exists(audio_path):
             os.remove(audio_path)
