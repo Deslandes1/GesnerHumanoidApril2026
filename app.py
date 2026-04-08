@@ -44,9 +44,12 @@ Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# FACE DESIGN (MOUTH ANIMATION)
+# FACE DESIGN (REAL TALKING LIPS)
 # -----------------------------
-def create_face(mouth_open=0.0):
+def create_face(mouth_val=0.0):
+    """
+    mouth_val: 0.0 (closed) to 1.0 (fully open)
+    """
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
@@ -58,15 +61,16 @@ def create_face(mouth_open=0.0):
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # --- THE MOUTH ---
-    # Top of the mouth is fixed at 255
-    y_top = 255
-    # The bottom moves based on mouth_open (val between 0 and 1)
-    # We ensure y_bottom is always at least 5 pixels below y_top
-    y_bottom = y_top + 5 + int(mouth_open * 55)
+    # --- THE TALKING LIPS ---
+    center_y = 265
+    # Mouth expands both UP and DOWN from the center line
+    half_height = 2 + (mouth_val * 25) 
     
-    # Draw the animated lips
-    draw.ellipse((165, y_top, 235, y_bottom), outline="black", width=5)
+    y0 = center_y - half_height
+    y1 = center_y + half_height
+    
+    # Draw the animated lips (Oval that grows/shrinks)
+    draw.ellipse((160, y0, 240, y1), outline="black", width=6)
 
     # Robot details
     draw.line((200, 80, 200, 40), fill="black", width=4)
@@ -100,6 +104,12 @@ with right:
 with left:
     st.title("🤖 Gesner Humanoid AI")
     
+    # RESTORED HAITIAN FLAG
+    st.markdown(
+        "<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>",
+        unsafe_allow_html=True
+    )
+    
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
     
     # The placeholder for the robot face
@@ -107,14 +117,13 @@ with left:
     face_placeholder.image(create_face(0.0))
 
     if st.button("▶️ Start Speaking"):
-        # Create temporary audio storage
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Gesner AI is thinking..."):
+        with st.spinner("Gesner AI is preparing to speak..."):
             asyncio.run(generate_voice(texts[language], voices[language], audio_path))
 
-        # Play audio immediately
+        # Audio Autoplay
         with open(audio_path, "rb") as f:
             audio_bytes = f.read()
             b64_audio = base64.b64encode(audio_bytes).decode()
@@ -123,28 +132,27 @@ with left:
                 unsafe_allow_html=True
             )
 
-        # Calculate exact duration
-        audio_info = MP3(audio_path)
-        duration = audio_info.info.length
+        # Exact Duration
+        duration = MP3(audio_path).info.length
         
-        # --- SUSTAINED ANIMATION LOOP ---
+        # --- IMPROVED TALKING ANIMATION ---
         start_time = time.time()
         while (time.time() - start_time) < duration:
-            current_elapsed = time.time() - start_time
+            elapsed = time.time() - start_time
             
-            # Using absolute sine for high-speed mouth chatter (up and down)
-            # Speed is set to 20 for a very responsive look
-            mouth_pos = abs(math.sin(current_elapsed * 20))
+            # Complex wave for more natural "speech" movement
+            # Mixing two frequencies (15 and 30) makes it look less like a robot and more like talking
+            wave = (math.sin(elapsed * 15) * 0.5) + (math.sin(elapsed * 30) * 0.5)
+            mouth_pos = abs(wave)
             
-            # Re-render face with the new mouth position
             face_placeholder.image(create_face(mouth_pos))
             
-            # Frame rate control
+            # Keep the refresh rate high (approx 25 frames per second)
             time.sleep(0.04)
 
-        # Close the mouth completely once audio is done
+        # Reset to closed mouth
         face_placeholder.image(create_face(0.0))
         
-        # Clean up the file system
+        # Clean up
         if os.path.exists(audio_path):
             os.remove(audio_path)
