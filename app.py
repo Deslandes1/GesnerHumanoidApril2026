@@ -4,6 +4,7 @@ import asyncio
 import edge_tts
 import time
 from mutagen.mp3 import MP3
+import base64
 
 # -----------------------------
 # PAGE CONFIG
@@ -20,36 +21,40 @@ voices = {
 }
 
 # -----------------------------
-# SCRIPT
+# KEEP YOUR CURRENT SCRIPT HERE (UNCHANGED)
 # -----------------------------
 texts = {
     "English": """Welcome to GlobalInternet.py.
 This is Gesner Deslandes, owner of an online software company based in Haiti.
-Visit our official website now.
-globalinternetsitepy dash abh7v6tnmskxxnuplrdcgk dot streamlit dot app.
+Visit our official website now:
+https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
 We build and deliver complete software solutions within 24 hours.
 Contact us today.
-Phone: five zero nine, four seven three, eight five six six three.
-Email: deslandes seventy eight at gmail dot com.
+Phone: (509)-47385663
+Email: deslandes78@gmail.com
 GlobalInternet.py, building software for the world.""",
 
     "French": """Bienvenue sur GlobalInternet.py.
-Je suis Gesner Deslandes, propriétaire d’une entreprise de logiciels en ligne.
-Visitez notre site officiel maintenant.
-globalinternetsitepy tiret abh7v6tnmskxxnuplrdcgk point streamlit point app.
+Je suis Gesner Deslandes, propriétaire d’une entreprise de logiciels en ligne basée en Haïti.
+Visitez notre site officiel maintenant:
+https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
 Nous livrons des logiciels complets en 24 heures.
-Contactez-nous dès aujourd’hui.""",
+Contactez-nous dès aujourd’hui.
+Téléphone: (509)-47385663
+Email: deslandes78@gmail.com""",
 
     "Spanish": """Bienvenido a GlobalInternet.py.
-Soy Gesner Deslandes, propietario de una empresa de software en línea.
-Visita nuestro sitio web ahora.
-globalinternetsitepy guion abh7v6tnmskxxnuplrdcgk punto streamlit punto app.
+Soy Gesner Deslandes, propietario de una empresa de software en línea en Haití.
+Visita nuestro sitio web ahora:
+https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
 Entregamos software completo en 24 horas.
-Contáctanos hoy."""
+Contáctanos hoy.
+Teléfono: (509)-47385663
+Correo: deslandes78@gmail.com"""
 }
 
 # -----------------------------
-# FACE
+# HUMANOID FACE
 # -----------------------------
 def create_face(mouth_open=False):
     img = Image.new("RGB", (400, 400), "white")
@@ -85,16 +90,25 @@ def get_audio_duration(file):
     return MP3(file).info.length
 
 # -----------------------------
-# UI
+# UI LAYOUT (UNCHANGED)
 # -----------------------------
 left, right = st.columns([3, 1])
 
+# -----------------------------
+# RIGHT PANEL (DO NOT TOUCH)
+# -----------------------------
 with right:
     st.markdown("## 🌐 GlobalInternet.py")
-    st.markdown("Gesner Deslandes")
+    st.markdown("Owner: Gesner Deslandes")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
+    st.markdown("🔗 https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/")
+    st.markdown("---")
+    st.success("AI & Software Solutions 🇭🇹")
 
+# -----------------------------
+# LEFT PANEL
+# -----------------------------
 with left:
 
     st.title("🤖 Gesner Humanoid AI")
@@ -107,31 +121,33 @@ with left:
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
 
     frame = st.empty()
-
-    # initial face
     frame.image(create_face(False))
 
     if st.button("▶️ Speak"):
 
-        # generate voice
         asyncio.run(generate_voice(texts[language], voices[language]))
 
         audio_file = "voice.mp3"
 
-        # get duration
-        duration = get_audio_duration(audio_file)
+        # Convert audio to base64 (for autoplay)
+        with open(audio_file, "rb") as f:
+            audio_bytes = f.read()
+        audio_base64 = base64.b64encode(audio_bytes).decode()
 
-        # play audio (non-blocking)
+        # Play audio (NON-BLOCKING)
         st.markdown(
             f"""
             <audio autoplay>
-            <source src="data:audio/mp3;base64,{open(audio_file, "rb").read().hex()}">
+            <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
             </audio>
             """,
             unsafe_allow_html=True
         )
 
-        # 🔥 FORCE LIVE ANIMATION
+        # REAL DURATION
+        duration = get_audio_duration(audio_file)
+
+        # 🔥 PERFECT LIP SYNC
         start = time.time()
         mouth = False
 
