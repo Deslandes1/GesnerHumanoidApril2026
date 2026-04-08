@@ -1,52 +1,41 @@
 import streamlit as st
 from PIL import Image, ImageDraw
-import asyncio
-import edge_tts
 import time
-from mutagen.mp3 import MP3
+from gtts import gTTS
 import base64
-import math
+import os
 
-# -----------------------------
+# =========================
 # PAGE CONFIG
-# -----------------------------
-st.set_page_config(layout="wide")
+# =========================
+st.set_page_config(page_title="Gesner Humanoid AI", layout="wide")
 
-# -----------------------------
-# VOICES
-# -----------------------------
-voices = {
-    "English": "en-US-GuyNeural",
-    "French": "fr-FR-HenriNeural",
-    "Spanish": "es-ES-AlvaroNeural"
-}
+# =========================
+# TEXT TO SPEECH FUNCTION
+# =========================
+def text_to_audio(text, lang="fr"):
+    tts = gTTS(text=text, lang=lang)
+    audio_file = "speech.mp3"
+    tts.save(audio_file)
+    return audio_file
 
-# -----------------------------
-# TEXTS
-# -----------------------------
-texts = {
-    "English": """Discover GlobalInternet.py – Your Python Software Partner.
-https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
-We build software and deliver it in 24 hours.
-Phone: (509)-47385663
-Email: deslandes78@gmail.com""",
 
-    "French": """Découvrez GlobalInternet.py – votre partenaire logiciel Python.
-https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
-Nous développons des logiciels livrés en 24 heures.
-Téléphone: (509)-47385663
-Email: deslandes78@gmail.com""",
+def autoplay_audio(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
 
-    "Spanish": """Descubre GlobalInternet.py – tu socio de software en Python.
-https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/
-Creamos software y lo entregamos en 24 horas.
-Teléfono: (509)-47385663
-Correo: deslandes78@gmail.com"""
-}
+    audio_html = f"""
+    <audio autoplay controls>
+        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+    </audio>
+    """
+    st.markdown(audio_html, unsafe_allow_html=True)
 
-# -----------------------------
-# FACE DESIGN
-# -----------------------------
+
+# =========================
+# SAFE TALKING FACE
+# =========================
 def create_face(mouth_level=0):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
@@ -54,116 +43,71 @@ def create_face(mouth_level=0):
     # head
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
 
-    # inner face
+    # face inner
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
 
     # eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
 
-    # 🔥 REAL TALKING MOUTH (smooth dynamic opening)
-    mouth_open = 20 + (math.sin(mouth_level * math.pi) * 25)
+    # =========================
+    # FIXED TALKING MOUTH
+    # =========================
+    mouth_width = 70
+    base_y = 250
 
-    draw.ellipse(
-        (170, 240, 230, 240 + mouth_open),
-        outline="black",
-        width=4
-    )
+    open_amount = int(5 + mouth_level * 30)
+
+    x1 = 200 - mouth_width // 2
+    y1 = base_y
+    x2 = 200 + mouth_width // 2
+    y2 = base_y + open_amount
+
+    draw.ellipse([x1, y1, x2, y2], outline="black", width=4)
 
     # antenna
     draw.line((200, 80, 200, 40), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
 
-    # side panels
-    draw.rectangle((40, 180, 70, 260), outline="black", width=3)
-    draw.rectangle((330, 180, 360, 260), outline="black", width=3)
-
     return img
 
-# -----------------------------
-# VOICE GENERATION
-# -----------------------------
-async def generate_voice(text, voice):
-    communicate = edge_tts.Communicate(text, voice)
-    await communicate.save("voice.mp3")
 
-# -----------------------------
-# LAYOUT
-# -----------------------------
-left, right = st.columns([3, 1])
+# =========================
+# UI HEADER
+# =========================
+st.title("🤖 Gesner Humanoid AI Face")
 
-# -----------------------------
-# RIGHT PANEL (UNCHANGED)
-# -----------------------------
-with right:
-    st.markdown("## 🌐 GlobalInternet.py")
-    st.markdown("Owner: Gesner Deslandes")
-    st.markdown("📱 (509)-47385663")
-    st.markdown("📧 deslandes78@gmail.com")
-    st.markdown("🔗 https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/")
-    st.markdown("---")
-    st.success("AI & Software Solutions 🇭🇹")
+text = st.text_area("Enter speech text:", "Hello, I am Gesner Humanoid AI speaking now.")
 
-# -----------------------------
-# LEFT PANEL
-# -----------------------------
-with left:
+lang = st.selectbox("Language", ["fr", "en"])
 
-    st.title("🤖 Gesner Humanoid AI")
+# =========================
+# SPEAK BUTTON
+# =========================
+if st.button("🔊 Speak"):
 
-    st.markdown(
-        "<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>",
-        unsafe_allow_html=True
-    )
+    # create audio
+    audio_file = text_to_audio(text, lang)
 
-    language = st.selectbox("🌍 Select Language", list(voices.keys()))
+    # estimate duration (safe approximation)
+    duration = max(3, len(text) * 0.06)
 
+    # play audio
+    autoplay_audio(audio_file)
+
+    # animation container
     frame = st.empty()
+
+    start_time = time.time()
+
+    # animate mouth until audio ends
+    while time.time() - start_time < duration:
+
+        # oscillation for talking effect
+        for level in [0.2, 0.5, 1.0, 0.4, 0.7, 0.1]:
+            img = create_face(level)
+            frame.image(img)
+            time.sleep(0.08)
+
+    # final closed mouth
     frame.image(create_face(0))
-
-    # -----------------------------
-    # SPEAK BUTTON
-    # -----------------------------
-    if st.button("▶️ Speak"):
-
-        asyncio.run(generate_voice(texts[language], voices[language]))
-
-        audio_file = "voice.mp3"
-
-        # 🔥 AUTO PLAY AUDIO
-        with open(audio_file, "rb") as f:
-            audio_bytes = f.read()
-
-        audio_base64 = base64.b64encode(audio_bytes).decode()
-
-        st.markdown(
-            f"""
-            <audio autoplay>
-            <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-            </audio>
-            """,
-            unsafe_allow_html=True
-        )
-
-        # -----------------------------
-        # AUDIO LENGTH
-        # -----------------------------
-        duration = MP3(audio_file).info.length
-
-        # -----------------------------
-        # 🔥 REAL TALKING MOUTH LOOP
-        # -----------------------------
-        start = time.time()
-
-        while time.time() - start < duration:
-
-            # speech-like wave movement (not random)
-            t = (time.time() - start)
-
-            mouth_level = (math.sin(t * 12) + math.sin(t * 7)) * 0.5 + 0.5
-
-            frame.image(create_face(mouth_level))
-
-            time.sleep(0.03)
-
-        frame.image(create_face(0))
