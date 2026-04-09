@@ -14,7 +14,7 @@ import tempfile
 st.set_page_config(layout="wide", page_title="Gesner Humanoid AI")
 
 # -----------------------------
-# VOICES & TEXTS (MESSAGE TO THE KIDS)
+# VOICES & TEXTS (MESSAGE TO MR. WIBY)
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
@@ -22,28 +22,27 @@ voices = {
     "Spanish": "es-ES-AlvaroNeural"
 }
 
-# The personal message from Gesner Deslandes to his sons
 texts = {
-    "English": """Junior, Roosevelt, and Babas, listen to me. Zendaya is still too small, but you guys are old enough to understand this easily. 
-    We make money by creating and selling software through our company, GlobalInternet.py. This company is a legacy for you to take charge of one day. 
-    Do not ever break the codes. Instead, study coding to reinforce them, just like your papa Gesner Deslandes, a mastermind, a fighter, and the king of his jungle. 
-    Roosevelt, I know you love technology. Junior, I know you love E-football. That is okay, as long as you do your best in active learning and reading. 
-    Junior knows how much I value reading. Even if the school doors close, you can use reading to improve your mind and feed your brain. 
-    Some call me Tiboul, others call me Mr. G, or even Wakanda Forever. But I will always be your bad ass dad. Gesner Deslandes forever!""",
+    "English": """Mister Wiby, this is Gesner Deslandes from Be Like Brit. I want to take this moment to tell you: get better soon. 
+    The last time I saw you, you had a broken arm in a cast, and I couldn't talk to you since you were heading to the office. 
+    Mister Wiby, I know you might not believe it because the Gesner Humanoid AI does not have the voice you are used to hearing, 
+    but these are my words and my coding behind this message. I know the members of your church will keep you in their prayers, and so do I. 
+    I know you will get better and come back to work as soon as possible at Be Like Brit. 
+    Your friend and colleague, Gesner Deslandes, Technology Coordinator at Be Like Brit, Grand Goave, Haiti.""",
 
-    "French": """Junior, Roosevelt, et Babas, écoutez-moi. Zendaya est encore trop petite, mais vous êtes assez grands pour comprendre cela facilement. 
-    Nous gagnons de l'argent en créant et en vendant des logiciels via notre entreprise, GlobalInternet.py. Cette entreprise est un héritage que vous devrez diriger un jour. 
-    Ne cassez jamais les codes. Au lieu de cela, étudiez la programmation pour les renforcer, tout comme votre papa Gesner Deslandes, un cerveau, un combattant et le roi de sa jungle. 
-    Roosevelt, je sais que tu aimes la technologie. Junior, je sais que tu aimes l'E-football. C'est bien, tant que vous faites de votre mieux dans l'apprentissage actif et la lecture. 
-    Junior sait à quel point j'accorde de l'importance à la lecture. Même si les portes de l'école se ferment, vous pouvez utiliser la lecture pour améliorer votre esprit et nourrir votre cerveau. 
-    Certains m'appellent Tiboul, d'autres Mr. G, ou même Wakanda Forever. Mais je serai toujours votre papa dur à cuire. Gesner Deslandes pour toujours !""",
+    "French": """Monsieur Wiby, c'est Gesner Deslandes de Be Like Brit. Je voulais prendre un moment pour vous dire : bon rétablissement. 
+    La dernière fois que je vous ai vu, vous aviez le bras cassé dans le plâtre, et je n'ai pas pu vous parler car vous alliez au bureau. 
+    Monsieur Wiby, je sais que vous ne le croirez peut-être pas parce que l'IA Humanoïde Gesner n'a pas la voix que vous avez l'habitude d'entendre, 
+    mais ce sont mes mots et mon codage derrière ce message. Je sais que les membres de votre église vous garderont dans leurs prières, et moi aussi. 
+    Je sais que vous irez mieux et que vous reviendrez travailler le plus tôt possible à Be Like Brit. 
+    Votre ami et collègue, Gesner Deslandes, Coordinateur Technologique à Be Like Brit, Grand Goâve, Haïti.""",
 
-    "Spanish": """Junior, Roosevelt y Babas, escúchenme. Zendaya aún es muy pequeña, pero ustedes tienen la edad suficiente para entender esto fácilmente. 
-    Ganamos dinero creando y vendiendo software a través de nuestra empresa, GlobalInternet.py. Esta empresa es un legado para que ustedes se hagan cargo algún día. 
-    Nunca rompan los códigos. En su lugar, estudien programación para reforzarlos, al igual que su papá Gesner Deslandes, una mente maestra, un luchador y el rey de su jungla. 
-    Roosevelt, sé que te interesa la tecnología. Junior, sé que te interesa el E-football. Eso está bien, siempre y cuando den lo mejor de sí en el aprendizaje activo y la lectura. 
-    Junior ya sabe la importancia que le doy a la lectura. Incluso si las puertas de la escuela se cierran, pueden usar la lectura para mejorar su mente y alimentar su cerebro. 
-    Algunos me llaman Tiboul, otros Mr. G, o incluso Wakanda Forever. Pero siempre seré su papá rudo. ¡Gesner Deslandes por siempre!"""
+    "Spanish": """Señor Wiby, habla Gesner Deslandes de Be Like Brit. Quiero tomarme este momento para decirte: que te mejores pronto. 
+    La última vez que te vi, tenías el brazo roto enyesado y no pude hablar contigo porque ibas a la oficina. 
+    Señor Wiby, sé que tal vez no lo creas porque la IA Humanoide de Gesner no tiene la voz que sueles escuchar, 
+    pero estas son mis palabras y mi programación detrás de este mensaje. Sé que los miembros de tu iglesia te mantendrán en sus oraciones, al igual que yo. 
+    Sé que te recuperarás y volverás al trabajo lo antes posible en Be Like Brit. 
+    Tu amigo y colega, Gesner Deslandes, Coordinador de Tecnología en Be Like Brit, Grand Goave, Haití."""
 }
 
 # -----------------------------
@@ -53,7 +52,7 @@ def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # Face Outlines
+    # Face Shape
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
     
@@ -88,7 +87,7 @@ with right:
     st.markdown("📧 deslandes78@gmail.com")
     st.markdown("🔗 [Main Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.markdown("---")
-    st.success("Building a Legacy 🇭🇹")
+    st.success("Be Like Brit 🇭🇹")
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
@@ -104,11 +103,11 @@ with left:
     face_frame = st.empty()
     face_frame.image(create_face(is_open=False))
 
-    if st.button("▶️ Play Father's Message"):
+    if st.button("▶️ Play Message for Mr. Wiby"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Generating father's voice..."):
+        with st.spinner("Preparing words of kindness..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
 
         with open(audio_path, "rb") as f:
@@ -116,12 +115,13 @@ with left:
         
         duration = MP3(audio_path).info.length
         
-        # Injection and immediate loop start
+        # Audio injection
         st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
         
         start_time = time.time()
         frame_toggle = True
 
+        # THE RELENTLESS ANIMATION LOOP
         while (time.time() - start_time) < duration:
             face_frame.image(create_face(is_open=frame_toggle))
             frame_toggle = not frame_toggle
