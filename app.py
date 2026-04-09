@@ -26,36 +26,48 @@ voices = {
 texts = {
     "English": """Master Chess with an AI that teaches you – not just plays against you. 
 I'm Gesner Deslandes, founder of GlobalInternet.py, and I built this Chess Teaching AI to help you learn winning strategies while you play. 
-You will learn why Nh3 means Knight to h3, piece symbols, and notation. 
-Discover three winning moves for Beginner, Intermediate, and Advanced levels. 
-Learn how to spot checkmates, forks, pins, and discovered attacks. 
-Master the fastest mates like Fool's Mate and Scholar's Mate, and solid openings like the Sicilian Dragon. 
-Features include playing against Stockfish, AI move suggestions every turn, and downloading your full move history. 
-The app is available in four languages: English, Spanish, French, and Haitian Creole. 
-Demo access uses password 20082010. Contact us for custom software on WhatsApp at 509-4738-5663. 
-The full license is 149 dollars. Stop memorizing – start understanding. Try the Chess Teaching AI today.""",
+What you learn: Why Nh3 means Knight to h3, piece symbols, and notation explained. 
+Three winning moves for Beginner, Intermediate, and Advanced levels. 
+How to spot checkmates, forks, pins, and discovered attacks. 
+Fastest mates like Fool's Mate and Scholar's Mate, and solid openings like the Italian Game, Queen's Gambit, and Sicilian Dragon. 
+Features include playing against Stockfish, world‑class AI. AI suggests the best move every turn. 
+Choose any legal move from a dropdown and download your full move history. 
+Available in four languages: English, Spanish, French, and Haitian Creole. 
+Difficulty levels: Beginner, Intermediate, and Advanced. 
+Demo access password is 20082010. Contact for custom software on WhatsApp at 509-4738-5663 or email deslandes78@gmail.com. 
+GlobalInternet.py – Custom Python software from Haiti to the world. 
+Full license is 149 dollars lifetime, includes all updates. 
+Stop memorising – start understanding. Try the Chess Teaching AI today.""",
 
     "French": """Maîtrisez les échecs avec une IA qui vous enseigne, et pas seulement qui joue contre vous. 
 Je suis Gesner Deslandes, fondateur de GlobalInternet.py, et j'ai créé cette IA d'enseignement des échecs pour vous aider à apprendre des stratégies gagnantes pendant que vous jouez. 
-Vous apprendrez pourquoi Nh3 signifie Cavalier en h3, les symboles des pièces et la notation. 
-Découvrez trois coups gagnants pour les niveaux débutant, intermédiaire et avancé. 
-Apprenez à repérer les échecs et mats, les fourchettes, les clouages et les attaques à la découverte. 
-Maîtrisez les mats les plus rapides comme le coup du berger, et des ouvertures solides comme la Dragon Sicilienne. 
-Les fonctionnalités incluent le jeu contre Stockfish, des suggestions de coups par l'IA à chaque tour et le téléchargement de l'historique de vos coups. 
-L'application est disponible en quatre langues : anglais, espagnol, français et créole haïtien. 
-L'accès à la démo utilise le mot de passe 20082010. Contactez-nous pour un logiciel personnalisé sur WhatsApp au 509-4738-5663. 
-La licence complète est de 149 dollars. Arrêtez de mémoriser, commencez à comprendre. Essayez l'IA d'enseignement des échecs dès aujourd'hui.""",
+Ce que vous apprenez : Pourquoi Nh3 signifie Cavalier en h3, les symboles des pièces et la notation expliquée. 
+Trois coups gagnants pour les niveaux débutant, intermédiaire et avancé. 
+Comment repérer les échecs et mats, les fourchettes, les clouages et les attaques à la découverte. 
+Les mats les plus rapides comme le coup du berger, et des ouvertures solides comme le Gambit de la Dame et la Dragon Sicilienne. 
+Les fonctionnalités incluent le jeu contre Stockfish, une IA de classe mondiale. L'IA suggère le meilleur coup à chaque tour. 
+Choisissez n'importe quel coup légal et téléchargez l'historique complet de vos coups. 
+Disponible en quatre langues : anglais, espagnol, français et créole haïtien. 
+Niveaux de difficulté : débutant, intermédiaire et avancé. 
+Le mot de passe d'accès à la démo est 20082010. Contactez-nous pour un logiciel personnalisé sur WhatsApp au 509-4738-5663 ou par e-mail à deslandes78@gmail.com. 
+GlobalInternet.py – Logiciels Python personnalisés d'Haïti vers le monde. 
+La licence complète est de 149 dollars à vie, incluant toutes les mises à jour. 
+Arrêtez de mémoriser, commencez à comprendre. Essayez l'IA d'enseignement des échecs dès aujourd'hui.""",
 
     "Spanish": """Domina el ajedrez con una IA que te enseña, no solo juega contra ti. 
 Soy Gesner Deslandes, fundador de GlobalInternet.py, y creé esta IA de enseñanza de ajedrez para ayudarte a aprender estrategias ganadoras mientras juegas. 
-Aprenderás por qué Nh3 significa Caballo a h3, los símbolos de las piezas y la notación. 
-Descubre tres movimientos ganadores para los niveles principiante, intermedio y avanzado. 
-Aprende a detectar jaques mate, ataques dobles, clavadas y ataques descubiertos. 
-Domina los mates más rápidos como el Mate del Pastor y aperturas sólidas como la Siciliana Dragón. 
-Las características incluyen jugar contra Stockfish, sugerencias de movimientos de IA en cada turno y la descarga de tu historial de movimientos. 
-La aplicación está disponible en cuatro idiomas: inglés, español, francés y criollo haitiano. 
-El acceso a la demo utiliza la contraseña 20082010. Contáctenos para software personalizado por WhatsApp al 509-4738-5663. 
-La licencia completa cuesta 149 dólares. Deja de memorizar, comienza a entender. Prueba la IA de enseñanza de ajedrez hoy mismo."""
+Lo que aprendes: Por qué Nh3 significa Caballo a h3, los símbolos de las piezas y la notación explicada. 
+Tres movimientos ganadores para los niveles principiante, intermedio y avanzado. 
+Cómo detectar jaques mate, ataques dobles, clavadas y ataques descubiertos. 
+Los mates más rápidos como el Mate del Pastor y aperturas sólidas como el Gambito de Dama y la Siciliana Dragón. 
+Las características incluyen jugar contra Stockfish, IA de clase mundial. La IA sugiere el mejor movimiento en cada turno. 
+Elige cualquier movimiento legal y descarga tu historial completo de movimientos. 
+Disponible en cuatro idiomas: inglés, español, francés y criollo haitiano. 
+Niveles de dificultad: principiante, intermedio y avanzado. 
+La contraseña de acceso a la demo es 20082010. Contacte para software personalizado por WhatsApp al 509-4738-5663 o correo electrónico deslandes78@gmail.com. 
+GlobalInternet.py – Software Python personalizado desde Haití para el mundo. 
+La licencia completa cuesta 149 dólares de por vida, incluye todas las actualizaciones. 
+Deja de memorizar, comienza a entender. Prueba la IA de enseñanza de ajedrez hoy mismo."""
 }
 
 # -----------------------------
@@ -122,7 +134,7 @@ with left:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Gesner AI is starting the masterclass..."):
+        with st.spinner("Gesner AI is starting the announcement..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
 
         # Play Audio
