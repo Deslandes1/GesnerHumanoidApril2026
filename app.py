@@ -14,7 +14,7 @@ import tempfile
 st.set_page_config(layout="wide", page_title="Gesner Humanoid AI")
 
 # -----------------------------
-# VOICES & TEXTS
+# VOICES & TEXTS (UPDATED FOR CHESS APP)
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
@@ -23,23 +23,23 @@ voices = {
 }
 
 texts = {
-    "English": """Discover GlobalInternet.py – Your Python Software Partner. 
-https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/ 
-We build software and deliver it in 24 hours. 
-Phone: (509)-47385663 
-Email: deslandes78@gmail.com""",
+    "English": """Welcome to GlobalInternet.py. Today, I am excited to present our Chess against the Machine application. 
+This software allows you to challenge a powerful AI engine in a game of strategy and intellect. 
+Whether you are a beginner or a grandmaster, our interface provides a smooth and professional experience. 
+Visit us at global internet site p y to start playing now. 
+For custom software, contact Gesner Deslandes at 509-47385663 or email deslandes78@gmail.com.""",
 
-    "French": """Découvrez GlobalInternet.py – votre partenaire logiciel Python. 
-https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/ 
-Nous développons des logiciels livrés en 24 heures. 
-Téléphone: (509)-47385663 
-Email: deslandes78@gmail.com""",
+    "French": """Bienvenue chez GlobalInternet.py. Aujourd'hui, je suis ravi de vous présenter notre application d'échecs contre la machine. 
+Ce logiciel vous permet de défier un moteur d'intelligence artificielle puissant dans un jeu de stratégie et d'intellect. 
+Que vous soyez débutant ou grand maître, notre interface offre une expérience fluide et professionnelle. 
+Visitez-nous sur global internet site p y pour commencer à jouer. 
+Pour tout logiciel personnalisé, contactez Gesner Deslandes au 509-47385663 ou par email à deslandes78@gmail.com.""",
 
-    "Spanish": """Descubre GlobalInternet.py – tu socio de software en Python. 
-https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/ 
-Creamos software y lo entregamos en 24 horas. 
-Teléfono: (509)-47385663 
-Correo: con deslandes78@gmail.com"""
+    "Spanish": """Bienvenido a GlobalInternet.py. Hoy, me complace presentar nuestra aplicación de Ajedrez contra la Máquina. 
+Este software le permite desafiar a un potente motor de inteligencia artificial en un juego de estrategia e intelecto. 
+Ya sea principiante o gran maestro, nuestra interfaz ofrece una experiencia fluida y profesional. 
+Visítenos en global internet site p y para empezar a jugar. 
+Para software personalizado, contacte a Gesner Deslandes al 509-47385663 o envíe un correo a deslandes78@gmail.com."""
 }
 
 # -----------------------------
@@ -102,7 +102,7 @@ with left:
     face_frame = st.empty()
     face_frame.image(create_face(is_open=False))
 
-    if st.button("▶️ Speak Now"):
+    if st.button("▶️ Explain Chess App"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
@@ -121,7 +121,6 @@ with left:
         # --- THE RELENTLESS ANIMATION LOOP ---
         frame_toggle = True
         while (time.time() - start_time) < duration:
-            # Flips between open/closed every 0.04 seconds for maximum aggression
             face_frame.image(create_face(is_open=frame_toggle))
             frame_toggle = not frame_toggle
             time.sleep(0.04) 
