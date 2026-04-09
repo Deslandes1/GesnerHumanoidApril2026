@@ -14,7 +14,7 @@ import tempfile
 st.set_page_config(layout="wide", page_title="Gesner Humanoid AI")
 
 # -----------------------------
-# VOICES & TEXTS (LATEST CHESS SCRIPT)
+# VOICES & TEXTS
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
@@ -76,7 +76,7 @@ def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # Face Outlines
+    # Face Shape
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
     
@@ -129,31 +129,35 @@ with left:
     face_frame = st.empty()
     face_frame.image(create_face(is_open=False))
 
-    if st.button("▶️ Play Master Chess Script"):
+    if st.button("▶️ Start Aggressive Presentation"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Gesner AI is starting the announcement..."):
+        with st.spinner("Preparing Gesner Humanoid AI..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
 
-        # Play Audio
+        # 1. LOAD AUDIO AS BASE64
         with open(audio_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
-            st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
-
-        # Precise Duration
+        
+        # 2. GET DURATION BEFORE STARTING
         duration = MP3(audio_path).info.length
+        
+        # 3. START AUDIO & SYNC ANIMATION IMMEDIATELY
+        st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
+        
         start_time = time.time()
+        frame_toggle = True
 
         # --- THE RELENTLESS ANIMATION LOOP ---
-        frame_toggle = True
         while (time.time() - start_time) < duration:
-            # Flips between open/closed for aggressive visibility
+            # Immediate flip for aggressive motion
             face_frame.image(create_face(is_open=frame_toggle))
             frame_toggle = not frame_toggle
+            # 0.04s ensures we catch the eye and keeps up with speech tempo
             time.sleep(0.04) 
 
-        # Final Close
+        # Final Close State
         face_frame.image(create_face(is_open=False))
         
         if os.path.exists(audio_path):
