@@ -22,7 +22,6 @@ voices = {
     "Spanish": "es-ES-AlvaroNeural"
 }
 
-# Unified script for the AI to read across all selected languages
 texts = {
     "English": """Master Chess with an AI that teaches you – not just plays against you. 
 I'm Gesner Deslandes, founder of GlobalInternet.py, and I built this Chess Teaching AI to help you learn winning strategies while you play. 
@@ -149,6 +148,7 @@ with left:
         # --- THE RELENTLESS ANIMATION LOOP ---
         frame_toggle = True
         while (time.time() - start_time) < duration:
+            # Flips between open/closed for aggressive visibility
             face_frame.image(create_face(is_open=frame_toggle))
             frame_toggle = not frame_toggle
             time.sleep(0.04) 
