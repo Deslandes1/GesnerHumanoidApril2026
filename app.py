@@ -14,7 +14,7 @@ import tempfile
 st.set_page_config(layout="wide", page_title="Gesner Humanoid AI")
 
 # -----------------------------
-# VOICES & TEXTS (UPDATED FOR CHESS APP)
+# VOICES & TEXTS (SCRIPT UPDATED)
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
@@ -22,24 +22,49 @@ voices = {
     "Spanish": "es-ES-AlvaroNeural"
 }
 
+# The message you provided is now the core script for the AI
 texts = {
-    "English": """Welcome to GlobalInternet.py. Today, I am excited to present our Chess against the Machine application. 
-This software allows you to challenge a powerful AI engine in a game of strategy and intellect. 
-Whether you are a beginner or a grandmaster, our interface provides a smooth and professional experience. 
-Visit us at global internet site p y to start playing now. 
-For custom software, contact Gesner Deslandes at 509-47385663 or email deslandes78@gmail.com.""",
+    "English": """Gesner Deslandes – GlobalInternet.py. 
+Building Python software from Haiti to the world. 
+I invite you to visit our newly improved website. Here’s what you’ll see and notice: 
+A professional, multilingual site in English, French, Spanish, and Kreyòl. 
+My full background as a Python developer, technology coordinator, interpreter, and more. 
+A clear list of services including custom development, AI, dashboards, and 24 hour delivery. 
+Ten completed software projects, each with price, status, and Request Info. 
+Live demos where you can instantly try the Haiti Voting Software, Accountant Excel AI, and DSM-2026 Radar. The password is 20082010. 
+Easy donation to support us via Moncash Prisme transfer. 
+Direct contact via phone, email, and a clear call to action. 
+No more broken demos. No more confusion. Just working software, proudly made in Haiti. 
+Visit now at global internet site p y. 
+Your feedback is welcome. Let’s build the future together.""",
 
-    "French": """Bienvenue chez GlobalInternet.py. Aujourd'hui, je suis ravi de vous présenter notre application d'échecs contre la machine. 
-Ce logiciel vous permet de défier un moteur d'intelligence artificielle puissant dans un jeu de stratégie et d'intellect. 
-Que vous soyez débutant ou grand maître, notre interface offre une expérience fluide et professionnelle. 
-Visitez-nous sur global internet site p y pour commencer à jouer. 
-Pour tout logiciel personnalisé, contactez Gesner Deslandes au 509-47385663 ou par email à deslandes78@gmail.com.""",
+    "French": """Gesner Deslandes – GlobalInternet.py. 
+Développement de logiciels Python d'Haïti vers le monde. 
+Je vous invite à visiter notre site Web nouvellement amélioré. Voici ce que vous verrez : 
+Un site professionnel et multilingue en anglais, français, espagnol et kreyòl. 
+Mon parcours complet en tant que développeur Python, coordinateur technologique, interprète, et plus encore. 
+Une liste claire de services incluant le développement personnalisé, l'IA, les tableaux de bord et la livraison en 24 heures. 
+Dix projets logiciels terminés, chacun avec prix, statut et demande d'informations. 
+Des démos en direct où vous pouvez essayer instantanément le logiciel de vote en Haïti, l'IA Accountant Excel et le radar DSM-2026. Le mot de passe est 20082010. 
+Don facile pour nous soutenir via le transfert Moncash Prisme. 
+Contact direct par téléphone, e-mail et un appel à l'action clair. 
+Plus de démos cassées. Plus de confusion. Juste des logiciels fonctionnels, fièrement fabriqués en Haïti. 
+Visitez maintenant sur global internet site p y. 
+Vos commentaires sont les bienvenus. Construisons l'avenir ensemble.""",
 
-    "Spanish": """Bienvenido a GlobalInternet.py. Hoy, me complace presentar nuestra aplicación de Ajedrez contra la Máquina. 
-Este software le permite desafiar a un potente motor de inteligencia artificial en un juego de estrategia e intelecto. 
-Ya sea principiante o gran maestro, nuestra interfaz ofrece una experiencia fluida y profesional. 
-Visítenos en global internet site p y para empezar a jugar. 
-Para software personalizado, contacte a Gesner Deslandes al 509-47385663 o envíe un correo a deslandes78@gmail.com."""
+    "Spanish": """Gesner Deslandes – GlobalInternet.py. 
+Construyendo software Python desde Haití para el mundo. 
+Los invito a visitar nuestro sitio web recientemente mejorado. Esto es lo que verán y notarán: 
+Un sitio profesional y multilingüe en inglés, francés, español y kreyòl. 
+Mi trayectoria completa como desarrollador Python, coordinador de tecnología, intérprete y más. 
+Una lista clara de servicios que incluye desarrollo personalizado, IA, tableros de control y entrega en 24 horas. 
+Diez proyectos de software completados, cada uno con precio, estado y solicitud de información. 
+Demos en vivo donde pueden probar instantáneamente el Software de Votación de Haití, Accountant Excel AI y DSM-2026 Radar. La contraseña es 20082010. 
+Donación fácil para apoyarnos a través de la transferencia Moncash Prisme. 
+Contacto directo por teléfono, correo electrónico y un claro llamado a la acción. 
+No más demos rotos. No más confusión. Solo software que funciona, hecho con orgullo en Haití. 
+Visite ahora en global internet site p y. 
+Sus comentarios son bienvenidos. Construyamos el futuro juntos."""
 }
 
 # -----------------------------
@@ -84,7 +109,7 @@ with right:
     st.markdown("**Owner:** Gesner Deslandes")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
-    st.markdown("🔗 [Click for Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
+    st.markdown("🔗 [Main Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.markdown("---")
     st.success("AI & Software Solutions 🇭🇹")
 
@@ -102,11 +127,11 @@ with left:
     face_frame = st.empty()
     face_frame.image(create_face(is_open=False))
 
-    if st.button("▶️ Explain Chess App"):
+    if st.button("▶️ Start Announcement"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Gesner AI is starting..."):
+        with st.spinner("Gesner AI is preparing the announcement..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
 
         # Play Audio
