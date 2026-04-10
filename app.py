@@ -14,7 +14,7 @@ import tempfile
 st.set_page_config(layout="wide", page_title="Gesner Humanoid AI")
 
 # -----------------------------
-# VOICES & TEXTS (APRIL 2026 SCRIPT)
+# VOICES & TEXTS (PAYPAL EXPLAINER)
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
@@ -22,46 +22,22 @@ voices = {
     "Spanish": "es-ES-AlvaroNeural"
 }
 
-# The specific advertisement script
-advert_script = """🌐 GlobalInternet.py est votre destination unique pour des logiciels Python sur mesure, construits d'Haïti vers le monde. 
-
-👥 Notre équipe complète :
-👨‍💼 Gesner Deslandes – Fondateur et PDG
-👨‍💼 Gesner Junior Deslandes – Assistant du PDG
-👨‍💻 Roosevelt Deslandes – Programmeur Python
-👨‍💻 Sebastien Stephane Deslandes – Programmeur Python
-👩‍💼 Zendaya Christelle Deslandes – Secrétaire
-
-📅 Tous les nouveaux membres ont rejoint l’équipe en avril 2026. Bienvenue à bord.
-
-⚙️ Nos services incluent :
-🐍 Développement Python sur mesure
-🧠 Solutions d’IA et de machine learning
-🗳️ Systèmes complets de vote et d’élection
-📊 Tableaux de bord décisionnels
-🏫 Systèmes de gestion scolaire
-📦 Gestion des stocks et point de vente
-📈 Extraction de données web
-♟️ Jeu d’échecs éducatif avec IA
-🧮 Logiciel de comptabilité
-📜 Base de données des archives nationales
-🛡️ Radar de sécurité avancé DSM-2026
-
-🎬 Des démos en direct sont disponibles pour la plupart des projets. 🔐 Accès démo protégé par mot de passe : 20082010
-
-💰 Les prix varient de 20 USD à 2000 USD, licence unique.
-
-📞 Contactez-nous pour vos besoins en logiciels sur mesure :
-💬 WhatsApp : 509 4738-5663
-📧 Email : deslandes78@gmail.com"""
-
-# Clean version for TTS engine (removing emojis for better flow)
-tts_clean_script = advert_script.replace("🌐", "").replace("👥", "").replace("👨‍💼", "").replace("👨‍💻", "").replace("👩‍💼", "").replace("📅", "").replace("⚙️", "").replace("🐍", "").replace("🧠", "").replace("🗳️", "").replace("📊", "").replace("🏫", "").replace("📦", "").replace("📈", "").replace("♟️", "").replace("🧮", "").replace("📜", "").replace("🛡️", "").replace("🎬", "").replace("🔐", "").replace("💰", "").replace("📞", "").replace("💬", "").replace("📧", "")
+# The educational script for the AI to read
+paypal_script = """My name is Gesner Deslandes. Today I want to explain how when you have a PayPal account, you can cash in, cash out, or make any online transaction. 
+PayPal works as a digital middleman between your bank and merchants. When you want to pay someone, PayPal securely moves the funds from your linked card or balance to the recipient's email address. 
+To get paid, someone simply sends money to your email. These funds sit in your PayPal balance. 
+To cash out and put that money in your physical wallet, you must link a local bank account or a debit card. You then select Transfer Funds, and PayPal sends the money to your bank, which usually takes one to three business days. 
+In some regions, you can also use a PayPal debit card at an ATM for instant cash. 
+Understanding these digital flows is key to running a global business. This was Gesner Deslandes, the owner of GlobalInternet.py."""
 
 texts = {
-    "English": tts_clean_script,
-    "French": tts_clean_script,
-    "Spanish": tts_clean_script
+    "English": paypal_script,
+    "French": """Je m'appelle Gesner Deslandes. Aujourd'hui, je veux expliquer comment, lorsque vous avez un compte PayPal, vous pouvez encaisser, retirer ou effectuer toute transaction en ligne. 
+    PayPal fonctionne comme un intermédiaire numérique entre votre banque et les marchands. Pour encaisser votre argent dans votre portefeuille réel, vous devez lier un compte bancaire ou une carte. 
+    C'était Gesner Deslandes, le propriétaire de GlobalInternet.py.""",
+    "Spanish": """Mi nombre es Gesner Deslandes. Hoy quiero explicar cómo, cuando tienes una cuenta de PayPal, puedes ingresar, retirar o realizar cualquier transacción en línea. 
+    PayPal funciona como un intermediario digital entre su banco y los comerciantes. Para retirar su dinero a su billetera real, debe vincular una cuenta bancaria o tarjeta. 
+    Este fue Gesner Deslandes, el dueño de GlobalInternet.py."""
 }
 
 # -----------------------------
@@ -100,13 +76,15 @@ def create_face(is_open=False):
 left, right = st.columns([3, 1])
 
 with right:
+    # PAYPAL SYMBOL ADDED
+    st.image("https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg", width=100)
     st.markdown("## 🌐 GlobalInternet.py")
-    st.markdown("**Founder & CEO:** Gesner Deslandes")
+    st.markdown("**Owner:** Gesner Deslandes")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
     st.markdown("🔗 [Main Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.markdown("---")
-    st.success("Haitian Software Mastery 🇭🇹")
+    st.success("Fintech & Software 🇭🇹")
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
@@ -117,20 +95,19 @@ with left:
         unsafe_allow_html=True
     )
     
-    language = st.selectbox("🌍 Select Language", list(voices.keys()), index=1)
+    language = st.selectbox("🌍 Select Language", list(voices.keys()))
     
-    # TELEPROMPTER FOR VIEWERS
-    st.markdown("### 📜 AI Teleprompter")
-    st.text_area("Currently Reading:", value=advert_script, height=250)
-
+    # Teleprompter view
+    st.info("AI Explainer: Digital Transactions & PayPal")
+    
     face_frame = st.empty()
     face_frame.image(create_face(is_open=False))
 
-    if st.button("▶️ Launch GlobalInternet.py Advertisement"):
+    if st.button("▶️ Start PayPal Explanation"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("AI preparing the company pitch..."):
+        with st.spinner("Gesner AI is calculating transaction logic..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
 
         with open(audio_path, "rb") as f:
@@ -138,19 +115,18 @@ with left:
         
         duration = MP3(audio_path).info.length
         
-        # Immediate audio start
+        # Immediate audio injection
         st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
         
         start_time = time.time()
         frame_toggle = True
 
-        # THE AGGRESSIVE ANIMATION LOOP
+        # AGGRESSIVE ANIMATION LOOP SYNCED TO AUDIO
         while (time.time() - start_time) < duration:
             face_frame.image(create_face(is_open=frame_toggle))
             frame_toggle = not frame_toggle
             time.sleep(0.04) 
 
-        # Return to closed mouth
         face_frame.image(create_face(is_open=False))
         
         if os.path.exists(audio_path):
