@@ -14,7 +14,7 @@ import tempfile
 st.set_page_config(layout="wide", page_title="Gesner Humanoid AI")
 
 # -----------------------------
-# VOICES & TEXTS (MESSAGE TO MR. WIBY)
+# VOICES & TEXTS (BUSINESS EDUCATION SCRIPT)
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
@@ -23,26 +23,29 @@ voices = {
 }
 
 texts = {
-    "English": """Mister Wiby, this is Gesner Deslandes from Be Like Brit. I want to take this moment to tell you: get better soon. 
-    The last time I saw you, you had a broken arm in a cast, and I couldn't talk to you since you were heading to the office. 
-    Mister Wiby, I know you might not believe it because the Gesner Humanoid AI does not have the voice you are used to hearing, 
-    but these are my words and my coding behind this message. I know the members of your church will keep you in their prayers, and so do I. 
-    I know you will get better and come back to work as soon as possible at Be Like Brit. 
-    Your friend and colleague, Gesner Deslandes, Technology Coordinator at Be Like Brit, Grand Goave, Haiti.""",
+    "English": """How does a website become a business? It is not just about having a link; it is about solving a problem.
+    First, you identify a need, like custom software or educational tools. 
+    Second, you build a platform that establishes trust. This is where your branding and professional design come in.
+    Third, you implement a monetization model. This could be selling products directly, offering subscription services like our Chess AI, or providing specialized consulting.
+    Fourth, you drive traffic. Without people visiting your site, you have no customers. You use social media and quality content to bring people in.
+    Finally, you automate and scale. By using Python and Streamlit, we create tools that work for us twenty-four hours a day. 
+    At GlobalInternet.py, we don't just build sites; we build engines of commerce. That is how a simple code becomes a professional legacy.""",
 
-    "French": """Monsieur Wiby, c'est Gesner Deslandes de Be Like Brit. Je voulais prendre un moment pour vous dire : bon rétablissement. 
-    La dernière fois que je vous ai vu, vous aviez le bras cassé dans le plâtre, et je n'ai pas pu vous parler car vous alliez au bureau. 
-    Monsieur Wiby, je sais que vous ne le croirez peut-être pas parce que l'IA Humanoïde Gesner n'a pas la voix que vous avez l'habitude d'entendre, 
-    mais ce sont mes mots et mon codage derrière ce message. Je sais que les membres de votre église vous garderont dans leurs prières, et moi aussi. 
-    Je sais que vous irez mieux et que vous reviendrez travailler le plus tôt possible à Be Like Brit. 
-    Votre ami et collègue, Gesner Deslandes, Coordinateur Technologique à Be Like Brit, Grand Goâve, Haïti.""",
+    "French": """Comment un site web devient-il une entreprise ? Il ne s'agit pas seulement d'avoir un lien ; il s'agit de résoudre un problème.
+    Premièrement, vous identifiez un besoin, comme des logiciels personnalisés ou des outils éducatifs.
+    Deuxièmement, vous construisez une plateforme qui établit la confiance. C'est là qu'interviennent votre image de marque et votre design professionnel.
+    Troisièmement, vous mettez en œuvre un modèle de monétisation. Il peut s'agir de vendre des produits directement, d'offrir des services d'abonnement comme notre IA d'échecs, ou de fournir des conseils spécialisés.
+    Quatrièmement, vous générez du trafic. Sans visiteurs, vous n'avez pas de clients. Vous utilisez les médias sociaux et un contenu de qualité pour attirer les gens.
+    Enfin, vous automatisez et passez à l'échelle. En utilisant Python et Streamlit, nous créons des outils qui travaillent pour nous vingt-quatre heures sur vingt-quatre.
+    Chez GlobalInternet.py, nous ne construisons pas seulement des sites ; nous construisons des moteurs de commerce.""",
 
-    "Spanish": """Señor Wiby, habla Gesner Deslandes de Be Like Brit. Quiero tomarme este momento para decirte: que te mejores pronto. 
-    La última vez que te vi, tenías el brazo roto enyesado y no pude hablar contigo porque ibas a la oficina. 
-    Señor Wiby, sé que tal vez no lo creas porque la IA Humanoide de Gesner no tiene la voz que sueles escuchar, 
-    pero estas son mis palabras y mi programación detrás de este mensaje. Sé que los miembros de tu iglesia te mantendrán en sus oraciones, al igual que yo. 
-    Sé que te recuperarás y volverás al trabajo lo antes posible en Be Like Brit. 
-    Tu amigo y colega, Gesner Deslandes, Coordinador de Tecnología en Be Like Brit, Grand Goave, Haití."""
+    "Spanish": """¿Cómo se convierte un sitio web en un negocio? No se trata solo de tener un enlace; se trata de resolver un problema.
+    Primero, identificas una necesidad, como software personalizado o herramientas educativas.
+    Segundo, construyes una plataforma que genere confianza. Aquí es donde entra tu marca y diseño profesional.
+    Tercero, implementas un modelo de monetización. Esto podría ser la venta directa de productos, ofrecer servicios de suscripción como nuestra IA de ajedrez, o brindar consultoría especializada.
+    Cuarto, generas tráfico. Sin visitas, no hay clientes. Utilizas las redes sociales y contenido de calidad para atraer a la gente.
+    Finalmente, automatizas y escalas. Usando Python y Streamlit, creamos herramientas que trabajan para nosotros las veinticuatro horas del día.
+    En GlobalInternet.py, no solo construimos sitios; construimos motores de comercio. Así es como un simple código se convierte en un legado profesional."""
 }
 
 # -----------------------------
@@ -52,7 +55,7 @@ def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # Face Shape
+    # Face Outlines
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
     
@@ -87,7 +90,7 @@ with right:
     st.markdown("📧 deslandes78@gmail.com")
     st.markdown("🔗 [Main Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.markdown("---")
-    st.success("Be Like Brit 🇭🇹")
+    st.success("Business Education 🇭🇹")
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
@@ -103,11 +106,11 @@ with left:
     face_frame = st.empty()
     face_frame.image(create_face(is_open=False))
 
-    if st.button("▶️ Play Message for Mr. Wiby"):
+    if st.button("▶️ Start Business Explanation"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Preparing words of kindness..."):
+        with st.spinner("Generating detailed explanation..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
 
         with open(audio_path, "rb") as f:
@@ -115,7 +118,7 @@ with left:
         
         duration = MP3(audio_path).info.length
         
-        # Audio injection
+        # Audio injection and instant sync
         st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
         
         start_time = time.time()
