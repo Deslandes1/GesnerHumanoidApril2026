@@ -38,7 +38,7 @@ def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # Face Outlines
+    # Face Shape
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
     
@@ -67,16 +67,12 @@ def create_face(is_open=False):
 left, right = st.columns([3, 1])
 
 with right:
-    # Alternative Sendwave Symbol Loading
-    st.markdown(
-        """
-        <div style="text-align: center;">
-            <img src="https://play-lh.googleusercontent.com/9796Y8fD8h0_6JjD6u0N6vW-Zt6L9U7nFq5v0Xf5T6R5X6Z7Y8n9v0w-x-y-z" width="150" onerror="this.src='https://img.icons8.com/color/144/wave.png';">
-            <h3 style="color: #1a73e8;">Sendwave</h3>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    # ---------------------------------------------------------
+    # SENDWAVE LOGO (PULLED FROM GITHUB)
+    # ---------------------------------------------------------
+    github_logo_url = "https://raw.githubusercontent.com/GesnerDeslandes/GesnerHumanoidAI/main/Sendwave.webp"
+    st.image(github_logo_url, width=200)
+    
     st.markdown("---")
     st.markdown("## 🌐 GlobalInternet.py")
     st.markdown("**Owner:** Gesner Deslandes")
@@ -84,7 +80,7 @@ with right:
     st.markdown("📧 deslandes78@gmail.com")
     st.markdown("🔗 [Main Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.markdown("---")
-    st.success("Direct Support for Haiti 🇭🇹")
+    st.success("Haiti Global Support 🇭🇹")
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
@@ -112,7 +108,6 @@ with left:
         
         duration = MP3(audio_path).info.length
         
-        # Audio injection
         st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
         
         start_time = time.time()
