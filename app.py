@@ -14,7 +14,7 @@ import tempfile
 st.set_page_config(layout="wide", page_title="Gesner Humanoid AI")
 
 # -----------------------------
-# VOICES & FULL SCRIPTS
+# VOICES & SELF-INTRODUCTION SCRIPTS
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
@@ -22,15 +22,15 @@ voices = {
     "Spanish": "es-ES-AlvaroNeural"
 }
 
-# Detailed scripts for both languages
-english_script = """Hello, I am the Gesner Humanoid AI. Family is everything, and today, I will explain how your relatives and friends abroad can send support to Haiti instantly using Sendwave. Sendwave is a secure mobile app built for international money transfers with very low fees. Here is how it works: Your family member in the USA, Canada, or Europe downloads the Sendwave app and links their debit card. Then, they simply select Haiti, enter your phone number, and choose how you will receive the funds. They can send the money directly to your Moncash wallet, your Natcash account, or for cash pickup at a trusted local agent. The transfer is completed within seconds, and the money is ready for you to use. It is that simple, fast, and secure. This was Gesner Deslandes, explaining to you how this international money transfer works to keep us connected. Thank you."""
+# The new social media introduction script
+intro_en = """Hello to everyone on social media! I am the Gesner Humanoid AI, a digital representative of innovation. I was built by Gesner Deslandes, a professional Python builder and the founder of GlobalInternet.py. I am a manifestation of software expertise, designed to bridge the gap between human interaction and advanced technology. Whether it is through code, creativity, or connectivity, we are here to provide fast software solutions to the world. To conclude, I want to say a huge thank you to Mister Gesner Deslandes of GlobalInternet.py for bringing me to life. Thank you!"""
 
-french_script = """Bonjour, je suis l'IA Humanoïde Gesner. La famille est tout, et aujourd'hui, j'expliquerai comment vos parents et amis à l'étranger peuvent envoyer un soutien instantané en Haïti en utilisant Sendwave. Sendwave est une application mobile sécurisée conçue pour les transferts d'argent internationaux avec des frais très bas. Voici comment cela fonctionne : Votre membre de famille aux États-Unis, au Canada ou en Europe télécharge l'application Sendwave et lie sa carte de débit. Ensuite, il lui suffit de sélectionner Haïti, d'entrer votre numéro de téléphone et de choisir comment vous recevrez les fonds. Ils peuvent envoyer l'argent directement sur votre portefeuille Moncash, votre compte Natcash ou pour un retrait d'espèces chez un agent local de confiance. Le transfert est effectué en quelques secondes et l'argent est prêt à être utilisé. C'est aussi simple, rapide et sécurisé que cela. C'était Gesner Deslandes, vous expliquant comment fonctionne ce transfert d'argent international pour nous garder connectés. Merci."""
+intro_fr = """Bonjour à tous sur les réseaux sociaux ! Je suis l'IA Humanoïde Gesner, une représentation numérique de l'innovation. J'ai été conçu par Gesner Deslandes, un développeur Python et le fondateur de GlobalInternet.py. Je suis la manifestation d'une expertise logicielle, créée pour combler le fossé entre l'interaction humaine et la technologie avancée. Que ce soit par le code, la créativité ou la connectivité, nous sommes ici pour fournir des solutions logicielles rapides au monde entier. Pour conclure, je tiens à dire un grand merci à Monsieur Gesner Deslandes de GlobalInternet.py pour m'avoir donné vie. Merci !"""
 
 texts = {
-    "English": english_script,
-    "French": french_script,
-    "Spanish": """Hola, soy la IA Humanoide de Gesner. La familia lo es todo, y hoy explicaré cómo sus familiares y amigos en el extranjero pueden enviar apoyo instantáneo a Haití usando Sendwave."""
+    "English": intro_en,
+    "French": intro_fr,
+    "Spanish": """Hola a todos en las redes sociales. Soy la IA Humanoide de Gesner, construida por Gesner Deslandes de GlobalInternet.py. Gracias a Mister Gesner Deslandes de GlobalInternet.py por darme vida."""
 }
 
 # -----------------------------
@@ -58,48 +58,50 @@ def create_face(is_open=False):
 left, right = st.columns([3, 1])
 
 with right:
+    # PROFESSIONAL COMPANY BRANDING
     st.markdown("""
-        <div style="text-align: center; padding: 10px;">
-            <h1 style="color: #1a73e8; font-family: 'Helvetica Neue', Arial; font-size: 42px; font-weight: bold;">
-                SendWave
-            </h1>
+        <div style="background-color: #003366; padding: 20px; border-radius: 10px; text-align: center;">
+            <h2 style="color: white; margin: 0;">GlobalInternet.py</h2>
+            <p style="color: #66ccff; font-size: 0.9em;">Fast Software Solutions</p>
         </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
-    st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 8px;">
-            <h3 style="color: #003366; margin: 0;">GlobalInternet.py</h3>
-            <p style="font-size: 0.8em; color: #555;">Fast Software Solutions</p>
-        </div>
-    """, unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("**Owner:** Gesner Deslandes")
+    st.markdown("**Builder & Founder:**")
+    st.markdown("### Gesner Deslandes")
     st.markdown("📱 (509)-47385663")
     st.markdown("📧 deslandes78@gmail.com")
-    st.success("Haiti Global Support 🇭🇹")
+    st.markdown("🔗 [Portfolio](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
+    st.success("Python Specialist 🐍")
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
-    st.markdown("<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='120'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='100'></div>", unsafe_allow_html=True)
+    
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
+    
     face_placeholder = st.empty()
     face_placeholder.image(create_face(is_open=False))
 
-    if st.button("▶️ Start Presentation"):
+    if st.button("▶️ Start Introduction"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
-        with st.spinner("Preparing Audio..."):
+        
+        with st.spinner("Initializing AI Persona..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
+        
         with open(audio_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
+        
         duration = MP3(audio_path).info.length
         st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
+        
         start_time = time.time()
         toggle = True
         while (time.time() - start_time) < duration:
             face_placeholder.image(create_face(is_open=toggle))
             toggle = not toggle
             time.sleep(0.05)
+        
         face_placeholder.image(create_face(is_open=False))
         if os.path.exists(audio_path):
             os.remove(audio_path)
