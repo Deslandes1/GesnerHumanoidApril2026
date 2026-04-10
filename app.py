@@ -27,8 +27,8 @@ sendwave_script = """Hello, I am the Gesner Humanoid AI. Family is everything, a
 
 texts = {
     "English": sendwave_script,
-    "French": """Bonjour, je suis l'IA Humanoïde Gesner. La famille est tout, et aujourd'hui, j'expliquerai comment vos parents et amis à l'étranger peuvent envoyer un soutien instantané en Haïti en utilisant Sendwave. Sendwave est une application mobile sécurisée pour les transferts d'argent internationaux avec des frais très bas. Voici comment cela fonctionne: votre membre de famille à l'étranger télécharge l'application Sendwave et lie sa carte de débit. Ensuite, ils sélectionnent Haïti, entrent votre numéro de téléphone et choisissent comment vous recevrez les fonds. Ils peuvent envoyer l'argent directement vers votre portefeuille Moncash, votre compte Natcash ou pour un retrait en espèces chez un agent local de confiance. Le transfert est terminé en quelques secondes et l'argent est prêt à être utilisé. C'est simple, rapide et sécurisé. C'était Gesner Deslandes, vous expliquant comment fonctionne ce transfert d'argent international pour nous garder connectés. Merci.""",
-    "Spanish": """Hola, soy la IA Humanoide de Gesner. La familia lo es todo, y hoy explicaré cómo sus familiares y amigos en el extranjero pueden enviar apoyo instantáneo a Haití usando Sendwave. Sendwave es una aplicación móvil segura para transferencias de dinero internacionales con tarifas muy bajas. Así es como funciona: su familiar en el extranjero descarga la aplicación Sendwave y vincula su tarjeta de débito. Luego, simplemente seleccionan Haití, ingresan su número de teléfono y eligen cómo recibirá los fondos. Pueden enviar el dinero directamente a su billetera Moncash, su cuenta Natcash o para retiro de efectivo en un agente local de confianza. La transferencia se completa en segundos y el dinero está listo para que lo use. Es así de simple, rápido y seguro. Este fue Gesner Deslandes, explicándole cómo funciona esta transferencia internacional de dinero para mantenernos conectados. Gracias."""
+    "French": """Bonjour, je suis l'IA Humanoïde Gesner. La famille est tout, et aujourd'hui, j'expliquerai comment vos parents et amis à l'étranger peuvent envoyer un soutien instantané en Haïti en utilisant Sendwave. Sendwave est une application mobile sécurisée pour les transferts d'argent internationaux avec des frais très bas. Voici comment cela fonctionne: votre membre de famille à l'étranger télécharge l'application Sendwave et lie sa carte de débit. Ensuite, ils sélectionnent Haïti, entrent votre numéro de téléphone et choisissent comment vous recevrez les fonds. Ils peuvent envoyer l'argent directement vers votre portefeuille Moncash, votre compte Natcash ou pour un retrait en espèces chez un agent local de confiance. Le transfert est terminé en quelques secondes et l'argent est prêt à être utilisé. C'était Gesner Deslandes, vous expliquant comment fonctionne ce transfert d'argent international pour nous garder connectés. Merci.""",
+    "Spanish": """Hola, soy la IA Humanoide de Gesner. La familia lo es todo, y hoy explicaré cómo sus familiares y amigos en el extranjero pueden enviar apoyo instantáneo a Haití usando Sendwave. Sendwave es una aplicación móvil segura para transferencias de dinero internacionales con tarifas muy bajas. Así es como funciona: su familiar en el extranjero descarga la aplicación Sendwave y vincula su tarjeta de débito. Luego, simplemente seleccionan Haití, ingresan su número de teléfono y eligen cómo recibirá los fondos. Pueden enviar el dinero directamente a su billetera Moncash, su cuenta Natcash o para retiro de efectivo en un agente local de confianza. La transferencia se completa en segundos y el dinero está listo para que lo use. Este fue Gesner Deslandes, explicándole cómo funciona esta transferencia internacional de dinero para mantenernos conectados. Gracias."""
 }
 
 # -----------------------------
@@ -38,7 +38,7 @@ def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # Face Outlines
+    # Face Shape
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
     
@@ -49,10 +49,8 @@ def create_face(is_open=False):
     # --- AGGRESSIVE BLACK MOUTH ---
     center_y = 265
     if is_open:
-        # High-visibility open state
         draw.ellipse((140, center_y - 35, 260, center_y + 35), fill="black")
     else:
-        # Heavy closed state
         draw.line((150, center_y, 250, center_y), fill="black", width=12)
 
     # Robot Details
@@ -70,7 +68,6 @@ left, right = st.columns([3, 1])
 
 with right:
     # SENDWAVE LOGO (MEDIUM SIZE)
-    # Replaced Paypal logo with Sendwave logo as requested
     st.image("https://upload.wikimedia.org/wikipedia/commons/e/ea/Sendwave_logo.svg", width=150)
     st.markdown("---")
     st.markdown("## 🌐 GlobalInternet.py")
@@ -79,7 +76,7 @@ with right:
     st.markdown("📧 deslandes78@gmail.com")
     st.markdown("🔗 [Main Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.markdown("---")
-    st.success("International Transfers 🇭🇹")
+    st.success("Haiti Global Support 🇭🇹")
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
@@ -95,11 +92,11 @@ with left:
     face_frame = st.empty()
     face_frame.image(create_face(is_open=False))
 
-    if st.button("▶️ Start Sendwave Advertisement"):
+    if st.button("▶️ Start SendWave presentation"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
-        with st.spinner("Preparing speech..."):
+        with st.spinner("Preparing Sendwave presentation..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
 
         with open(audio_path, "rb") as f:
@@ -113,13 +110,12 @@ with left:
         start_time = time.time()
         frame_toggle = True
 
-        # THE AGGRESSIVE ANIMATION LOOP
+        # THE RELENTLESS ANIMATION LOOP
         while (time.time() - start_time) < duration:
             face_frame.image(create_face(is_open=frame_toggle))
             frame_toggle = not frame_toggle
             time.sleep(0.04) 
 
-        # Return to closed state
         face_frame.image(create_face(is_open=False))
         
         if os.path.exists(audio_path):
