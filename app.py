@@ -14,7 +14,7 @@ import tempfile
 st.set_page_config(layout="wide", page_title="Gesner Humanoid AI")
 
 # -----------------------------
-# VOICES & TEXTS (PAYPAL SCRIPT)
+# VOICES & TEXTS (SENDWAVE SCRIPT)
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
@@ -23,21 +23,12 @@ voices = {
 }
 
 # The educational script for the AI to read
-paypal_script = """My name is Gesner Deslandes. Today I want to explain how when you have a PayPal account, you can cash in, cash out, or make any online transaction. 
-PayPal works as a digital wallet that connects your bank account or credit card to the internet. 
-When you pay someone, PayPal acts as a secure shield so the merchant never sees your bank details. 
-To get paid, your email address is all you need. Once the money is in your PayPal balance, you can cash it out by transferring it to your linked bank account or debit card. 
-The money moves from the digital world into your physical wallet in just a few days. 
-This is the power of fintech for global business. This was Gesner Deslandes, the owner of GlobalInternet.py."""
+sendwave_script = """Hello, I am the Gesner Humanoid AI. Family is everything, and today, I will explain how your relatives and friends abroad can send support to Haiti instantly using Sendwave. Sendwave is a secure mobile app built for international money transfers with very low fees. Here is how it works: Your family member in the USA, Canada, or Europe downloads the Sendwave app and links their debit card. Then, they simply select Haiti, enter your phone number, and choose how you will receive the funds. They can send the money directly to your Moncash wallet, your Natcash account, or for cash pickup at a trusted local agent. The transfer is completed within seconds, and the money is ready for you to use. It is that simple, fast, and secure. This was Gesner Deslandes, explaining to you how this international money transfer works to keep us connected. Thank you."""
 
 texts = {
-    "English": paypal_script,
-    "French": """Je m'appelle Gesner Deslandes. Aujourd'hui, je veux vous expliquer comment utiliser PayPal pour vos transactions. 
-    PayPal est un portefeuille numérique sécurisé. Vous pouvez recevoir de l'argent via votre e-mail et le transférer vers votre compte bancaire pour le retirer en espèces. 
-    C'était Gesner Deslandes, le propriétaire de GlobalInternet.py.""",
-    "Spanish": """Mi nombre es Gesner Deslandes. Hoy quiero explicarles cómo funciona PayPal. 
-    Es una billetera digital que protege sus datos. Puede recibir pagos con su correo electrónico y transferir ese dinero a su banco para tener efectivo. 
-    Este fue Gesner Deslandes, el dueño de GlobalInternet.py."""
+    "English": sendwave_script,
+    "French": """Bonjour, je suis l'IA Humanoïde Gesner. La famille est tout, et aujourd'hui, j'expliquerai comment vos parents et amis à l'étranger peuvent envoyer un soutien instantané en Haïti en utilisant Sendwave. Sendwave est une application mobile sécurisée pour les transferts d'argent internationaux avec des frais très bas. Voici comment cela fonctionne: votre membre de famille à l'étranger télécharge l'application Sendwave et lie sa carte de débit. Ensuite, ils sélectionnent Haïti, entrent votre numéro de téléphone et choisissent comment vous recevrez les fonds. Ils peuvent envoyer l'argent directement vers votre portefeuille Moncash, votre compte Natcash ou pour un retrait en espèces chez un agent local de confiance. Le transfert est terminé en quelques secondes et l'argent est prêt à être utilisé. C'est simple, rapide et sécurisé. C'était Gesner Deslandes, vous expliquant comment fonctionne ce transfert d'argent international pour nous garder connectés. Merci.""",
+    "Spanish": """Hola, soy la IA Humanoide de Gesner. La familia lo es todo, y hoy explicaré cómo sus familiares y amigos en el extranjero pueden enviar apoyo instantáneo a Haití usando Sendwave. Sendwave es una aplicación móvil segura para transferencias de dinero internacionales con tarifas muy bajas. Así es como funciona: su familiar en el extranjero descarga la aplicación Sendwave y vincula su tarjeta de débito. Luego, simplemente seleccionan Haití, ingresan su número de teléfono y eligen cómo recibirá los fondos. Pueden enviar el dinero directamente a su billetera Moncash, su cuenta Natcash o para retiro de efectivo en un agente local de confianza. La transferencia se completa en segundos y el dinero está listo para que lo use. Es así de simple, rápido y seguro. Este fue Gesner Deslandes, explicándole cómo funciona esta transferencia internacional de dinero para mantenernos conectados. Gracias."""
 }
 
 # -----------------------------
@@ -78,8 +69,9 @@ def create_face(is_open=False):
 left, right = st.columns([3, 1])
 
 with right:
-    # PAYPAL COLOR LOGIC (MEDIUM SIZE)
-    st.image("https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg", width=150)
+    # SENDWAVE LOGO (MEDIUM SIZE)
+    # Replaced Paypal logo with Sendwave logo as requested
+    st.image("https://upload.wikimedia.org/wikipedia/commons/e/ea/Sendwave_logo.svg", width=150)
     st.markdown("---")
     st.markdown("## 🌐 GlobalInternet.py")
     st.markdown("**Owner:** Gesner Deslandes")
@@ -87,7 +79,7 @@ with right:
     st.markdown("📧 deslandes78@gmail.com")
     st.markdown("🔗 [Main Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.markdown("---")
-    st.success("Software Solutions 🇭🇹")
+    st.success("International Transfers 🇭🇹")
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
@@ -103,7 +95,7 @@ with left:
     face_frame = st.empty()
     face_frame.image(create_face(is_open=False))
 
-    if st.button("▶️ Start PayPal Presentation"):
+    if st.button("▶️ Start Sendwave Advertisement"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
 
