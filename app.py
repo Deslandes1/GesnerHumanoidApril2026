@@ -28,7 +28,7 @@ sendwave_script = """Hello, I am the Gesner Humanoid AI. Family is everything, a
 texts = {
     "English": sendwave_script,
     "French": """Bonjour, je suis l'IA Humanoïde Gesner. La famille est tout, et aujourd'hui, j'expliquerai comment vos parents et amis à l'étranger peuvent envoyer un soutien instantané en Haïti en utilisant Sendwave. Sendwave est une application mobile sécurisée pour les transferts d'argent internationaux avec des frais très bas. Voici comment cela fonctionne: votre membre de famille à l'étranger télécharge l'application Sendwave et lie sa carte de débit. Ensuite, ils sélectionnent Haïti, entrent votre numéro de téléphone et choisissent comment vous recevrez les fonds. Ils peuvent envoyer l'argent directement vers votre portefeuille Moncash, votre compte Natcash ou pour un retrait en espèces chez un agent local de confiance. Le transfert est terminé en quelques secondes et l'argent est prêt à être utilisé. C'était Gesner Deslandes, vous expliquant comment fonctionne ce transfert d'argent international pour nous garder connectés. Merci.""",
-    "Spanish": """Hola, soy la IA Humanoide de Gesner. La familia lo es todo, y hoy explicaré cómo sus familiares y amigos en el extranjero pueden enviar apoyo instantáneo a Haití usando Sendwave. Sendwave es una aplicación móvil segura para transferencias de dinero internacionales con tarifas muy bajas. Así es como funciona: su familiar en el extranjero descarga la aplicación Sendwave y vincula su tarjeta de débito. Luego, simplemente seleccionan Haití, ingresan su número de teléfono y eligen cómo recibirá los fondos. Pueden enviar el dinero directamente a su billetera Moncash, su cuenta Natcash o para retiro de efectivo en un agente local de confianza. La transferencia se completa en segundos y el dinero está listo para que lo use. Este fue Gesner Deslandes, explicándole cómo funciona esta transferencia internacional de dinero para mantenernos conectados. Gracias."""
+    "Spanish": """Hola, soy la IA Humanoide de Gesner. La familia lo es todo, y hoy explicaré cómo sus familiares y amigos en el extranjero pueden enviar apoyo instantáneo a Haití usando Sendwave. Sendwave es una aplicación móvil segura para transferencias de dinero internacionales con tarifas muy bajas. Así es como funciona: su familiar en el extranjero descarga la aplicación Sendwave y vincula su tarjeta de débito. Luego, simplemente seleccionan Haití, ingresan su número de teléfono y eligen cómo recibirá los fondos. Pueden enviar el dinero directamente a su billetera Moncash, su cuenta Natcash o para retiro de efectivo en un agente local de confianza. El transferencia se completa en segundos y el dinero está listo para que lo use. Este fue Gesner Deslandes, explicándole cómo funciona esta transferencia internacional de dinero para mantenernos conectados. Gracias."""
 }
 
 # -----------------------------
@@ -38,7 +38,7 @@ def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
 
-    # Face Shape
+    # Face Outlines
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
     
@@ -67,8 +67,16 @@ def create_face(is_open=False):
 left, right = st.columns([3, 1])
 
 with right:
-    # SENDWAVE LOGO (MEDIUM SIZE)
-    st.image("https://upload.wikimedia.org/wikipedia/commons/e/ea/Sendwave_logo.svg", width=150)
+    # Alternative Sendwave Symbol Loading
+    st.markdown(
+        """
+        <div style="text-align: center;">
+            <img src="https://play-lh.googleusercontent.com/9796Y8fD8h0_6JjD6u0N6vW-Zt6L9U7nFq5v0Xf5T6R5X6Z7Y8n9v0w-x-y-z" width="150" onerror="this.src='https://img.icons8.com/color/144/wave.png';">
+            <h3 style="color: #1a73e8;">Sendwave</h3>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     st.markdown("---")
     st.markdown("## 🌐 GlobalInternet.py")
     st.markdown("**Owner:** Gesner Deslandes")
@@ -76,7 +84,7 @@ with right:
     st.markdown("📧 deslandes78@gmail.com")
     st.markdown("🔗 [Main Website](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.markdown("---")
-    st.success("Haiti Global Support 🇭🇹")
+    st.success("Direct Support for Haiti 🇭🇹")
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
