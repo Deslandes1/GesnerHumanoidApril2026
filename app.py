@@ -7,6 +7,8 @@ from mutagen.mp3 import MP3
 import base64
 import os
 import tempfile
+import requests
+from io import BytesIO
 
 # -----------------------------
 # PAGE CONFIG
@@ -21,7 +23,6 @@ voices = {
     "French": "fr-FR-HenriNeural"
 }
 
-# New congratulatory script for Ariana
 congrats_script_en = """
 Attention! This is Gesner Humanoid AI with a very special message!
 
@@ -56,7 +57,7 @@ texts = {
 }
 
 # -----------------------------
-# HAITIAN FLAG FUNCTION (blue/red blocks + emoji)
+# HAITIAN FLAG FUNCTION
 # -----------------------------
 def show_haitian_flag():
     st.markdown(
@@ -77,26 +78,36 @@ def show_haitian_flag():
 def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
-    # Face Structure
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
-    # Eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
-    
-    # --- AGGRESSIVE MOUTH MOVEMENT ---
     center_y = 265
     if is_open:
-        # Extra Large, aggressive open mouth
         draw.ellipse((110, center_y - 50, 290, center_y + 50), fill="black")
     else:
-        # Very thick, heavy aggressive closed line
         draw.line((140, center_y, 260, center_y), fill="black", width=20)
-        
-    # Antenna
     draw.line((200, 40, 200, 80), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
     return img
+
+# -----------------------------
+# LOAD ARIANA IMAGE
+# -----------------------------
+def load_ariana_image():
+    local_path = "Ariana .png"
+    if os.path.exists(local_path):
+        return Image.open(local_path)
+    else:
+        url = "https://raw.githubusercontent.com/Deslandes1/GesnerHumanoidApril2026/main/Ariana%20.png"
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                return Image.open(BytesIO(response.content))
+            else:
+                return None
+        except:
+            return None
 
 # -----------------------------
 # UI LAYOUT
@@ -104,10 +115,7 @@ def create_face(is_open=False):
 left, right = st.columns([3, 1])
 
 with right:
-    # HAITIAN FLAG (original position)
     show_haitian_flag()
-    
-    # Company branding
     st.markdown("---")
     st.markdown("""
         <div style="background-color: #003366; padding: 20px; border-radius: 10px; text-align: center;">
@@ -127,27 +135,23 @@ with left:
     st.title("🤖 Gesner Humanoid AI")
     st.subheader("🎉 Congratulatory Message: Ariana – Haiti’s Pride in Africa")
     
-    # Display Ariana's picture with decorative stars and balloons
-    ariana_path = "Ariana.png"
-    if os.path.exists(ariana_path):
-        # Create a row with columns to center the image and decorations
+    ariana_img = load_ariana_image()
+    if ariana_img is not None:
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            # Decorative elements: blue and red stars/balloons around the image
             st.markdown("""
                 <div style="text-align: center;">
                     <span style="font-size: 40px;">🎈🔵🔴🎈</span><br>
                     <span style="font-size: 30px;">⭐️🔵⭐️🔴⭐️</span>
                 </div>
             """, unsafe_allow_html=True)
-            st.image(ariana_path, caption="Ariana – Our Haitian Hero", use_column_width=True)
+            st.image(ariana_img, caption="Ariana – Our Haitian Hero", use_column_width=True)
             st.markdown("""
                 <div style="text-align: center;">
                     <span style="font-size: 30px;">⭐️🔴⭐️🔵⭐️</span><br>
                     <span style="font-size: 40px;">🎈🔴🔵🎈</span>
                 </div>
             """, unsafe_allow_html=True)
-            # Encouragement text
             st.markdown("""
                 <div style="text-align: center; background-color: #f0f0f0; padding: 10px; border-radius: 10px; margin-top: 10px;">
                     <p style="color: #00209F; font-weight: bold;">💙 Courage, Joy, Patience 💙</p>
@@ -157,31 +161,24 @@ with left:
                 </div>
             """, unsafe_allow_html=True)
     else:
-        st.warning("Ariana.png not found. Please upload the image to the repository.")
+        st.error("Ariana image not found. Please ensure 'Ariana .png' is uploaded to the repository.")
     
     st.markdown("---")
-    
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
     
     face_placeholder = st.empty()
     face_placeholder.image(create_face(is_open=False))
-    
     audio_placeholder = st.empty()
 
     if st.button("🚀 Play Congratulatory Message"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
-        
         with st.spinner("Generating audio message..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
-        
         with open(audio_path, "rb") as f:
             audio_bytes = f.read()
             b64 = base64.b64encode(audio_bytes).decode()
-        
         duration = MP3(audio_path).info.length
-        
-        # Audio player
         audio_html = f"""
             <audio autoplay="true" controls style="width: 100%;">
                 <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
@@ -189,22 +186,21 @@ with left:
         """
         audio_placeholder.markdown(audio_html, unsafe_allow_html=True)
         
-        # --- AGGRESSIVE MOUTH ANIMATION FOR FULL DURATION ---
+        # --- AGGRESSIVE MOUTH MOVEMENT FOR THE FULL DURATION ---
+        # Small delay to allow audio to start playing
+        time.sleep(0.3)
         start_time = time.time()
         toggle = True
-        
         while (time.time() - start_time) < duration:
             face_placeholder.image(create_face(is_open=toggle))
             toggle = not toggle
-            # Fast toggle for intense aggressive look
-            time.sleep(0.04) 
+            time.sleep(0.04)   # Very fast toggle = aggressive look
         
-        # Reset to closed mouth
+        # Final reset
         face_placeholder.image(create_face(is_open=False))
         
         if os.path.exists(audio_path):
             os.remove(audio_path)
 
-# Optional footer
 st.markdown("---")
 st.markdown("🇭🇹 *Gesner Humanoid AI – Celebrating Haitian excellence everywhere.* 🇭🇹")
