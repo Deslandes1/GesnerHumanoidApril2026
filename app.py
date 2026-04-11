@@ -53,22 +53,28 @@ texts = {
 }
 
 # -----------------------------
-# FACE DESIGN (AGGRESSIVE MOUTH)
+# FACE DESIGN (ALWAYS AGGRESSIVE)
 # -----------------------------
 def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
+    # Face Structure
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
+    # Eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
     
+    # --- AGGRESSIVE MOUTH MOVEMENT ---
     center_y = 265
     if is_open:
-        draw.ellipse((130, center_y - 40, 270, center_y + 40), fill="black")
+        # Extra large, aggressive open mouth
+        draw.ellipse((120, center_y - 45, 280, center_y + 45), fill="black")
     else:
-        draw.line((150, center_y, 250, center_y), fill="black", width=15)
+        # Very thick, heavy closed line
+        draw.line((140, center_y, 260, center_y), fill="black", width=18)
         
+    # Antenna
     draw.line((200, 40, 200, 80), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
     return img
@@ -95,7 +101,7 @@ with right:
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
-    st.subheader("Official Founder's Statement")
+    st.subheader("Founder's Business Statement")
     
     st.markdown("<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='100'></div>", unsafe_allow_html=True)
     
@@ -106,11 +112,11 @@ with left:
     
     audio_placeholder = st.empty()
 
-    if st.button("▶️ Generate and Play Audio"):
+    if st.button("▶️ Generate and Play"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
         
-        with st.spinner("Generating Speech..."):
+        with st.spinner("Building Audio..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
         
         with open(audio_path, "rb") as f:
@@ -119,16 +125,15 @@ with left:
         
         duration = MP3(audio_path).info.length
         
-        # We place the audio tag in the placeholder first to trigger playback
+        # Audio tag with controls for backup
         audio_html = f"""
-            <audio autoplay="true" controls>
+            <audio autoplay="true" controls style="width: 100%;">
                 <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-                Your browser does not support the audio element.
             </audio>
         """
         audio_placeholder.markdown(audio_html, unsafe_allow_html=True)
         
-        # CONTINUOUS AGGRESSIVE ANIMATION LOOP
+        # AGGRESSIVE ANIMATION LOOP
         start_time = time.time()
         toggle = True
         while (time.time() - start_time) < duration:
