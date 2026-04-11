@@ -14,36 +14,43 @@ import tempfile
 st.set_page_config(layout="wide", page_title="Gesner Humanoid AI")
 
 # -----------------------------
-# VOICES & AI IMAGE CLASSIFIER SCRIPT
+# VOICES & BUSINESS MISSION SCRIPT
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
     "French": "fr-FR-HenriNeural"
 }
 
-classifier_script_en = """
-Hello everyone! Today I am presenting the AI Image Classifier app, built by GlobalInternet.py. 
-This app uses a pre-trained neural network called MobileNetV2 that recognizes one thousand everyday objects, animals, vehicles, and common items.
-For the best results, you should upload clear images of animals, vehicles, food, electronics, household items, or nature scenes. 
-Please note, do not upload personal family photos, text documents, or medical images, as this model is a proof-of-concept for object recognition.
-This high-quality AI Classifier software is available for one thousand two hundred dollars. This includes a one-time license, the full source code, setup, and one year of support.
-GlobalInternet.py provides Python software and AI solutions from Haiti to the world. 
-Thank you to Mister Gesner Deslandes of GlobalInternet.py for leading this innovation!
+# The new business focus script
+mission_script_en = """
+Hello, this is Gesner Deslandes, the owner and founder of GlobalInternet.py. 
+Today I want to tell our audience that our company is a business one. 
+When we display our flag on the software we have built, that is to showcase our origin and add more value to our company and products, to show to the world where we are from. 
+However, we are an online company operating in the cloud. 
+I myself, Gesner Deslandes, I am a businessman and I build to innovate and sell, nothing more, nothing less. 
+I build, I don't talk much, that is what I do in my company every single day. 
+Having fun building software for sale, it is all about business and innovation. 
+We also look for new partnerships to work together to innovate together. 
+Knowledge has no limits. However, we build wealthy and healthy for our community and for the world. 
+That was Gesner Deslandes, the Owner of GlobalInternet.py.
 """
 
-classifier_script_fr = """
-Bonjour à tous ! Aujourd'hui, je vous présente l'application AI Image Classifier, conçue par GlobalInternet.py.
-Cette application utilise un réseau de neurones pré-entraîné appelé MobileNetV2 qui reconnaît mille objets du quotidien, animaux, véhicules et articles courants.
-Pour obtenir les meilleurs résultats, vous devez télécharger des images claires d'animaux, de véhicules, de nourriture, d'électronique ou de scènes de nature.
-Veuillez noter : ne téléchargez pas de photos de famille personnelles ou de documents médicaux, car ce modèle est une preuve de concept pour la reconnaissance d'objets.
-Ce logiciel de classification par IA est disponible pour mille deux cents dollars. Cela comprend une licence unique, le code source complet, la configuration et un an de support.
-GlobalInternet.py fournit des logiciels Python et des solutions d'IA d'Haïti au reste du monde.
-Merci à Monsieur Gesner Deslandes de GlobalInternet.py pour avoir dirigé cette innovation !
+mission_script_fr = """
+Bonjour, c'est Gesner Deslandes, propriétaire et fondateur de GlobalInternet.py. 
+Aujourd'hui, je veux dire à notre public que notre entreprise est une affaire commerciale. 
+Lorsque nous affichons notre drapeau sur les logiciels que nous avons créés, c'est pour montrer notre origine et ajouter de la valeur à notre entreprise et à nos produits, pour montrer au monde d'où nous venons. 
+Cependant, nous sommes une entreprise en ligne opérant dans le cloud. 
+Moi-même, Gesner Deslandes, je suis un homme d'affaires et je construis pour innover et vendre, rien de plus, rien de moins. 
+Je construis, je ne parle pas beaucoup, c'est ce que je fais dans mon entreprise chaque jour. 
+S'amuser à créer des logiciels pour la vente, tout est question de business et d'innovation. 
+Nous recherchons également de nouveaux partenariats pour travailler ensemble et innover ensemble. 
+La connaissance n'a pas de limites. Cependant, nous construisons de manière prospère et saine pour notre communauté et pour le monde. 
+C'était Gesner Deslandes, le propriétaire de GlobalInternet.py.
 """
 
 texts = {
-    "English": classifier_script_en,
-    "French": classifier_script_fr
+    "English": mission_script_en,
+    "French": mission_script_fr
 }
 
 # -----------------------------
@@ -79,6 +86,7 @@ def create_face(is_open=False):
 left, right = st.columns([3, 1])
 
 with right:
+    # PROFESSIONAL COMPANY BRANDING
     st.markdown("""
         <div style="background-color: #003366; padding: 20px; border-radius: 10px; text-align: center;">
             <h2 style="color: white; margin: 0;">GlobalInternet.py</h2>
@@ -91,11 +99,11 @@ with right:
     st.markdown("📱 (509) 4738-5663")
     st.markdown("📧 deslandes78@gmail.com")
     st.markdown("🔗 [Portfolio](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
-    st.success("Python Specialist 🐍")
+    st.success("Business & Innovation 📈")
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
-    st.subheader("Showcase: AI Image Classifier")
+    st.subheader("Official Founder's Statement")
     
     st.markdown("<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='100'></div>", unsafe_allow_html=True)
     
@@ -104,11 +112,11 @@ with left:
     face_placeholder = st.empty()
     face_placeholder.image(create_face(is_open=False))
 
-    if st.button("▶️ Start AI Presentation"):
+    if st.button("▶️ Play Statement"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
         
-        with st.spinner("Initializing AI Persona..."):
+        with st.spinner("Preparing Audio..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
         
         with open(audio_path, "rb") as f:
@@ -123,10 +131,8 @@ with left:
         while (time.time() - start_time) < duration:
             face_placeholder.image(create_face(is_open=toggle))
             toggle = not toggle
-            # High speed toggle for aggressive look
             time.sleep(0.04) 
         
-        # Ensure mouth is closed at the very end
         face_placeholder.image(create_face(is_open=False))
         
         if os.path.exists(audio_path):
