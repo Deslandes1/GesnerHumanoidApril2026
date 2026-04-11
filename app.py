@@ -57,20 +57,10 @@ texts = {
 }
 
 # -----------------------------
-# HAITIAN FLAG FUNCTION
+# PROPER HAITIAN FLAG (blue/red with coat of arms)
 # -----------------------------
-def show_haitian_flag():
-    st.markdown(
-        """
-        <div style="display: flex; align-items: center; justify-content: center; margin: 10px 0;">
-            <div style="background-color: #00209F; width: 60px; height: 40px;"></div>
-            <div style="background-color: #DE2119; width: 60px; height: 40px;"></div>
-            <span style="font-size: 30px; margin-left: 10px;">🇭🇹</span>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-    st.caption("Haitian Flag (blue & red with coat of arms)")
+def show_haitian_flag(width=100):
+    st.image("https://flagcdn.com/w320/ht.png", width=width)
 
 # -----------------------------
 # FACE DESIGN (AGGRESSIVE MOUTH)
@@ -110,13 +100,12 @@ def load_ariana_image():
             return None
 
 # -----------------------------
-# MAIN LAYOUT – COMPACT, NO SCROLLING
+# COMPACT LAYOUT – FITS ONE SCREEN
 # -----------------------------
-# Top row: title
 st.title("🤖 Gesner Humanoid AI")
 st.subheader("🎉 Congratulatory Message: Ariana – Haiti’s Pride in Africa")
 
-# Two main columns: left for face + Ariana, right for flag + company info
+# Two main columns
 left_col, right_col = st.columns([2.5, 1.2])
 
 with left_col:
@@ -124,38 +113,36 @@ with left_col:
     col_face, col_ariana = st.columns(2)
     with col_face:
         face_placeholder = st.empty()
-        face_placeholder.image(create_face(is_open=False), width=350)
+        face_placeholder.image(create_face(is_open=False), width=300)
     with col_ariana:
         ariana_img = load_ariana_image()
         if ariana_img is not None:
-            # Decorative stars and balloons above and below Ariana
             st.markdown(
                 """
                 <div style="text-align: center;">
-                    <span style="font-size: 35px;">🎈🔵🔴🎈</span><br>
-                    <span style="font-size: 25px;">⭐️🔵⭐️🔴⭐️</span>
+                    <span style="font-size: 30px;">🎈🔵🔴🎈</span><br>
+                    <span style="font-size: 22px;">⭐️🔵⭐️🔴⭐️</span>
                 </div>
                 """,
                 unsafe_allow_html=True
             )
-            st.image(ariana_img, caption="Ariana – Our Haitian Hero", width=280)
+            st.image(ariana_img, caption="Ariana – Our Haitian Hero", width=240)
             st.markdown(
                 """
                 <div style="text-align: center;">
-                    <span style="font-size: 25px;">⭐️🔴⭐️🔵⭐️</span><br>
-                    <span style="font-size: 35px;">🎈🔴🔵🎈</span>
+                    <span style="font-size: 22px;">⭐️🔴⭐️🔵⭐️</span><br>
+                    <span style="font-size: 30px;">🎈🔴🔵🎈</span>
                 </div>
                 """,
                 unsafe_allow_html=True
             )
-            # Encouragement text
             st.markdown(
                 """
-                <div style="text-align: center; background-color: #f0f0f0; padding: 5px; border-radius: 10px; margin-top: 5px;">
-                    <p style="color: #00209F; font-weight: bold; margin: 0;">💙 Courage, Joy, Patience 💙</p>
-                    <p style="color: #DE2119; font-weight: bold; margin: 0;">❤️ May your parents be proud! ❤️</p>
-                    <p style="color: #00209F; font-weight: bold; margin: 0;">💙 May your twin sister be proud! 💙</p>
-                    <p style="color: #DE2119; font-weight: bold; margin: 0;">❤️ May all of Haiti be proud! ❤️</p>
+                <div style="text-align: center; background-color: #f0f0f0; padding: 4px; border-radius: 8px; margin-top: 4px;">
+                    <p style="color: #00209F; font-weight: bold; margin: 0; font-size: 0.8rem;">💙 Courage, Joy, Patience 💙</p>
+                    <p style="color: #DE2119; font-weight: bold; margin: 0; font-size: 0.8rem;">❤️ May your parents be proud! ❤️</p>
+                    <p style="color: #00209F; font-weight: bold; margin: 0; font-size: 0.8rem;">💙 May your twin sister be proud! 💙</p>
+                    <p style="color: #DE2119; font-weight: bold; margin: 0; font-size: 0.8rem;">❤️ May all of Haiti be proud! ❤️</p>
                 </div>
                 """,
                 unsafe_allow_html=True
@@ -163,8 +150,8 @@ with left_col:
         else:
             st.error("Ariana image not found.")
     
-    # Row 2: language selector and button (compact)
-    col_lang, col_btn = st.columns([1, 1])
+    # Row 2: language selector and button
+    col_lang, col_btn = st.columns([1, 1.5])
     with col_lang:
         language = st.selectbox("🌍 Select Language", list(voices.keys()))
     with col_btn:
@@ -172,17 +159,18 @@ with left_col:
         st.write("")
         play_button = st.button("🚀 Play Congratulatory Message", use_container_width=True)
     
-    # Audio placeholder (below button)
+    # Audio placeholder
     audio_placeholder = st.empty()
 
 with right_col:
-    show_haitian_flag()
+    # Proper Haitian flag
+    show_haitian_flag(width=100)
     st.markdown("---")
     st.markdown(
         """
-        <div style="background-color: #003366; padding: 15px; border-radius: 10px; text-align: center;">
-            <h2 style="color: white; margin: 0;">GlobalInternet.py</h2>
-            <p style="color: #66ccff; font-size: 0.9em;">Innovation & Tech</p>
+        <div style="background-color: #003366; padding: 12px; border-radius: 10px; text-align: center;">
+            <h2 style="color: white; margin: 0; font-size: 1.4rem;">GlobalInternet.py</h2>
+            <p style="color: #66ccff; font-size: 0.8rem;">Innovation & Tech</p>
         </div>
         """,
         unsafe_allow_html=True
@@ -219,14 +207,14 @@ if play_button:
     start_time = time.time()
     toggle = True
     while (time.time() - start_time) < duration:
-        face_placeholder.image(create_face(is_open=toggle), width=350)
+        face_placeholder.image(create_face(is_open=toggle), width=300)
         toggle = not toggle
         time.sleep(0.04)
-    face_placeholder.image(create_face(is_open=False), width=350)
+    face_placeholder.image(create_face(is_open=False), width=300)
     
     if os.path.exists(audio_path):
         os.remove(audio_path)
 
-# Optional footer (will be at bottom but likely out of view; you can remove if needed)
+# Optional footer (may appear at bottom, but you can remove if needed)
 st.markdown("---")
 st.markdown("🇭🇹 *Gesner Humanoid AI – Celebrating Haitian excellence everywhere.* 🇭🇹")
