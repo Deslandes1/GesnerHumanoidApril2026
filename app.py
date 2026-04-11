@@ -21,7 +21,6 @@ voices = {
     "French": "fr-FR-HenriNeural"
 }
 
-# The new business focus script
 mission_script_en = """
 Hello, this is Gesner Deslandes, the owner and founder of GlobalInternet.py. 
 Today I want to tell our audience that our company is a business one. 
@@ -59,23 +58,17 @@ texts = {
 def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
-    # Face Structure
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
-    # Eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
     
-    # --- AGGRESSIVE MOUTH MOVEMENT ---
     center_y = 265
     if is_open:
-        # Large, aggressive open mouth
         draw.ellipse((130, center_y - 40, 270, center_y + 40), fill="black")
     else:
-        # Thick closed line
         draw.line((150, center_y, 250, center_y), fill="black", width=15)
         
-    # Antenna
     draw.line((200, 40, 200, 80), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
     return img
@@ -86,7 +79,6 @@ def create_face(is_open=False):
 left, right = st.columns([3, 1])
 
 with right:
-    # PROFESSIONAL COMPANY BRANDING
     st.markdown("""
         <div style="background-color: #003366; padding: 20px; border-radius: 10px; text-align: center;">
             <h2 style="color: white; margin: 0;">GlobalInternet.py</h2>
@@ -111,19 +103,30 @@ with left:
     
     face_placeholder = st.empty()
     face_placeholder.image(create_face(is_open=False))
+    
+    audio_placeholder = st.empty()
 
-    if st.button("▶️ Play Statement"):
+    if st.button("▶️ Generate and Play Audio"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
         
-        with st.spinner("Preparing Audio..."):
+        with st.spinner("Generating Speech..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
         
         with open(audio_path, "rb") as f:
-            b64 = base64.b64encode(f.read()).decode()
+            audio_bytes = f.read()
+            b64 = base64.b64encode(audio_bytes).decode()
         
         duration = MP3(audio_path).info.length
-        st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
+        
+        # We place the audio tag in the placeholder first to trigger playback
+        audio_html = f"""
+            <audio autoplay="true" controls>
+                <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+                Your browser does not support the audio element.
+            </audio>
+        """
+        audio_placeholder.markdown(audio_html, unsafe_allow_html=True)
         
         # CONTINUOUS AGGRESSIVE ANIMATION LOOP
         start_time = time.time()
