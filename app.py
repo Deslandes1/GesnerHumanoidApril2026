@@ -63,19 +63,23 @@ texts = {
 def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
+    # Face Structure
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
+    # Eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
     
+    # --- AGGRESSIVE MOUTH MOVEMENT ---
     center_y = 265
     if is_open:
-        # Aggressive wide open mouth for promotion
+        # Extra Large, aggressive open mouth
         draw.ellipse((110, center_y - 50, 290, center_y + 50), fill="black")
     else:
-        # Very thick aggressive closed line
+        # Very thick, heavy aggressive closed line
         draw.line((140, center_y, 260, center_y), fill="black", width=20)
         
+    # Antenna
     draw.line((200, 40, 200, 80), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
     return img
@@ -132,6 +136,7 @@ with left:
         
         duration = MP3(audio_path).info.length
         
+        # Audio rendering with controls
         audio_html = f"""
             <audio autoplay="true" controls style="width: 100%;">
                 <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
@@ -139,15 +144,18 @@ with left:
         """
         audio_placeholder.markdown(audio_html, unsafe_allow_html=True)
         
-        # CONTINUOUS AGGRESSIVE ANIMATION LOOP
+        # --- AGGRESSIVE ANIMATION ENGINE ---
+        # Forces the mouth to stay in motion for the full duration
         start_time = time.time()
         toggle = True
+        
         while (time.time() - start_time) < duration:
             face_placeholder.image(create_face(is_open=toggle))
             toggle = not toggle
-            # Slightly faster sleep for "aggressive" promotional energy
-            time.sleep(0.035) 
+            # High-speed toggle for intense promotional look
+            time.sleep(0.04) 
         
+        # Final reset to closed mouth
         face_placeholder.image(create_face(is_open=False))
         
         if os.path.exists(audio_path):
