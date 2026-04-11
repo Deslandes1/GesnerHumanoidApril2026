@@ -21,7 +21,6 @@ voices = {
     "French": "fr-FR-HenriNeural"
 }
 
-# The specific script for the AI Image Classifier presentation
 classifier_script_en = """
 Hello everyone! Today I am presenting the AI Image Classifier app, built by GlobalInternet.py. 
 This app uses a pre-trained neural network called MobileNetV2 that recognizes one thousand everyday objects, animals, vehicles, and common items.
@@ -29,7 +28,7 @@ For the best results, you should upload clear images of animals, vehicles, food,
 Please note, do not upload personal family photos, text documents, or medical images, as this model is a proof-of-concept for object recognition.
 This high-quality AI Classifier software is available for one thousand two hundred dollars. This includes a one-time license, the full source code, setup, and one year of support.
 GlobalInternet.py provides Python software and AI solutions from Haiti to the world. 
-Thank you to Mister Gesner Deslandes for leading this innovation!
+Thank you to Mister Gesner Deslandes of GlobalInternet.py for leading this innovation!
 """
 
 classifier_script_fr = """
@@ -39,7 +38,7 @@ Pour obtenir les meilleurs résultats, vous devez télécharger des images clair
 Veuillez noter : ne téléchargez pas de photos de famille personnelles ou de documents médicaux, car ce modèle est une preuve de concept pour la reconnaissance d'objets.
 Ce logiciel de classification par IA est disponible pour mille deux cents dollars. Cela comprend une licence unique, le code source complet, la configuration et un an de support.
 GlobalInternet.py fournit des logiciels Python et des solutions d'IA d'Haïti au reste du monde.
-Merci à Monsieur Gesner Deslandes pour avoir dirigé cette innovation !
+Merci à Monsieur Gesner Deslandes de GlobalInternet.py pour avoir dirigé cette innovation !
 """
 
 texts = {
@@ -48,7 +47,7 @@ texts = {
 }
 
 # -----------------------------
-# FACE DESIGN
+# FACE DESIGN (AGGRESSIVE MOUTH)
 # -----------------------------
 def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
@@ -59,12 +58,16 @@ def create_face(is_open=False):
     # Eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
-    # Mouth Animation Logic
+    
+    # --- AGGRESSIVE MOUTH MOVEMENT ---
     center_y = 265
     if is_open:
-        draw.ellipse((140, center_y - 30, 260, center_y + 30), fill="black")
+        # Large, aggressive open mouth
+        draw.ellipse((130, center_y - 40, 270, center_y + 40), fill="black")
     else:
-        draw.line((150, center_y, 250, center_y), fill="black", width=12)
+        # Thick closed line
+        draw.line((150, center_y, 250, center_y), fill="black", width=15)
+        
     # Antenna
     draw.line((200, 40, 200, 80), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
@@ -76,7 +79,6 @@ def create_face(is_open=False):
 left, right = st.columns([3, 1])
 
 with right:
-    # PROFESSIONAL COMPANY BRANDING
     st.markdown("""
         <div style="background-color: #003366; padding: 20px; border-radius: 10px; text-align: center;">
             <h2 style="color: white; margin: 0;">GlobalInternet.py</h2>
@@ -93,7 +95,7 @@ with right:
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
-    st.subheader("App Showcase: AI Image Classifier")
+    st.subheader("Showcase: AI Image Classifier")
     
     st.markdown("<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='100'></div>", unsafe_allow_html=True)
     
@@ -106,7 +108,7 @@ with left:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
         
-        with st.spinner("Analyzing Script..."):
+        with st.spinner("Initializing AI Persona..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
         
         with open(audio_path, "rb") as f:
@@ -115,14 +117,17 @@ with left:
         duration = MP3(audio_path).info.length
         st.markdown(f'<audio autoplay><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
         
-        # SYNCED MOUTH ANIMATION
+        # CONTINUOUS AGGRESSIVE ANIMATION LOOP
         start_time = time.time()
         toggle = True
         while (time.time() - start_time) < duration:
             face_placeholder.image(create_face(is_open=toggle))
             toggle = not toggle
-            time.sleep(0.05)
+            # High speed toggle for aggressive look
+            time.sleep(0.04) 
         
+        # Ensure mouth is closed at the very end
         face_placeholder.image(create_face(is_open=False))
+        
         if os.path.exists(audio_path):
             os.remove(audio_path)
