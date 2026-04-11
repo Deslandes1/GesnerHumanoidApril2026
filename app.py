@@ -14,67 +14,68 @@ import tempfile
 st.set_page_config(layout="wide", page_title="Gesner Humanoid AI")
 
 # -----------------------------
-# VOICES & BUSINESS MISSION SCRIPT
+# VOICES & PROMOTIONAL SCRIPT
 # -----------------------------
 voices = {
     "English": "en-US-GuyNeural",
     "French": "fr-FR-HenriNeural"
 }
 
-mission_script_en = """
-Hello, this is Gesner Deslandes, the owner and founder of GlobalInternet.py. 
-Today I want to tell our audience that our company is a business one. 
-When we display our flag on the software we have built, that is to showcase our origin and add more value to our company and products, to show to the world where we are from. 
-However, we are an online company operating in the cloud. 
-I myself, Gesner Deslandes, I am a businessman and I build to innovate and sell, nothing more, nothing less. 
-I build, I don't talk much, that is what I do in my company every single day. 
-Having fun building software for sale, it is all about business and innovation. 
-We also look for new partnerships to work together to innovate together. 
-Knowledge has no limits. However, we build wealthy and healthy for our community and for the world. 
-That was Gesner Deslandes, the Owner of GlobalInternet.py.
+# High-energy promotional script
+promo_script_en = """
+Attention! This is Gesner Humanoid AI with a special announcement!
+Are you looking for the fastest way to support your loved ones in Haiti? Look no further than Western Union! 
+We know that family is everything. Whether it is for food, medicine, or school fees, your support needs to arrive safely and without delay!
+Why choose Western Union? 
+First! Speed! Your money is ready for pickup in just minutes. 
+Second! Accessibility! With thousands of locations from Port-au-Prince to the smallest villages, we are everywhere you need us to be. 
+Third! Security! Trust the leader with over one hundred and fifty years of experience!
+And fourth! Simplicity! No bank account? No problem! Just a name and a pickup location is all it takes.
+To every Haitian abroad: Your family is waiting! Don't let distance stand in the way. 
+Send with confidence. Send with Western Union today! 
+Visit your nearest agent or download the app now. 
+This is Gesner Humanoid AI for GlobalInternet.py. Keep Haiti strong! Send now!
 """
 
-mission_script_fr = """
-Bonjour, c'est Gesner Deslandes, propriétaire et fondateur de GlobalInternet.py. 
-Aujourd'hui, je veux dire à notre public que notre entreprise est une affaire commerciale. 
-Lorsque nous affichons notre drapeau sur les logiciels que nous avons créés, c'est pour montrer notre origine et ajouter de la valeur à notre entreprise et à nos produits, pour montrer au monde d'où nous venons. 
-Cependant, nous sommes une entreprise en ligne opérant dans le cloud. 
-Moi-même, Gesner Deslandes, je suis un homme d'affaires et je construis pour innover et vendre, rien de plus, rien de moins. 
-Je construis, je ne parle pas beaucoup, c'est ce que je fais dans mon entreprise chaque jour. 
-S'amuser à créer des logiciels pour la vente, tout est question de business et d'innovation. 
-Nous recherchons également de nouveaux partenariats pour travailler ensemble et innover ensemble. 
-La connaissance n'a pas de limites. Cependant, nous construisons de manière prospère et saine pour notre communauté et pour le monde. 
-C'était Gesner Deslandes, le propriétaire de GlobalInternet.py.
+promo_script_fr = """
+Attention ! Ici l'IA Humanoïde Gesner pour une annonce spéciale !
+Vous cherchez le moyen le plus rapide de soutenir vos proches en Haïti ? Ne cherchez plus, choisissez Western Union !
+La famille est ce qu'il y a de plus important. Que ce soit pour la nourriture, les médicaments ou les frais scolaires, votre soutien doit arriver en toute sécurité et sans délai !
+Pourquoi choisir Western Union ?
+Premièrement ! La Rapidité ! Votre argent est prêt en quelques minutes seulement.
+Deuxièmement ! L'Accessibilité ! Avec des milliers d'agences de Port-au-Prince aux plus petits villages, nous sommes partout où vous avez besoin de nous.
+Troisièmement ! La Sécurité ! Faites confiance au leader avec plus de cent cinquante ans d'expérience !
+Et quatrièmement ! La Simplicité ! Pas de compte bancaire ? Aucun problème ! Un nom et un lieu de retrait suffisent.
+À tous les Haïtiens à l'étranger : Votre famille vous attend ! Ne laissez pas la distance vous arrêter.
+Envoyez en toute confiance. Envoyez avec Western Union dès aujourd'hui !
+Visitez votre agent le plus proche ou téléchargez l'application maintenant.
+C'était l'IA Humanoïde Gesner pour GlobalInternet.py. Gardez Haïti forte ! Envoyez maintenant !
 """
 
 texts = {
-    "English": mission_script_en,
-    "French": mission_script_fr
+    "English": promo_script_en,
+    "French": promo_script_fr
 }
 
 # -----------------------------
-# FACE DESIGN (ALWAYS AGGRESSIVE)
+# FACE DESIGN (AGGRESSIVE MOUTH)
 # -----------------------------
 def create_face(is_open=False):
     img = Image.new("RGB", (400, 400), "white")
     draw = ImageDraw.Draw(img)
-    # Face Structure
     draw.ellipse((50, 80, 350, 350), outline="black", width=5)
     draw.ellipse((90, 120, 310, 320), outline="black", width=3)
-    # Eyes
     draw.ellipse((140, 170, 180, 210), fill="black")
     draw.ellipse((220, 170, 260, 210), fill="black")
     
-    # --- AGGRESSIVE MOUTH MOVEMENT ---
     center_y = 265
     if is_open:
-        # Extra large, aggressive open mouth
-        draw.ellipse((120, center_y - 45, 280, center_y + 45), fill="black")
+        # Aggressive wide open mouth for promotion
+        draw.ellipse((110, center_y - 50, 290, center_y + 50), fill="black")
     else:
-        # Very thick, heavy closed line
-        draw.line((140, center_y, 260, center_y), fill="black", width=18)
+        # Very thick aggressive closed line
+        draw.line((140, center_y, 260, center_y), fill="black", width=20)
         
-    # Antenna
     draw.line((200, 40, 200, 80), fill="black", width=4)
     draw.ellipse((185, 20, 215, 50), outline="black", width=3)
     return img
@@ -85,10 +86,18 @@ def create_face(is_open=False):
 left, right = st.columns([3, 1])
 
 with right:
+    # WESTERN UNION PROMO BRANDING
+    st.markdown("""
+        <div style="background-color: #FFCC00; padding: 15px; border-radius: 10px; text-align: center; border: 3px solid black;">
+            <h1 style="color: black; margin: 0; font-family: 'Arial Black', sans-serif; letter-spacing: -1px;">WESTERN<br>UNION</h1>
+            <p style="color: black; font-weight: bold; margin-top: 5px;">SEND NOW</p>
+        </div>
+    """, unsafe_allow_html=True)
+    st.markdown("---")
     st.markdown("""
         <div style="background-color: #003366; padding: 20px; border-radius: 10px; text-align: center;">
             <h2 style="color: white; margin: 0;">GlobalInternet.py</h2>
-            <p style="color: #66ccff; font-size: 0.9em;">Fast Software Solutions</p>
+            <p style="color: #66ccff; font-size: 0.9em;">Innovation & Tech</p>
         </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
@@ -96,14 +105,12 @@ with right:
     st.markdown("### Gesner Deslandes")
     st.markdown("📱 (509) 4738-5663")
     st.markdown("📧 deslandes78@gmail.com")
-    st.markdown("🔗 [Portfolio](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
-    st.success("Business & Innovation 📈")
+    st.markdown("🔗 [Main Platform](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
+    st.success("Building the Future 🇭🇹")
 
 with left:
     st.title("🤖 Gesner Humanoid AI")
-    st.subheader("Founder's Business Statement")
-    
-    st.markdown("<div style='text-align:center;'><img src='https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Haiti.svg' width='100'></div>", unsafe_allow_html=True)
+    st.subheader("🔥 Special Promotion: Western Union x Haiti")
     
     language = st.selectbox("🌍 Select Language", list(voices.keys()))
     
@@ -112,11 +119,11 @@ with left:
     
     audio_placeholder = st.empty()
 
-    if st.button("▶️ Generate and Play"):
+    if st.button("🚀 Start Promotional Announcement"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
             audio_path = tmp.name
         
-        with st.spinner("Building Audio..."):
+        with st.spinner("Generating High-Energy Audio..."):
             asyncio.run(edge_tts.Communicate(texts[language], voices[language]).save(audio_path))
         
         with open(audio_path, "rb") as f:
@@ -125,7 +132,6 @@ with left:
         
         duration = MP3(audio_path).info.length
         
-        # Audio tag with controls for backup
         audio_html = f"""
             <audio autoplay="true" controls style="width: 100%;">
                 <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
@@ -133,13 +139,14 @@ with left:
         """
         audio_placeholder.markdown(audio_html, unsafe_allow_html=True)
         
-        # AGGRESSIVE ANIMATION LOOP
+        # CONTINUOUS AGGRESSIVE ANIMATION LOOP
         start_time = time.time()
         toggle = True
         while (time.time() - start_time) < duration:
             face_placeholder.image(create_face(is_open=toggle))
             toggle = not toggle
-            time.sleep(0.04) 
+            # Slightly faster sleep for "aggressive" promotional energy
+            time.sleep(0.035) 
         
         face_placeholder.image(create_face(is_open=False))
         
